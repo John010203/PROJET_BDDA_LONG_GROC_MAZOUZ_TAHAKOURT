@@ -1,5 +1,5 @@
-import PageId
-import ByteBuffer
+from PageId import PageId
+from ByteBuffer import ByteBuffer
 
 class DiskManager :
 
@@ -20,15 +20,25 @@ class DiskManager :
             return PageId(index, self.fileCounter[index])
 
     def ReadPage(self,pageId: PageId, buff : ByteBuffer) -> None:
-        return
+        numPage = pageId.PageIdx
+        numFile = pageId.FileIdx
+        pos = 4096*numPage
+        file = open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb")#revoir le seek
+        buff.from_bytes(file.read(4096))
+        file.close()
     
     def WritePage(self,pageId: PageId, buff) -> None:
-        return
+        numPage = pageId.PageIdx
+        numFile = pageId.FileIdx
+        pos = 4096*numPage
+        file = open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","wb")
+        file.write(buff.to_bytes())
+        file.close()
+        
 
     def Dealloc(self,pageId:PageId) -> None: 
         self.pagesDisponibles.append(pageId)
-        self.pagesUtilisees.pop(pageId)
 
     def GetCurrentCountAllocPages(self) ->  int :
         """Retourne le nombre de pages allouées"""
-        return len(self.pagesUtilisees)
+        return sum(self.fileCounter)-len(self.pagesDisponibles)

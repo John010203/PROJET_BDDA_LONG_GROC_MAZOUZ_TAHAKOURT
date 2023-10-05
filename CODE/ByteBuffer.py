@@ -3,7 +3,7 @@ import struct
 
 class ByteBuffer:
 
-    def __init__(self, size=30):
+    def __init__(self, size=4096):
         self.__bytes = [None]*size
         self.__pos = 0
 
@@ -11,10 +11,12 @@ class ByteBuffer:
         self.__pos = pos
 
     def from_bytes(self, bytes):
+        #lire
         self.__pos = 0
         self.__bytes = [b for b in bytes]
 
     def to_bytes(self):
+        #ecrire
         return bytes([b for b in self.__bytes if b != None])
 
     def read_int(self):

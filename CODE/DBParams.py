@@ -1,4 +1,4 @@
-class DBparams(object):
+class DBParams:
 
     def __init__(self, DBPath, SGBDPageSize, DMFileCount):
         self.DBPath = DBPath

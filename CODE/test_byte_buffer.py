@@ -1,4 +1,4 @@
-from BDDA.ByteBuffer import ByteBuffer
+from CODE.ByteBuffer import ByteBuffer
 
 buffer = ByteBuffer()
 buffer.put_int(13)

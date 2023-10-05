@@ -3,19 +3,21 @@ import ByteBuffer
 
 class DiskManager :
 
-    diskManager = DiskManager()
+    def __init__(self, bdd):
+        self.bdd = bdd
 
-    def __init__(self):
+        self.fileCounter = [0]*4
+
         self.pagesDisponibles = []
-        self.pagesUtilisees= []
+
 
     def AllocPage(self) -> PageId :
         if (len(self.pagesDisponibles)!=0):
-            self.pagesutilisees.append(self.pagesDisponibles[-1])
-            return self.pagesDisponibles.pop()
+            return self.pagesDisponibles.pop(0)
         else:
-            print("Aucune page disponible")
-            return None
+            index = self.fileCounter.index(min(self.fileCounter))
+            self.fileCounter[index]+=1
+            return PageId(index, self.fileCounter[index])
 
     def ReadPage(self,pageId: PageId, buff : ByteBuffer) -> None:
         return

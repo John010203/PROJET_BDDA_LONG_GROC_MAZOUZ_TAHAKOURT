@@ -1,4 +1,6 @@
 class DBparams(object):
-    DBPath = "../DB"
-    SGBDPageSize = 4096
-    DMFileCount = 4
+
+    def __init__(self, DBPath, SGBDPageSize, DMFileCount):
+        self.DBPath = DBPath
+        self.SGBDPageSize = SGBDPageSize
+        self.DMFileCount = DMFileCount

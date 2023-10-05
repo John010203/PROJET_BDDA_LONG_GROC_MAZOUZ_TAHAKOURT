@@ -1,7 +1,10 @@
 import PageId
 import ByteBuffer
 
-class DiskManager : 
+class DiskManager :
+
+    diskManager = DiskManager()
+
     def __init__(self):
         self.pagesDisponibles = []
         self.pagesUtilisees= []

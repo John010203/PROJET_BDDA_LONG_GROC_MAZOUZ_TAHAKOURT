@@ -1,6 +1,6 @@
-from CODE.ByteBuffer import ByteBuffer
+import ByteBuffer as ByteBuffer
 
-buffer = ByteBuffer()
+buffer = ByteBuffer.ByteBuffer()
 buffer.put_int(13)
 buffer.put_int(-24)
 buffer.put_float(3.2)
@@ -21,7 +21,7 @@ with open("buffer.txt", 'wb') as f:
     f.seek(10)
     f.write(buffer.to_bytes())
 
-buffer = ByteBuffer(0)
+buffer = ByteBuffer.ByteBuffer(0)
 with open("buffer.txt", 'rb') as f:
     buffer.from_bytes(f.read()[20:50])
 

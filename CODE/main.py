@@ -28,3 +28,7 @@ print(bf2.read_int())
 print(bf2.read_int())
 print(bf2.read_float())
 
+print(dm.GetCurrentCountAllocPages())
+dm.Dealloc(page_id)
+
+print(dm.GetCurrentCountAllocPages())

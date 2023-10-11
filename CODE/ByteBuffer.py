@@ -4,11 +4,11 @@ import struct
 class ByteBuffer:
 
     def __init__(self, size=4096):
-        self.__bytes = [None]*size
-        self.__pos = 0
+        self.__bytes = [None]*size #tableau créer
+        self.__pos = 0 #position initialisé
 
     def set_position(self, pos):
-        self.__pos = pos
+        self.__pos = pos #défini la position
 
     def from_bytes(self, bytes):
         #lire
@@ -20,17 +20,20 @@ class ByteBuffer:
         return bytes([b for b in self.__bytes if b != None])
 
     def read_int(self):
+        #lit un entier de 4 octets
         b = self.__bytes[self.__pos: self.__pos + 4]
         val = int.from_bytes(b, byteorder='big', signed=True)
         self.__pos = self.__pos + 4
         return val
 
     def put_int(self, i):
+        #convertit un entier en 4 octets
         for i, c in enumerate(i.to_bytes(4, byteorder = 'big', signed=True)):
             self.__bytes[self.__pos + i] = c
         self.__pos = self.__pos + 4
 
     def read_float(self):
+        #lit un float de 4 octets
         b = bytes(self.__bytes[self.__pos: self.__pos + 4])
         f = struct.unpack_from('<f', b)[0]
         f = round(f, ndigits=2)
@@ -38,17 +41,20 @@ class ByteBuffer:
         return f
 
     def put_float(self, f):
+        #convertit un float en 4 octets
         for i, c in enumerate(struct.pack('<f', f)):
             self.__bytes[self.__pos + i] = c
         self.__pos = self.__pos + 4
 
     def read_char(self):
+        #lit un caractère d'1 octet et le décode en utf-8
         r = self.__bytes[self.__pos]
         r = bytes([r]).decode('utf-8')
         self.__pos += 1
         return r
 
     def put_char(self, c):
+        #convertit en utf-8 un caractère en 1 octet 
         b = c.encode('utf-8')
         self.__bytes[self.__pos] = b[0]
         self.__pos += 1

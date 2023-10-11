@@ -5,7 +5,7 @@ from ByteBuffer import ByteBuffer
 import DBParams as DP
 from BDD import BDD
 
-dbb = BDD(DP.DBParams("../DB",4096,  4))
+dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
 
 
 
@@ -30,5 +30,4 @@ print(bf2.read_float())
 
 print(dm.GetCurrentCountAllocPages())
 dm.Dealloc(page_id)
-
 print(dm.GetCurrentCountAllocPages())

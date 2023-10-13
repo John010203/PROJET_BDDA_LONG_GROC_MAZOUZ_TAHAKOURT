@@ -13,7 +13,7 @@ class BufferManager :
     def FindFrameLibre(self):
         index : int = None
         for i in range(len(self.listFrame)) :
-            if self.listFrame[i].pageId==None :
+            if self.listFrame[i].page_id==None :
                 index=i
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:  
@@ -25,7 +25,7 @@ class BufferManager :
     def FindFrame(self, pageId : PageId):#verifie si la page est deja chargee
         index = None
         for i in range(len(self.listFrame)) :
-            if self.listFrame[i].pageId == pageId : 
+            if self.listFrame[i].page_id == pageId : 
                 index = i 
         return index
 

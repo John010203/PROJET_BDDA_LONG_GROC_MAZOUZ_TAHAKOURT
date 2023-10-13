@@ -1,4 +1,4 @@
-import ByteBuffer
+from ByteBuffer import ByteBuffer
 
 class Frame :
     def __init__(self) -> None:

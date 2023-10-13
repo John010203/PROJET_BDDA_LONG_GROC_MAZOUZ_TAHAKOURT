@@ -1,5 +1,5 @@
 from DiskManager import DiskManager
-import BufferManager as BM
+import BufferManager
 from ByteBuffer import ByteBuffer
 import DBParams as DP
 from BDD import BDD
@@ -9,10 +9,10 @@ dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
 
 # DiskManager tests
 dm = dbb.disk_manager
+bf1= dbb.buffer_manager
 
 bf = ByteBuffer(4096)
 bf2 = ByteBuffer(4096)
-bf1 = BM(dbb)
 
 bf.put_int(12)
 bf.put_int(14)
@@ -25,5 +25,5 @@ dm.ReadPage(page_id, bf2)
 print(bf2.read_int())
 print(bf2.read_int())
 print(bf2.read_float())
-print(bf1.getPage(page_id))
+print(bf1.GetPage(page_id).to_bytes())
 

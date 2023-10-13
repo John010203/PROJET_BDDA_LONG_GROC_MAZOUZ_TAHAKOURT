@@ -6,7 +6,7 @@ class DiskManager :
     def __init__(self, bdd):
         self.bdd = bdd
 
-        self.fileCounter = [0]*4
+        self.fileCounter = [0]*self.bdd.DBParams.DMFileCount
 
         self.pagesDisponibles = []
 
@@ -24,6 +24,7 @@ class DiskManager :
         numFile = pageId.FileIdx
         pos = 4096*numPage
         file = open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb")#revoir le seek
+        file.seek(pos)
         buff.from_bytes(file.read(4096))
         file.close()
     

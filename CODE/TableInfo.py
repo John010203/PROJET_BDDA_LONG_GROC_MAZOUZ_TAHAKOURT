@@ -1,5 +1,5 @@
 class TableInfo :
-    def init(self,nom,nbColonnes,colInfos):
-        self.nom = nom
+    def init(self,nomRelation,nbColonnes,colInfos):
+        self.nomRelation = nomRelation
         self.nbColonne : int = nbColonnes
-        self.colInfos : list = []
+        self.colInfos : list = colInfos

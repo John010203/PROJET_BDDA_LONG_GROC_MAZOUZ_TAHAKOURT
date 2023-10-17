@@ -12,8 +12,6 @@ class BufferManager :
 
     def FindFrameLibre(self):
         index : int = None
-        #on peut regrouper les 2 conditions dans une seule boucle for
-        #on n'est pas sense implementer LFU ici?
         """
         LFU : 
         Une page peut être remplacée ssi son pin_count = 0
@@ -23,6 +21,7 @@ class BufferManager :
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
                 index=i
+        #LFU
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:  
                 index = i
@@ -55,7 +54,6 @@ class BufferManager :
         return self.listFrame[i].buffer
 
     def FreePage(self, pageId : PageId, valdirty : int | bool) -> None:
-         #on n'est pas sense utiliser le flag dirty et valdirty?
          """
          • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
          """

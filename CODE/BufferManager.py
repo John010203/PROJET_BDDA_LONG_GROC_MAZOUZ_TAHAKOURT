@@ -14,6 +14,12 @@ class BufferManager :
         index : int = None
         #on peut regrouper les 2 conditions dans une seule boucle for
         #on n'est pas sense implementer LFU ici?
+        """
+        LFU : 
+        Une page peut être remplacée ssi son pin_count = 0
+        • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu ;
+        • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
+        """
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
                 index=i
@@ -39,8 +45,6 @@ class BufferManager :
             return self.listFrame[indice].buffer
 
         #La page n'est pas déjà chargé dans une frame
-        #on cherche une frame libre, on lit le contenu de la page et on le met dans 
-        #le buffer de la frame libre
         i = self.FindFrameLibre()
         
         frameId=self.listFrame[i]
@@ -52,6 +56,9 @@ class BufferManager :
 
     def FreePage(self, pageId : PageId, valdirty : int | bool) -> None:
          #on n'est pas sense utiliser le flag dirty et valdirty?
+         """
+         • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
+         """
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].pageId == pageId :
                     if self.listFrame[i].dirty == 1: 
@@ -60,6 +67,11 @@ class BufferManager :
                     ""
     
     def FlushAll(self) -> None :
+        """
+        ◦ l'écriture de toutes les pages dont le flag dirty = 1 sur disque
+        ◦ la remise à 0 de tous les flags/informations et contenus des buffers (buffer pool « vide »)
+
+        """
         return
     
 

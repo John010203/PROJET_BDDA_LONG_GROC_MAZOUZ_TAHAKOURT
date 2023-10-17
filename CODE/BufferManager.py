@@ -12,6 +12,8 @@ class BufferManager :
 
     def FindFrameLibre(self):
         index : int = None
+        #on peut regrouper les 2 conditions dans une seule boucle for
+        #on n'est pas sense implementer LFU ici?
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
                 index=i
@@ -37,6 +39,8 @@ class BufferManager :
             return self.listFrame[indice].buffer
 
         #La page n'est pas déjà chargé dans une frame
+        #on cherche une frame libre, on lit le contenu de la page et on le met dans 
+        #le buffer de la frame libre
         i = self.FindFrameLibre()
         
         frameId=self.listFrame[i]
@@ -47,6 +51,7 @@ class BufferManager :
         return self.listFrame[i].buffer
 
     def FreePage(self, pageId : PageId, valdirty : int | bool) -> None:
+         #on n'est pas sense utiliser le flag dirty et valdirty?
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].pageId == pageId :
                     if self.listFrame[i].dirty == 1: 

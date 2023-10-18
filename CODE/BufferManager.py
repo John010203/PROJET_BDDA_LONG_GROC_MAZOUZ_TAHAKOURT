@@ -24,7 +24,7 @@ class BufferManager :
         #LFU
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:  
-                index = i
+                index = i #plutot prendre lindex de lattribut qui a le LFU au minimum?
         if index==None : 
             raise Exception("Aucune frame disponible")
         return index
@@ -59,10 +59,10 @@ class BufferManager :
          """
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].pageId == pageId :
-                    if self.listFrame[i].dirty == 1: 
-                        self.listFrame[i].LFU=0
-                else :
-                    ""
+                    self.listFrame[i].pin_count-=1
+                    self.listFrame[i].dirty = valdirty
+                    #On a deja incremente le LFU dans GetPage
+                
     
     def FlushAll(self) -> None :
         """
@@ -70,7 +70,13 @@ class BufferManager :
         ◦ la remise à 0 de tous les flags/informations et contenus des buffers (buffer pool « vide »)
 
         """
-        return
+        for i in range(len(self.listFrame)):
+            if(self.listFrame[i].dirty==1):
+                self.bdd.disk_manager.WritePage(self.listFrame[i].pageId,self.listFrame[i].buffer)
+            self.listFrame[i]=Frame() #ou faire une fonction dans Frame pour remettre tout a zero/false?
+
+        
+      
     
 
         

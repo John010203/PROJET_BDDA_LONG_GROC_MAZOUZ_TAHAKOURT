@@ -47,14 +47,14 @@ class ByteBuffer:
         self.__pos = self.__pos + 4
 
     def read_char(self):
-        #lit un caractère d'1 octet et le décode en utf-8
+        #lit un caractère d'2 octet et le décode en utf-8
         r = self.__bytes[self.__pos]
         r = bytes([r]).decode('utf-8')
-        self.__pos += 1
+        self.__pos += 2
         return r
 
     def put_char(self, c):
-        #convertit en utf-8 un caractère en 1 octet 
+        #convertit en utf-8 un caractère en 2 octet 
         b = c.encode('utf-8')
         self.__bytes[self.__pos] = b[0]
-        self.__pos += 1
+        self.__pos += 2

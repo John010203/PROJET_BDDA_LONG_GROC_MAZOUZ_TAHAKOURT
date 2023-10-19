@@ -58,3 +58,8 @@ class ByteBuffer:
         b = c.encode('utf-8')
         self.__bytes[self.__pos] = b[0]
         self.__pos += 1
+
+    def get_pos(self, pos):
+        #retourne la position actuelle
+        return
+    

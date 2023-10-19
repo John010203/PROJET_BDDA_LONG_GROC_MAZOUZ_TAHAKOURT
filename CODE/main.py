@@ -2,13 +2,14 @@
 from DiskManager import DiskManager
 import BufferManager as BM
 from ByteBuffer import ByteBuffer
+from TableInfo import TableInfo
+from DataBaseInfo import DataBaseInfo
 import DBParams as DP
 from BDD import BDD
 
 dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
 
-
-
+dbb.DataBaseInfo.add 
 
 # DiskManager tests
 dm = dbb.disk_manager

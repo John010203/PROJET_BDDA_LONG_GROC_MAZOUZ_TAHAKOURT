@@ -9,5 +9,5 @@ class Frame :
         self.LFU = 0
 
     def clear(self):
-        return
+        return 
     

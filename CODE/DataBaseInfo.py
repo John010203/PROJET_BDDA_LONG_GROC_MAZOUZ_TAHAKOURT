@@ -1,8 +1,9 @@
 import TableInfo as TableInfo
 class DataBaseInfo :
-    def init(self,tableInfo, compteur):
-        self.tableInfo : list = tableInfo
-        self.compteur : int = compteur
+    def __init__(self, db):
+        self.db=db
+        self.tableInfo : list = []
+        #pas besoin de compteur size
 
     def Init() -> None :
         return

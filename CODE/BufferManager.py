@@ -10,6 +10,7 @@ class BufferManager :
         self.frameCount = bdd.DBParams.frameCount
         self.listFrame : list = [Frame()]*self.frameCount
 
+
     def FindFrameLibre(self):
         index : int = None
         """
@@ -22,9 +23,22 @@ class BufferManager :
             if self.listFrame[i].page_id==None :
                 index=i
         #LFU
+        min=None
         for i in range(len(self.listFrame)) :
-            if self.listFrame[i].pin_count == 0:  
-                index = i #plutot prendre lindex de lattribut qui a le LFU au minimum?
+            if self.listFrame[i].pin_count == 0:
+                if min==None: #premier pincount a zero 
+                    print("slt")
+                    min=self.listFrame[i].LFU
+                    index=i
+                    print('----'+str(index))
+                else: 
+                    print('else')
+                    if min>self.listFrame[i].LFU:
+                        print("slm")
+                        min=self.listFrame[i].LFU
+                        index=i
+                        
+        print('---- hors if',index)            
         if index==None : 
             raise Exception("Aucune frame disponible")
         return index
@@ -73,4 +87,4 @@ class BufferManager :
         for i in range(len(self.listFrame)):
             if(self.listFrame[i].dirty==1):
                 self.bdd.disk_manager.WritePage(self.listFrame[i].pageId,self.listFrame[i].buffer)
-            self.listFrame[i]=Frame() #ou faire une fonction dans Frame pour remettre tout a zero/false?
+            self.listFrame[i].clear()

@@ -1,4 +1,5 @@
 import TableInfo as TableInfo
+
 class DataBaseInfo :
     def __init__(self, db):
         self.db=db
@@ -15,7 +16,6 @@ class DataBaseInfo :
         return self.tableInfo.append(TableInfo)
     
     def GetTableInfo(self, nomRelation) -> TableInfo:
-        table : TableInfo = TableInfo()
         for i in self.tableInfo : 
             if i.nomRelation == nomRelation :
                 table = i

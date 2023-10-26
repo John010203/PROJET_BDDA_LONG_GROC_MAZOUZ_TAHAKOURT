@@ -9,13 +9,11 @@ bdd = BDD(DBP.DBParams("../DB/",4096, 4, 2))
 diskManager = bdd.disk_manager
 bfManager = bdd.buffer_manager
 
-
-
 '''
 Ecrire dans une page
 '''
 bfEcriture = ByteBuffer(4096)
-#i can be your boyfriend hushhhhh
+
 #ecrire dans le buffer
 bfEcriture.put_char('L')
 bfEcriture.put_int(0)
@@ -30,7 +28,7 @@ print('-----pageId1----',pageId1.FileIdx,pageId1.PageIdx,'----------')
 '''
 Lecture dans une page
 '''
-bfLecture = ByteBuffer(4096)#i can be your boyfriend hushhhhh
+bfLecture = ByteBuffer(4096)
 diskManager.ReadPage(pageId1,bfLecture)
 print(bfLecture.read_char(),end=' ')
 print(bfLecture.read_int(),end=' ')

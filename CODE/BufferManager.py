@@ -10,8 +10,13 @@ class BufferManager :
         self.frameCount = bdd.DBParams.frameCount
         self.listFrame : list = [Frame()]*self.frameCount
 
-
-    def FindFrameLibre(self):
+    def __str__(self):
+        res = ""
+        for i in range(len(self.listFrame)):
+            res += "\n" +str(i)+ "\t" + str(self.listFrame[i])
+        return res
+    
+    def FindFrameLibre(self)->int:
         index : int = None
         """
         LFU : 
@@ -27,18 +32,15 @@ class BufferManager :
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:
                 if min==None: #premier pincount a zero 
-                    print("slt")
                     min=self.listFrame[i].LFU
                     index=i
-                    print('----'+str(index))
+                    
                 else: 
-                    print('else')
                     if min>self.listFrame[i].LFU:
-                        print("slm")
                         min=self.listFrame[i].LFU
                         index=i
                         
-        print('---- hors if',index)            
+                    
         if index==None : 
             raise Exception("Aucune frame disponible")
         return index

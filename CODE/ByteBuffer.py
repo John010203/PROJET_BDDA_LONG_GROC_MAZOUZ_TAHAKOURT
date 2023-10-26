@@ -13,7 +13,8 @@ class ByteBuffer:
     def from_bytes(self, bytes):
         #lire
         self.__pos = 0
-        self.__bytes = [b for b in bytes]
+        for i,b in enumerate(bytes):
+            self.__bytes[i] = b
 
     def to_bytes(self):
         #ecrire

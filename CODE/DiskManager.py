@@ -1,6 +1,7 @@
 from PageId import PageId
 from ByteBuffer import ByteBuffer
 
+
 class DiskManager :
 
     def __init__(self, bdd):
@@ -33,10 +34,9 @@ class DiskManager :
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
         pos = 4096*numPage
-        file = open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","wb")
-        file.write(buff.to_bytes())
-        file.close()
-        
+        with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","wb") as f:
+            f.seek(pos)
+            f.write(buff.to_bytes())
 
     def Dealloc(self,pageId:PageId) -> None: 
         self.pagesDisponibles.append(pageId)

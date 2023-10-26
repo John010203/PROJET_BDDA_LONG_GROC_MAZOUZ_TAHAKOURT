@@ -17,7 +17,8 @@ class DiskManager :
         else:
             index = self.fileCounter.index(min(self.fileCounter))
             self.fileCounter[index]+=1
-            return PageId(index, self.fileCounter[index])
+            #VERIFIER QUE CA MARCHE DANS TOUS LES CAS
+            return PageId(index, self.fileCounter[index]-1)
 
     def ReadPage(self,pageId: PageId, buff : ByteBuffer) -> None:
         numPage = pageId.PageIdx

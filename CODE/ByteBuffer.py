@@ -13,7 +13,8 @@ class ByteBuffer:
     def from_bytes(self, bytes):
         #lire
         self.__pos = 0
-        self.__bytes = [b for b in bytes]
+        for i,b in enumerate(bytes):
+            self.__bytes[i] = b
 
     def to_bytes(self):
         #ecrire
@@ -50,11 +51,17 @@ class ByteBuffer:
         #lit un caractère d'2 octet et le décode en utf-8
         r = self.__bytes[self.__pos]
         r = bytes([r]).decode('utf-8')
-        self.__pos += 2
+        #faut check la taille d'un char
+        self.__pos += 1
         return r
 
     def put_char(self, c):
         #convertit en utf-8 un caractère en 2 octet 
         b = c.encode('utf-8')
         self.__bytes[self.__pos] = b[0]
-        self.__pos += 2
+        self.__pos += 1
+
+    def get_pos(self, pos):
+        #retourne la position actuelle
+        return
+    

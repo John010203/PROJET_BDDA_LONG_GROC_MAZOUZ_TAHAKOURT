@@ -16,13 +16,14 @@ bfEcriture = ByteBuffer(4096)
 
 #ecrire dans le buffer
 bfEcriture.put_char('L')
+print('------BUFFER ECRITURE------',bfEcriture)
 bfEcriture.put_int(0)
 bfEcriture.put_char('L')
 bfEcriture.put_char('L')
 #Allocation de la page
 pageId1 = diskManager.AllocPage()
 diskManager.WritePage(pageId1,bfEcriture)
-print('-----pageId1----',pageId1.FileIdx,pageId1.PageIdx,'----------')
+#print('-----pageId1----',pageId1.FileIdx,pageId1.PageIdx,'----------')
 
 
 '''
@@ -36,13 +37,13 @@ print(bfLecture.read_char(),end=' ')
 print(bfLecture.read_char(),end=' ')
 
 pageId2 = diskManager.AllocPage()
-print('\n-----pageId2 ----',pageId2.FileIdx,pageId2.PageIdx)
+#print('\n-----pageId2 ----',pageId2.FileIdx,pageId2.PageIdx)
 diskManager.Dealloc(pageId1)
 pageId3 = diskManager.AllocPage()
-print('\n-----pageId2 ----',pageId3.FileIdx,pageId3.PageIdx)
+#print('\n-----pageId2 ----',pageId3.FileIdx,pageId3.PageIdx)
 
-print(bfManager.FindFrame(pageId1))
-print(bfManager.FindFrameLibre())
+#print(bfManager.FindFrame(pageId1))
+#print(bfManager.FindFrameLibre())
 
 
 '''
@@ -50,7 +51,7 @@ Allocatioon de buffer depuis le buffer pool (bufferManager)
 '''
 Frame1 = bfManager.listFrame[bfManager.FindFrameLibre()]
 Frame1.page_id = diskManager.AllocPage()
-print(Frame1.page_id)
+#print(Frame1.page_id)
 
 Frame1.buffer.put_char('D')
 Frame1.buffer.put_char('R')

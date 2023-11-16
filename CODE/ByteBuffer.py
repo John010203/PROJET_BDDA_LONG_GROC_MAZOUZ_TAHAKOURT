@@ -61,7 +61,7 @@ class ByteBuffer:
         self.__bytes[self.__pos] = b[0]
         self.__pos += 1
 
-    def get_pos(self, pos):
+    def get_pos(self):
         #retourne la position actuelle
-        return
+        return self.__pos
     

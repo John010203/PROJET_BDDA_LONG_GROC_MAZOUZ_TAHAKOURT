@@ -36,12 +36,14 @@ class Record :
     def readFromBuffer(self, buff, pos):
         nbColonnes = len(self.recvalues)
         tailleRecord = buff.read_int(pos + 4*(nbColonnes-1))
-        
+
         buff.set_position(pos+4*nbColonnes)
         for i in range(nbColonnes):
             match self.tableInfo.cols[i].typeColonne[0] :
                 case "INT": self.recvalues[i] = buff.read_int()
                 case "FLOAT" : self.recvalues[i] = buff.read_float()
+                #si c un string on lit a partir de la taille du tring dans la colonnes 
+                #si c un varchar on recup buff[i] taille jusqu'a la conne i varchar et on soustrais la taille de ce qui a deja ete lu
                 case "STRING(T)" :  self.recvalues[i] = buff.read_char() #faut trouver la longueur de la chaine de caracteres
         return len(buff) - pos + 1
         

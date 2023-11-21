@@ -1,17 +1,17 @@
 import TableInfo as TableInfo
 
 class Record : 
-    def __init__(self, tableInfo):
+    def __init__(self, tableInfo,recvalues):
         #relation a laquelle appartient le record
         self.tabInfo : TableInfo = tableInfo
         #valeurs du record -> un tuple a n vlauers (nb de cols dans la relation)
-        self.recvalues : list = []
+        self.recvalues : list = recvalues
 
     def initTaille(self, indice):
-        if(self.tabInfo.list[indice].typeColonne[0] == "VARCHAR(T)"):
+        if(self.tabInfo.cols[indice].typeColonne[0] == "VARCHAR(T)"):
             return len(self.recvalues[indice])
         else :
-            return self.tabInfo.list[indice].typeColonne[1]
+            return self.tabInfo.cols[indice].typeColonne[1]
         
     def writeToBuffer(self, buff, pos) -> int :
         nbColonnes = len(self.recvalues)
@@ -34,14 +34,22 @@ class Record :
         return taille #nb d'octets ecrits
     
     def readFromBuffer(self, buff, pos):
+        tabTaille : list = []
         nbColonnes = len(self.recvalues)
-        tailleRecord = buff.read_int(pos + 4*(nbColonnes-1))
-        
-        buff.set_position(pos+4*nbColonnes)
+        buff.set_position(pos)
+        for i in range(nbColonnes+1):
+            tabTaille[i].append(buff.read_int()) 
+        tailleRecord = tabTaille[-1]
+        # buff.set_position(pos+4*nbColonnes) inutile??
         for i in range(nbColonnes):
             match self.tableInfo.cols[i].typeColonne[0] :
                 case "INT": self.recvalues[i] = buff.read_int()
                 case "FLOAT" : self.recvalues[i] = buff.read_float()
-                case "STRING(T)" :  self.recvalues[i] = buff.read_char() #faut trouver la longueur de la chaine de caracteres
-        return len(buff) - pos + 1
+                case "STRING(T)" | "VARCHAR(T)" : 
+                    self.recvalues[i] = buff.read_char() #faut trouver la longueur de la chaine de caracteres
+                    for j in range(tabTaille[i]-tabTaille[i-1] if i != 0 else tabTaille[i]):
+                        self.recvalues[j]+=buff.read_char()
+                case _:
+                    print("erreur")    
+        return tailleRecord
         

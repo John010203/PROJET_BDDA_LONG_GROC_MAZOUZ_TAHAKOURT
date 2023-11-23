@@ -1,5 +1,8 @@
-import DataBaseInfo as DataBaseInfo
+from CreateTableCommand import CreateTableCommand
+from CreateTableCommand import parseCommandeCreateTable
+from TableInfo import TableInfo
 class DatabaseManager:
+
     def __init__(self,bdd):
         self.bdd=bdd
         self.diskManager = bdd.disk_manager
@@ -13,6 +16,10 @@ class DatabaseManager:
     def ProcessCommand(self, cmd : str):
         match(cmd):
             case 'CREATE TABLE':
+                commande = parseCommandeCreateTable(cmd)
+                self.bdd.databaseInfo.AddTableInfo(TableInfo(commande[0],commande[1],commande[2]))
+                #on parse
+                #on appelle la classe CreateTableCommand
                 print()
             case 'ADD':
                 print()

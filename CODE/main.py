@@ -9,7 +9,7 @@ from BDD import BDD
 
 dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
 
-dbb.DataBaseInfo.add 
+#dbb.DataBaseInfo.add 
 
 # DiskManager tests
 dm = dbb.disk_manager
@@ -32,3 +32,15 @@ print(bf2.read_float())
 print(dm.GetCurrentCountAllocPages())
 dm.Dealloc(page_id)
 print(dm.GetCurrentCountAllocPages())
+
+
+
+def main():
+    dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
+    reponse = ""
+    while(reponse!="EXIT"):
+        print("Saisir une commande :")
+        reponse = input("=>")
+
+    
+    return

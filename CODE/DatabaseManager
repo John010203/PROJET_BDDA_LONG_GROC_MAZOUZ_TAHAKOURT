@@ -1,0 +1,26 @@
+import DataBaseInfo as DataBaseInfo
+class DatabaseManager:
+    def __init__(self,bdd):
+        self.bdd=bdd
+        self.diskManager = bdd.disk_manager
+        self.bufferManager = bdd.buffer_manager
+        self.databaseInfo = bdd.data_base_info
+
+    def Finish(self):
+        self.databaseInfo.Finish()
+        self.bufferManager.FlushAll()
+
+    def ProcessCommand(self, cmd : str):
+        match(cmd):
+            case 'CREATE TABLE':
+                print()
+            case 'ADD':
+                print()
+            case 'INSERT':
+                print()
+            case 'SELECT':
+                print()
+            case '':
+                print()
+            case 'WHERE':
+                print()

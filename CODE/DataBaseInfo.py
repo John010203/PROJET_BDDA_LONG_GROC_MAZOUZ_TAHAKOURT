@@ -3,7 +3,7 @@ import pickle
 class DataBaseInfo :
     def __init__(self, db):
         self.db=db
-        self.tableInfo : list = []
+        self.tableInfo : list = [] #toute sles relations de notre BDD
         #pas besoin de compteur size
         #pas besoin d'initialiser un compteur, on retourne jujste la taille du tableau
 

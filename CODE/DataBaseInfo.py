@@ -1,18 +1,21 @@
 import TableInfo as TableInfo
-
+import pickle
 class DataBaseInfo :
     def __init__(self, db):
         self.db=db
         self.tableInfo : list = [] #toute sles relations de notre BDD
         #pas besoin de compteur size
         #pas besoin d'initialiser un compteur, on retourne jujste la taille du tableau
-    def Init() -> None :
-        #recuperer les definitions des tables, ecritent dans un fichier
-        return
-    
-    def Finish() -> None:
-        #ecrire les definitons des tables dans le fichier 
-        return
+
+    #init lit un fichier et recupere  les definitions des tables    
+    def Init(self) -> None :
+        with open ('DBInfo','rb') as f1:
+            self.tableInfo+= pickle.load(f1)
+        
+    #enregistre les definitions des tables
+    def Finish(self) -> None:
+        with open ('DBInfo','rb') as f1:
+            pickle.dump(self.tableInfo,f1)
     
     def getNbRelations(self) -> int:
         return len(self.tableInfo)

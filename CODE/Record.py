@@ -58,4 +58,6 @@ class Record :
                 case _:
                     print("erreur")    
         return tailleRecord
+    
+    #ajouter une fonction get tailleRecord
         

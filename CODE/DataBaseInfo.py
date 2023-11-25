@@ -1,12 +1,14 @@
 import TableInfo as TableInfo
 import pickle
+
 class DataBaseInfo :
     def __init__(self, db):
         self.db=db
         self.tableInfo : list = []
         #pas besoin de compteur size
         #pas besoin d'initialiser un compteur, on retourne jujste la taille du tableau
-
+    def reset(self):
+        self.tableInfo = []
     #init lit un fichier et recupere  les definitions des tables    
     def Init(self) -> None :
         with open ('DBInfo','rb') as f1:

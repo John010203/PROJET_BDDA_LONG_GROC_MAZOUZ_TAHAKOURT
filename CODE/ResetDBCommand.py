@@ -1,3 +1,7 @@
+import BufferManager
+import DataBaseInfo
+import DiskManager
+
 class ResetDBCommand():
 
     def __init__(self,bdd):
@@ -7,6 +11,10 @@ class ResetDBCommand():
         self.databaseInfo = bdd.data_base_info
 
     def Reset(self):
+        BufferManager.reset()
+        DataBaseInfo.reset()
+        DiskManager.reset()
+        
         '''
          supprimer tous les fichiers du dossier DB
         • « remettre tout à 0 » dans le BufferManager et la DatabaseInfo, ainsi que potentiellement

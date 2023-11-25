@@ -6,3 +6,4 @@ class TableInfo :
         self.nbColonne : int = nbColonnes
         self.cols : list = cols
         self.headerPageId = headerPageId #PageId
+    

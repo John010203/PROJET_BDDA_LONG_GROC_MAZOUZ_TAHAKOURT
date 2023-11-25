@@ -9,7 +9,13 @@ class BufferManager :
         self.disk_manager = bdd.disk_manager
         self.frameCount = bdd.DBParams.frameCount
         self.listFrame : list = [Frame()]*self.frameCount
-
+        
+    def reset(self):
+        #self.frameCount = 0
+        for frame in self.listFrame :
+            frame.clear()
+             #a verifier
+        
     def __str__(self):
         res = ""
         for i in range(len(self.listFrame)):

@@ -6,12 +6,13 @@ class DiskManager :
 
     def __init__(self, bdd):
         self.bdd = bdd
-
         self.fileCounter = [0]*self.bdd.DBParams.DMFileCount
-
         self.pagesDisponibles = []
 
-
+    def reset(self):
+        self.fileCounter = []
+        self.pagesDisponibles = []
+        
     def AllocPage(self) -> PageId :
         if (len(self.pagesDisponibles)!=0):
             return self.pagesDisponibles.pop(0)

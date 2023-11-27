@@ -17,6 +17,9 @@ class SelectCommand:
         print(nbOperations)
         return nomRelation,operations
     
+    def parseOperation(op):
+        return 
     #dans une operation ya 2 operandes et nomColonne> = < >= <=Valeur
     def Execute(self):
+        print("-------------SELECTION-----------")
         print()

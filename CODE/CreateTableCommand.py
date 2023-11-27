@@ -1,9 +1,10 @@
 from TableInfo import TableInfo
-from ColInfo import ColInfo 
+from ColInfo import ColInfo
 
 class CreateTableCommand:
 
-    def __init__(self,chaineCommande):
+    def __init__(self,chaineCommande,db):
+        self.db = db
         self.commande = chaineCommande
         self.nomRelation,self.nbColonne,self.colInfos = self.parseCommandeCreateTable(chaineCommande)
     
@@ -28,8 +29,10 @@ class CreateTableCommand:
         l'appel à createHeaderPage ci-dessus
         • rajouter la TableInfo au DatabaseInfo avec la méthode qui convient
         """
-        TableInfo(self.nomRelation,self.nbColonnes,self.colInfos)#faut rajouter le headerPage
-        
+        print("-------------CREATION DE TABLE-----------")
+        relation = TableInfo(self.nomRelation,self.nbColonnes,self.colInfos)#faut rajouter le headerPage
+        #rajouter la relation dans la BDD
+        self.db.data_base_info.AddTableInfo(relation)
         return
     
 

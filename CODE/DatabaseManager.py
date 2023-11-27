@@ -2,7 +2,7 @@ from CreateTableCommand import CreateTableCommand
 from ResetDBCommand import ResetDBCommand
 from InsertCommand import InsertCommand
 from SelectCommand import SelectCommand
-
+from ImportCommand import ImportCommand
 class DatabaseManager:
 
     def __init__(self,bdd):
@@ -42,20 +42,23 @@ class DatabaseManager:
             return True
         else :
             return False
+    def imprt(self,cmd):
+        typeComande = cmd.split(' ')
+        if typeComande[0] == "IMPORT" and typeComande[1] == "INTO":
+            return True
+        else :
+            return False
 
     def ProcessCommand(self, cmd : str):
         
         if self.createTable(cmd):
-            CreateTableCommand(cmd).Execute()
-            print("-------------CREATION DE TABLE-----------")
+            CreateTableCommand(cmd,self.bdd).Execute()
         if self.reset(cmd):
             ResetDBCommand(cmd).Reset()
-            print("-------------RESETDB-----------")
         if self.insert(cmd):
-            InsertCommand(cmd).Execute()
-            print("-------------INSERTION-----------")
+            InsertCommand(cmd,self.bdd).Execute()
         if self.select(cmd):
             SelectCommand(cmd).Execute()
-            print("-------------SELECTION-----------")
-        if '':
-            print()
+        if self.imprt(cmd):
+            ImportCommand(cmd,self.bdd).Execute()
+            

@@ -17,8 +17,27 @@ class SelectCommand:
         print(nbOperations)
         return nomRelation,operations
     
-    def parseOperation(op):
-        return 
+    def parseOperation(self,op):#> < = >= <=
+        operationsSolo= ['>','<','=']
+        operationsDuo = [">=","<="]
+        
+        for c in operationsDuo:
+            if c in op:
+                return c
+        
+        for c in operationsSolo:
+            if c in op:
+                return c
+            
+    def evaluerOp(self,op):
+        op = op.strip()
+        operande = self.parseOperation(op)
+        op1,op2 = op.split(operande)
+        #pour toutes les colonnes op1 on check la valeur op2
+        #for c in cols :
+        #   eval(c+operande+op2)
+        #un truc comme ca
+        #apres on cherche parmis les tuples 
     #dans une operation ya 2 operandes et nomColonne> = < >= <=Valeur
     def Execute(self):
         print("-------------SELECTION-----------")

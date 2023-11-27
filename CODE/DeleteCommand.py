@@ -15,7 +15,7 @@ class DeleteCommand:
 
         return nomRelation,operations
     
-    def parseOperation(op):#> < = >= <=
+    def parseOperation(self,op):#> < = >= <=
         operationsSolo= ['>','<','=']
         operationsDuo = [">=","<="]
         

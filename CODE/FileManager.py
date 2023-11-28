@@ -6,11 +6,11 @@ from RecordId import RecordId
 
 class FileManager:
     def __init__(self, bdd) -> None:
-        self.bdd=bdd;
+        self.bdd=bdd
 
     def createNewHeaderPage(self)->PageId:
         pageId = self.bdd.disk_manager.AllocPage()
-        frameBuffer = self.bdd.buffer_manager.getPage();
+        frameBuffer = self.bdd.buffer_manager.getPage()
         headerPage = HeaderPage(frameBuffer)
         headerPage.setFreePageId(PageId(-1,0))
         headerPage.setFullPageId(PageId(-1,0))
@@ -38,8 +38,18 @@ class FileManager:
     
     
     def getFreeDataPageId(self,tabInfo,sizeRecord)->PageId:
-        
-        return
+        headerBuffer = self.bdd.buffer_manager.GetPage(tabInfo.headerPageId) #on charge juste le buffer dans lequel on va ecrire
+        headerPage = HeaderPage(headerBuffer)
+        pageId = headerPage.getFreePageId()
+        self.bdd.buffer_manager.FreePage(pageId,False)
+        pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
+        dataPage = DataPage(pageBuffer)
+        while not(pageId.FileIdx == -1 and pageId.PageIdx == 0) and sizeRecord > dataPage.getEspaceDisponible():
+            pageId = dataPage.nextPageId()
+            pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
+            dataPage = DataPage(pageBuffer)
+
+        return pageId
     
     def writeRecordToDataPage(self,record,pageId)->RecordId:
         return

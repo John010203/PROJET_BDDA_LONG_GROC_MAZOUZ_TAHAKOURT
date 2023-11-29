@@ -59,5 +59,9 @@ class Record :
                     print("erreur")    
         return tailleRecord
     
-    #ajouter une fonction get tailleRecord
+    def getTailleRecord(self):
+        somme=0
+        for i in range (len(self.recValues)):
+            somme+=self.initTaille(i)
+        return
         

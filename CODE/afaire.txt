@@ -1,3 +1,0 @@
--aRevoir les chemins des fichiers
--Allocpage nous donne le fichier1 en premier et pas le 0
--pos pour readChar ne marche pas avec un += 2

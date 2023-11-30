@@ -16,7 +16,6 @@ class Record :
     def writeToBuffer(self, buff, pos) -> int :
         nbColonnes = len(self.recvalues)
         buff.set_position(pos)
-
         buff.put_int(self.initTaille(0))
         taille = self.initTaille(0)
         for j in range(1,nbColonnes):
@@ -24,10 +23,23 @@ class Record :
             buff.put_int(taille)
 
         for i in range(nbColonnes):
-            match self.tableInfo.cols[i].typeColonne[0] :
+            match self.tabInfo.cols[i].typeColonne[0] :
                 case "INT": buff.put_int(self.recvalues[i])
                 case "FLOAT" : buff.put_float(self.recvalues[i])
+<<<<<<< HEAD
                 case "STRING(T)" | "VARCHAR(T)": 
+=======
+                case "STRING(T)" :
+                    
+                    if len(self.recvalues[i])>0:
+                        print('--',len(self.recvalues[i]))
+                        for c in self.recvalues[i] :
+                            buff.put_char(c)
+                    for k in range(self.tabInfo.cols[i].typeColonne[1] - len(self.recvalues[i])):
+                        buff.put_char(' ')
+                        
+                case "VARCHAR(T)": 
+>>>>>>> DatabaseInfo
                     if(len(self.recvalues[i])>0):
                         for c in self.recvalues[i] :
                             buff.put_char(c)
@@ -41,13 +53,14 @@ class Record :
     
     def readFromBuffer(self, buff, pos):
         tabTaille : list = []
-        nbColonnes = len(self.recvalues)
+        nbColonnes = len(self.tabInfo.cols)
         buff.set_position(pos)
-        for i in range(nbColonnes+1):
-            tabTaille[i].append(buff.read_int()) 
+        for i in range(nbColonnes):
+            tabTaille.append(buff.read_int()) 
         tailleRecord = tabTaille[-1]
         # buff.set_position(pos+4*nbColonnes) inutile??
         for i in range(nbColonnes):
+<<<<<<< HEAD
             match self.tableInfo.cols[i].typeColonne[0] :
                 case "INT": self.recvalues[i].append(buff.read_int())
                 case "FLOAT" : self.recvalues[i].append(buff.read_float())
@@ -55,6 +68,20 @@ class Record :
                     self.recvalues[i].append("") #faut trouver la longueur de la chaine de caracteres
                     for j in range(tabTaille[i]-tabTaille[i-1] if i != 0 else tabTaille[i]):
                         self.recvalues[j]+=buff.read_char()
+=======
+            match self.tabInfo.cols[i].typeColonne[0] :
+                case "INT": 
+                    self.recvalues.append(buff.read_int())
+                    
+                case "FLOAT" : 
+                    self.recvalues.append(buff.read_float())
+                    
+                case "STRING(T)" | "VARCHAR(T)" : 
+                    self.recvalues.append(buff.read_char()) #faut trouver la longueur de la chaine de caracteres
+                    for j in range(tabTaille[i]-tabTaille[i-1]-1 if i != 0 else tabTaille[i]-1):
+                        self.recvalues[i]+=buff.read_char()
+                    self.recvalues[i]=self.recvalues[i].strip()   
+>>>>>>> DatabaseInfo
                 case _:
                     print("erreur")    
         return tailleRecord

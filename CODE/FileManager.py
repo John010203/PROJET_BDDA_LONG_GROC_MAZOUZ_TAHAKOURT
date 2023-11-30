@@ -4,7 +4,6 @@ from DataPage import DataPage
 from RecordId import RecordId
 from Record import Record
 
-
 class FileManager:
     def __init__(self, bdd) -> None:
         self.bdd=bdd
@@ -23,16 +22,13 @@ class FileManager:
         pageIdHeader= tabInfo.headerPageId
         headerPageBuff=self.bdd.buffer_manager.getPage(pageIdHeader)
         headerPage=HeaderPage(headerPageBuff)
-
         #Faire la meme chose avec notre data page
         pageIdData=self.bdd.disk_manager.AllocPage()
         dataPageBuff=self.bdd.buffer_manager.getPage(pageIdData)
         dataPage = DataPage(dataPageBuff)
-
         #on fait le chainage
         dataPage.setPageId(headerPage.getFreePageId())
         headerPage.setFreePageId(pageIdData)
-
         self.bdd.buffer_manager.FreePage(pageIdHeader,True)
         self.bdd.buffer_manager.FreePage(pageIdData,True)
         return pageIdData
@@ -70,16 +66,13 @@ class FileManager:
         debutEspaceDispo+=tailleRecord
         buffPage.write_int(debutEspaceDispo)
         self.bdd.buffer_manager.FreePage(pageId,True)
-
         return RecordId(pageId,nbSlots)
-
     def getRecordsInDataPage(self,tabInfo,pageId):
         buffPage=self.bdd.buffer_manager.GetPage()
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots= buffPage.read_int()
         buffPage.set_position(8)
         listeRecords=[]
-
         for i in range(0,nbSlots):
             pos=buffPage.pos
             record=Record(tabInfo,[])
@@ -96,10 +89,8 @@ class FileManager:
         buffHeaderPage=self.bdd.buffer_manager.GetPage(headerPageId)
         headerPage=HeaderPage(buffHeaderPage)
         self.bdd.buffer_manager.FreePage(headerPageId)
-
         listePagesFree= headerPage.getPagesFromListe(headerPage.getFreePageId)
         listePagesFull=headerPage.getPagesFromListe(headerPage.getFullPageId)
-
         return listePagesFree+listePagesFull
     
     def InsertRecordIntoTable(self, record):
@@ -109,18 +100,3 @@ class FileManager:
     def GetAllRecords(self,tabInfo):
         listePages=self.getDataPages(tabInfo)
         return [self.getRecordsInDataPage(tabInfo,p) for p in listePages]
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-        
-

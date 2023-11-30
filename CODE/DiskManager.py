@@ -25,10 +25,10 @@ class DiskManager :
     def ReadPage(self,pageId: PageId, buff : ByteBuffer) -> None:
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
-        pos = 4096*numPage
+        pos = self.bdd.DBParams.SGBDPageSize*numPage
         file = open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb")#revoir le seek
         file.seek(pos)
-        buff.from_bytes(file.read(4096))
+        buff.from_bytes(file.read(self.bdd.DBParams.SGBDPageSize))
         file.close()
     
     def WritePage(self,pageId: PageId, buff) -> None:

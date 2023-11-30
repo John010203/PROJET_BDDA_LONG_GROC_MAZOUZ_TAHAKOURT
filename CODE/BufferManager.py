@@ -59,6 +59,9 @@ class BufferManager :
         return index
 
     def GetPage(self, pageId : PageId) -> ByteBuffer:
+        if pageId.FileIdx == -1 and pageId.PageIdx == 0:
+            return None
+
         indice = self.FindFrame(pageId) #La page est déjà chargé dans la frame
         if indice != None:
             self.listFrame[indice].pin_count+=1

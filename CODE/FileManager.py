@@ -10,7 +10,7 @@ class FileManager:
 
     def createNewHeaderPage(self)->PageId:
         pageId = self.bdd.disk_manager.AllocPage()
-        frameBuffer = self.bdd.buffer_manager.getPage()
+        frameBuffer = self.bdd.buffer_manager.GetPage(pageId)
         headerPage = HeaderPage(frameBuffer)
         headerPage.setFreePageId(PageId(-1,0))
         headerPage.setFullPageId(PageId(-1,0))
@@ -20,12 +20,13 @@ class FileManager:
     def addDataPage(self,tabInfo)->PageId:
         #charger notre headerPage en RAM
         pageIdHeader= tabInfo.headerPageId
-        headerPageBuff=self.bdd.buffer_manager.getPage(pageIdHeader)
+        headerPageBuff=self.bdd.buffer_manager.GetPage(pageIdHeader)
         headerPage=HeaderPage(headerPageBuff)
         #Faire la meme chose avec notre data page
         pageIdData=self.bdd.disk_manager.AllocPage()
-        dataPageBuff=self.bdd.buffer_manager.getPage(pageIdData)
+        dataPageBuff=self.bdd.buffer_manager.GetPage(pageIdData)
         dataPage = DataPage(dataPageBuff)
+        dataPage.initialisation()
         #on fait le chainage
         dataPage.setPageId(headerPage.getFreePageId())
         headerPage.setFreePageId(pageIdData)
@@ -50,31 +51,33 @@ class FileManager:
         return pageId if pageId.FileIdx!=-1 else None
     
     def writeRecordToDataPage(self,record,pageId)->RecordId:
-        buffPage = self.bdd.buffer_manager.getPage(pageId)
+        buffPage = self.bdd.buffer_manager.GetPage(pageId)
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots= buffPage.read_int()
+        #print(nbSlots)
         debutEspaceDispo=buffPage.read_int()
-        tailleRecord=record.getTaille()
+        tailleRecord=record.getTailleRecord()
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-16-(nbSlots*8)) #le -16 pour pas ecrase les deux derniers entiers
-        buffPage.write_int(debutEspaceDispo)
-        buffPage.write_int(tailleRecord)
+        buffPage.put_int(debutEspaceDispo)
+        buffPage.put_int(tailleRecord)
         buffPage.set_position(debutEspaceDispo)
-        record.writeToBuffer(buffPage,buffPage.pos)
+        record.writeToBuffer(buffPage,buffPage.get_pos())
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots+=1
-        buffPage.write_int(nbSlots)
+        buffPage.put_int(nbSlots)
         debutEspaceDispo+=tailleRecord
-        buffPage.write_int(debutEspaceDispo)
+        buffPage.put_int(debutEspaceDispo)
         self.bdd.buffer_manager.FreePage(pageId,True)
         return RecordId(pageId,nbSlots)
+    
     def getRecordsInDataPage(self,tabInfo,pageId):
-        buffPage=self.bdd.buffer_manager.GetPage()
+        buffPage=self.bdd.buffer_manager.GetPage(pageId)
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots= buffPage.read_int()
         buffPage.set_position(8)
         listeRecords=[]
         for i in range(0,nbSlots):
-            pos=buffPage.pos
+            pos=buffPage.get_pos()
             record=Record(tabInfo,[])
             taille=record.readFromBuffer(buffPage,pos)
             listeRecords.append(record)

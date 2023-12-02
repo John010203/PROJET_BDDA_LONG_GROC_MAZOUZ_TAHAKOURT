@@ -8,7 +8,9 @@ class BufferManager :
         self.bdd = bdd
         self.disk_manager = bdd.disk_manager
         self.frameCount = bdd.DBParams.frameCount
-        self.listFrame : list = [Frame()]*self.frameCount
+        self.listFrame = [Frame() for i in range(self.frameCount)]
+        print("DANS LE CONSTRUCTEUR ", self.listFrame[0])
+        print("DANS LE CONSTRUCTEUR ", self.listFrame[1])
         
     def reset(self):
         #self.frameCount = 0
@@ -30,9 +32,6 @@ class BufferManager :
         • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu ;
         • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
         """
-        for i in range(len(self.listFrame)) :
-            if self.listFrame[i].page_id==None :
-                index=i
         #LFU
         min=None
         for i in range(len(self.listFrame)) :
@@ -45,10 +44,16 @@ class BufferManager :
                     if min>self.listFrame[i].LFU:
                         min=self.listFrame[i].LFU
                         index=i
-                        
+        if min == None:
+            for i in range(len(self.listFrame)) :
+                if self.listFrame[i].page_id==None :
+                    print("je suis nul. ca sera moile prochain")
+                    index=i 
+                    return index 
                     
         if index==None : 
-            raise Exception("Aucune frame disponible")
+            print("Aucune frame disponible")
+            
         return index
 
     def FindFrame(self, pageId : PageId):#verifie si la page est deja chargee
@@ -59,6 +64,9 @@ class BufferManager :
         return index
 
     def GetPage(self, pageId : PageId) -> ByteBuffer:
+        print('debut frame 1 ',self.listFrame[0])
+        print('debut frame 2',self.listFrame[1])
+        #print('debut frame 3',self.listFrame[2])
         if pageId.FileIdx == -1 and pageId.PageIdx == 0:
             return None
 
@@ -76,16 +84,20 @@ class BufferManager :
         self.bdd.disk_manager.ReadPage(pageId, frameId.buffer)
         frameId.pin_count+=1
         frameId.LFU+=1
+        print('fin frame 1 ',self.listFrame[0])
+        print('fin frame 2',self.listFrame[1])
+        #print('fin frame 3',self.listFrame[2])
         return self.listFrame[i].buffer
 
-    def FreePage(self, pageId : PageId, valdirty : int | bool) -> None:
+    def FreePage(self, pageId : PageId, valdirty) -> None:
          """
          • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
          """
          for i in range(len(self.listFrame)) : 
-                if self.listFrame[i].pageId == pageId :
+                if self.listFrame[i].page_id == pageId :
                     self.listFrame[i].pin_count-=1
                     self.listFrame[i].dirty = valdirty
+                    self.listFrame[i].buffer.set_position(0)
                     #On a deja incremente le LFU dans GetPage
                 
     
@@ -97,5 +109,5 @@ class BufferManager :
         """
         for i in range(len(self.listFrame)):
             if(self.listFrame[i].dirty==1):
-                self.bdd.disk_manager.WritePage(self.listFrame[i].pageId,self.listFrame[i].buffer)
+                self.bdd.disk_manager.WritePage(self.listFrame[i].page_id,self.listFrame[i].buffer)
             self.listFrame[i].clear()

@@ -74,7 +74,13 @@ class Record :
     
     def getTailleRecord(self):
         somme=0
-        for i in range (len(self.recValues)):
+        for i in range (len(self.recvalues)):
             somme+=self.initTaille(i)
-        return
+        return somme
+    
+    def __str__(self):
+        res = ""
+        for i in self.recvalues :
+            res += str(i)+","
+        return res
         

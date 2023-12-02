@@ -4,14 +4,22 @@ class DataPage :
         #buff devra contenir les PageId et les donnees
         self.buff = buff
 
+    def initialisation(self):
+        self.buff.set_position(4088)#
+        self.buff.put_int(0)#nb slots
+        self.buff.put_int(8)#debut espace libre
+        self.buff.set_position(0)
+
     def setPageId(self,pageId):
         self.buff.set_position(0)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
+        self.buff.set_position(0)
 
     def nextPageId(self):
         self.buff.set_position(0)
         pageId = PageId(self.buff.read_int(),self.buff.read_int())
+        self.buff.set_position(0)
         return pageId
 
     def getPosition(): return

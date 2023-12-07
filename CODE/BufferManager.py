@@ -64,8 +64,6 @@ class BufferManager :
         return index
 
     def GetPage(self, pageId : PageId) -> ByteBuffer:
-        print('debut frame 1 ',self.listFrame[0])
-        print('debut frame 2',self.listFrame[1])
         #print('debut frame 3',self.listFrame[2])
         if pageId.FileIdx == -1 and pageId.PageIdx == 0:
             return None

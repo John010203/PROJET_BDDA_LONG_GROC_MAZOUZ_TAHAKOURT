@@ -73,11 +73,29 @@ ECRIRE LE RECORD DANS LE BUFFER
 test getpage
 '''
 #print('fngjkdherbgouryhgieufhipguepig')
-#pageId = diskManager.AllocPage()
+pageId = diskManager.AllocPage()
+pageId2 = diskManager.AllocPage()
 
 print('----',bfManager.GetPage(pageId))
+print('----',bfManager.GetPage(pageId2))
+
 bfManager.FreePage(pageId,False)
-print('----',bfManager.GetPage(pageId))
-print('----',bfManager.FindFrame(pageId))
+
+pageId3 = diskManager.AllocPage()
+print('----',bfManager.GetPage(pageId3))
+
+bfManager.FreePage(pageId2,False)
+
+pageId4 = diskManager.AllocPage()
+print('----',bfManager.GetPage(pageId4))
 
 
+bfManager.FreePage(pageId3,False)
+
+pageId5 = diskManager.AllocPage()
+print('----',bfManager.GetPage(pageId5))
+
+bfManager.FreePage(pageId4,False)
+
+pageId6 = diskManager.AllocPage()
+print('----',bfManager.GetPage(pageId6))

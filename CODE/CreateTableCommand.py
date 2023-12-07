@@ -9,7 +9,7 @@ class CreateTableCommand:
         self.nomRelation,self.nbColonne,self.colInfos = self.parseCommandeCreateTable(chaineCommande)
     
     def parseCommandeCreateTable(self,string):
-        print("DANS L AUTRE CLASSE")
+        #print("DANS L AUTRE CLASSE")
         args = string[12:len(string)-1]
         nomRelation = (args.split('(')[0]).strip()
         cols = args.split('(')[1].split(',')
@@ -19,20 +19,16 @@ class CreateTableCommand:
             nomCol = c.split(':')[0]
             typeCol = c.split(':')[1]
             listCols.append(ColInfo(nomCol.strip(),typeCol.strip()))
-        print(nomRelation,len(listCols),cols)
+        #print(nomRelation,len(listCols),cols)
         return nomRelation,len(listCols),listCols
     
     def Execute(self)->None:
-        """
-        appeler createNewHeaderPage du FileManager
-        • créer une TableInfo en utilisant les données « communes », ainsi que le PageId rendu par
-        l'appel à createHeaderPage ci-dessus
-        • rajouter la TableInfo au DatabaseInfo avec la méthode qui convient
-        """
-        print("-------------CREATION DE TABLE-----------")
-        relation = TableInfo(self.nomRelation,self.nbColonnes,self.colInfos)#faut rajouter le headerPage
-        #rajouter la relation dans la BDD
+        headerPage = self.db.file_manager.createNewHeaderPage()
+        relation = TableInfo(self.nomRelation,self.nbColonne,self.colInfos,headerPage)
         self.db.data_base_info.AddTableInfo(relation)
+
+        print(self.db.data_base_info)
+        
         return
     
 

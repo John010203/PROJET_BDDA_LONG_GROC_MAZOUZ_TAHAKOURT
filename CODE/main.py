@@ -6,9 +6,10 @@ from TableInfo import TableInfo
 from DataBaseInfo import DataBaseInfo
 import DBParams as DP
 from BDD import BDD
+from DatabaseManager import DatabaseManager
 
-dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
 
+'''
 #dbb.DataBaseInfo.add 
 
 # DiskManager tests
@@ -32,15 +33,25 @@ print(bf2.read_float())
 print(dm.GetCurrentCountAllocPages())
 dm.Dealloc(page_id)
 print(dm.GetCurrentCountAllocPages())
+'''
 
-
+#CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2)
+#CREATE TABLE PremiereRelation(Nom:STRING(20),Prenom:STRING(10))
+#INSERT INTO PremiereRelation VALUES (Mazouz,Camelia)
 
 def main():
-    dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
-    reponse = ""
-    while(reponse!="EXIT"):
+    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 2)))
+    run = True
+    commande = ""
+    while(run):
         print("Saisir une commande :")
-        reponse = input("=>")
-
+        commande = input("=>")
+        if(commande == "EXIT"):
+            dataBaseManager.Finish()
+            run = False
+        else:
+            dataBaseManager.ProcessCommand(commande)
+    
     
     return
+main()

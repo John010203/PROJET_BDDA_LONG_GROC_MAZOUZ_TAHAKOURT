@@ -11,14 +11,19 @@ class DataBaseInfo :
         self.tableInfo = []
     #init lit un fichier et recupere  les definitions des tables    
     def Init(self) -> None :
-        with open ('DBInfo','rb') as f1:
+        with open (self.db.DBParams.DBPath+'DBInfo.save','rb') as f1:
             self.tableInfo+= pickle.load(f1)
-        
+    #--------------------------------------------------------------------------------------------------------------
     #enregistre les definitions des tables
     def Finish(self) -> None:
-        with open ('DBInfo','rb') as f1:
+        with open (self.db.DBParams.DBPath+'DBInfo.save','wb') as f1:
             pickle.dump(self.tableInfo,f1)
-    
+        
+        with open (self.db.DBParams.DBPath+'DBInfo.save','rb') as f1:
+           data =  pickle.load(f1)
+
+        print(data.__str__())
+    #--------------------------------------------------------------------------------------------------------------
     def getNbRelations(self) -> int:
         return len(self.tableInfo)
     
@@ -30,3 +35,9 @@ class DataBaseInfo :
             if i.nomRelation == nomRelation :
                 table = i
         return table
+    
+    def __str__(self):
+        res = ""
+        for t in self.tableInfo:
+            res+=("\n"+t.__str__())
+        return res

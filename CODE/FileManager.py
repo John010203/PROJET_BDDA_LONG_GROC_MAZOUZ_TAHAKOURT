@@ -97,7 +97,7 @@ class FileManager:
         return listePagesFree+listePagesFull
     
     def InsertRecordIntoTable(self, record):
-        freeDataPage=self.getFreeDataPageId(record.tabInfo,record.getTaille())
+        freeDataPage=self.getFreeDataPageId(record.tabInfo,record.getTailleRecord())
         return self.writeRecordToDataPage(record,freeDataPage)
     
     def GetAllRecords(self,tabInfo):

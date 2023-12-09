@@ -16,9 +16,11 @@ class InsertCommand :
         nomRelation = (string.split(' ')[2]).strip()
         #print(nomRelation,end='\n')
         chaineValeurs = args.split(',')
-        relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
+        relation = self.bdd.data_base_info.GetTableInfo(nomRelation)
+
         listType = [c.typeColonne[0] for c in relation.cols]
-        for i in range(len(chaineValeurs)):
+        
+        for i in range(len(relation.cols)):
             if(listType[i] == "INT"):
                 chaineValeurs[i] = int(chaineValeurs[i])
             if(listType[i] == "FLOAT"):

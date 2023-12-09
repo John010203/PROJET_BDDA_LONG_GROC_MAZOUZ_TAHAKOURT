@@ -5,7 +5,7 @@ class TableInfo :
         self.nomRelation = nomRelation
         self.nbColonne : int = nbColonnes
         self.cols : list = cols
-        #self.headerPageId = headerPageId #PageId
+        self.headerPageId = headerPageId #PageId
 
     def __str__(self):
         return f"Table {self.nomRelation} with {len(self.cols)} columns"

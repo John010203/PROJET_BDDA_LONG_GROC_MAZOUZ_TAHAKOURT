@@ -61,7 +61,7 @@ class DatabaseManager:
             InsertCommand(cmd,self.bdd).Execute()
 
         if self.select(cmd):
-            SelectCommand(cmd).Execute()
+            SelectCommand(cmd,self.bdd).Execute()
 
         if self.imprt(cmd):
             ImportCommand(cmd,self.bdd).Execute()

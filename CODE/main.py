@@ -44,7 +44,6 @@ def main():
     run = True
     commande = ""
     while(run):
-        print("Saisir une commande :")
         commande = input("=>")
         if(commande == "EXIT"):
             dataBaseManager.Finish()

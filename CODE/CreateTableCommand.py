@@ -12,13 +12,22 @@ class CreateTableCommand:
         #print("DANS L AUTRE CLASSE")
         args = string[12:len(string)-1]
         nomRelation = (args.split('(')[0]).strip()
-        cols = args.split('(')[1].split(',')
+        cols = args.split(nomRelation+'(')[1].split(',')
         listCols = []
 
         for c in cols:
             nomCol = c.split(':')[0]
             typeCol = c.split(':')[1]
-            listCols.append(ColInfo(nomCol.strip(),typeCol.strip()))
+            if "STRING" in typeCol:
+                typeCol = ("STRING", int(typeCol.split("(")[1][:-1]))
+            if "VARCHAR" in typeCol:
+                typeCol = ("VARCHAR", int(typeCol.split("(")[1][:-1]))
+            if "INT" in typeCol:
+                typeCol = ("INT", 4)
+            if "FLOAT" in typeCol:
+                typeCol = ("FLOAT", 4)
+
+            listCols.append(ColInfo(nomCol.strip(),typeCol))
         #print(nomRelation,len(listCols),cols)
         return nomRelation,len(listCols),listCols
     

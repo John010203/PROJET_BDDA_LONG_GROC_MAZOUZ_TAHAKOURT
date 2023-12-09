@@ -64,7 +64,6 @@ print(file_manager.getRecordsInDataPage(table,pageId)[1])
 print('-----------------')
 pageId2 = file_manager.addDataPage(table)
 file_manager.writeRecordToDataPage(rec2,pageId2)
-print(pageId2)
 
 #HeaderPage(bfManager.GetPage(table.headerPageId))
 pageIdFree=file_manager.getFreeDataPageId(table,4049)

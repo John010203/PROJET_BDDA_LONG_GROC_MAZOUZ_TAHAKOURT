@@ -14,6 +14,8 @@ class DataPage :
         self.buff.set_position(0)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
+        self.buff.set_position(2000)
+        self.buff.put_int(2)
         self.buff.set_position(0)
 
     def nextPageId(self):
@@ -29,5 +31,5 @@ class DataPage :
         self.buff.set_position(4096-8)
         nbSlot = self.buff.read_int()
         posFreeArea = self.buff.read_int()
-        print(4096-(nbSlot*8)-posFreeArea-8)
+        self.buff.set_position(0)
         return 4096-(nbSlot*8)-posFreeArea-8

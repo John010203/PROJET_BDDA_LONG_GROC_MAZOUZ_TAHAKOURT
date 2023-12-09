@@ -27,14 +27,15 @@ class FileManager:
         dataPageBuff=self.bdd.buffer_manager.GetPage(pageIdData)
         dataPage = DataPage(dataPageBuff)
         dataPage.initialisation()
+
+
         #on fait le chainage
         dataPage.setPageId(headerPage.getFreePageId())
         dataPageBuff.set_position(0)
         headerPage.setFreePageId(pageIdData)
         self.bdd.buffer_manager.FreePage(pageIdHeader,True)
         self.bdd.buffer_manager.FreePage(pageIdData,True)
-        self.bdd.disk_manager.WritePage(pageIdData,dataPageBuff)
-
+    
         return pageIdData
     
     
@@ -42,20 +43,29 @@ class FileManager:
         headerBuffer = self.bdd.buffer_manager.GetPage(tabInfo.headerPageId) #on charge juste le buffer dans lequel on va ecrire
         headerPage = HeaderPage(headerBuffer)
         pageId = headerPage.getFreePageId()
-        print(pageId)
         pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
         pageBuffer.set_position(0)
-        print('--la--'+str(pageBuffer.read_int()))
         dataPage = DataPage(pageBuffer)  
         self.bdd.buffer_manager.FreePage(tabInfo.headerPageId,False)
         
-        while not(pageId.FileIdx == -1) and sizeRecord > dataPage.getEspaceDisponible():
-            print(dataPage.getEspaceDisponible())
-            pageId = dataPage.nextPageId()
-            print('--ici-'+str(pageId))
-            pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
-            dataPage = DataPage(pageBuffer)
-            self.bdd.buffer_manager.FreePage(pageId,False)
+        while not(pageId.FileIdx == -1):
+            if sizeRecord > dataPage.getEspaceDisponible():
+                print(pageId)
+                print(dataPage.getEspaceDisponible())
+                pageIdPrev=pageId
+                pageId = dataPage.nextPageId()
+                print('--ici-'+str(pageId))
+                
+                if(pageId.FileIdx!=-1):
+                    pageBuffer2 = self.bdd.buffer_manager.GetPage(pageId) 
+                    pageBuffer2.set_position(2000)
+                    print('hihii',pageBuffer2.read_int())
+                    dataPage = DataPage(pageBuffer2)
+                    self.bdd.buffer_manager.FreePage(pageIdPrev,False)
+                else:
+                    print("Vous n'avez plus d'espace.")
+            else:
+                print("cc")
 
         
         return pageId if pageId.FileIdx!=-1 else None

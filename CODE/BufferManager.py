@@ -51,7 +51,7 @@ class BufferManager :
                     return index 
                     
         if index==None : 
-            print("Aucune frame disponible")
+            raise Exception("Aucune frame disponible")
             
         return index
 
@@ -88,11 +88,15 @@ class BufferManager :
          """
          • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
          """
+    
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].page_id == pageId :
                     self.listFrame[i].pin_count-=1
                     self.listFrame[i].dirty = valdirty
                     self.listFrame[i].buffer.set_position(0)
+                    if(valdirty):
+                        self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
+             
                     #On a deja incremente le LFU dans GetPage
                 
     

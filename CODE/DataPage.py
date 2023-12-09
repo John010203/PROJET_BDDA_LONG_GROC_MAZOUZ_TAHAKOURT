@@ -29,4 +29,5 @@ class DataPage :
         self.buff.set_position(4096-8)
         nbSlot = self.buff.read_int()
         posFreeArea = self.buff.read_int()
+        print(4096-(nbSlot*8)-posFreeArea-8)
         return 4096-(nbSlot*8)-posFreeArea-8

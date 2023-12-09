@@ -29,7 +29,6 @@ class Record :
                 case "STRING(T)" :
                     
                     if len(self.recvalues[i])>0:
-                        print('--',len(self.recvalues[i]))
                         for c in self.recvalues[i] :
                             buff.put_char(c)
                     for k in range(self.tabInfo.cols[i].typeColonne[1] - len(self.recvalues[i])):

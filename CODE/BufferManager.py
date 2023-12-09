@@ -9,8 +9,7 @@ class BufferManager :
         self.disk_manager = bdd.disk_manager
         self.frameCount = bdd.DBParams.frameCount
         self.listFrame = [Frame() for i in range(self.frameCount)]
-        print("DANS LE CONSTRUCTEUR ", self.listFrame[0])
-        print("DANS LE CONSTRUCTEUR ", self.listFrame[1])
+        
         
     def reset(self):
         #self.frameCount = 0
@@ -82,9 +81,7 @@ class BufferManager :
         self.bdd.disk_manager.ReadPage(pageId, frameId.buffer)
         frameId.pin_count+=1
         frameId.LFU+=1
-        print('fin frame 1 ',self.listFrame[0])
-        print('fin frame 2',self.listFrame[1])
-        #print('fin frame 3',self.listFrame[2])
+        
         return self.listFrame[i].buffer
 
     def FreePage(self, pageId : PageId, valdirty) -> None:

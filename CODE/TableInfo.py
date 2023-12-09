@@ -5,5 +5,5 @@ class TableInfo :
         self.nomRelation = nomRelation
         self.nbColonne : int = nbColonnes
         self.cols : list = cols
-        #self.headerPageId = headerPageId #PageId
+        self.headerPageId = headerPageId #PageId
     

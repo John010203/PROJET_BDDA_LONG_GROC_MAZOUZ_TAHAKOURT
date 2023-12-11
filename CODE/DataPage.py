@@ -8,14 +8,14 @@ class DataPage :
         self.buff.set_position(4088)#
         self.buff.put_int(0)#nb slots
         self.buff.put_int(8)#debut espace libre
+        #self.buff.set_position(2000)
+        #self.buff.put_int(268464)
         self.buff.set_position(0)
 
     def setPageId(self,pageId):
         self.buff.set_position(0)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
-        self.buff.set_position(2000)
-        self.buff.put_int(2)
         self.buff.set_position(0)
 
     def nextPageId(self):

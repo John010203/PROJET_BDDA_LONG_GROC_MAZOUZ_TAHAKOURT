@@ -75,6 +75,8 @@ class BufferManager :
 
         #La page n'est pas déjà chargé dans une frame
         i = self.FindFrameLibre()
+        #print("indice frame libre",i)
+        #print(self)
         
         frameId=self.listFrame[i]
         frameId.page_id = pageId

@@ -1,14 +1,29 @@
-import DBParams as DBP
+
+from DiskManager import DiskManager
+import BufferManager as BM
+from ByteBuffer import ByteBuffer
+from TableInfo import TableInfo
+from DataBaseInfo import DataBaseInfo
+import DBParams as DP
 from BDD import BDD
 from DatabaseManager import DatabaseManager
 
-'''
-initialisation de la BDD
-'''
-bdd = BDD(DBP.DBParams("../DB/",4096, 4, 2))
-diskManager = bdd.disk_manager
-bfManager = bdd.buffer_manager
+#CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2)
+#CREATE TABLE PremiereRelation(Nom:STRING(20),Prenom:STRING(10))
+#INSERT INTO PremiereRelation VALUES (Mazouz,Camelia)
 
-test = DatabaseManager(bdd)
-
-test.ProcessCommand("SELECT * FROM nomRelation WHERE nomColonne1OPvaleur1 AND nomColonne2OPvaleur2 AND nomColonnekOPvaleurk")
+def main():
+    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 2)))
+    run = True
+    commande = ""
+    while(run):
+        commande = input("=>")
+        if(commande == "EXIT"):
+            dataBaseManager.Finish()
+            run = False
+        else:
+            dataBaseManager.ProcessCommand(commande)
+    
+    
+    return
+main()

@@ -20,18 +20,18 @@ file_manager = bdd.file_manager
 CREATION D'UN HEADERPAGE
 '''
 headerPage = file_manager.createNewHeaderPage()
-
+#premiere page de notre relation
+#print("Header Page -> ",headerPage)
 
 """
 Creation tableInfo(relation)
 """
 table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T)",20))],headerPage)
-tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARCHAR(T)",15)),ColInfo("ID",("INT",4))],headerPage)
-
-
+#tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARCHAR(T)",15)),ColInfo("ID",("INT",4))],headerPage)
+#print("Dans la table ->",table.headerPageId)
 
 '''
-CREATION D"UN RECORD
+CREATION Des RECORDS
 '''
 
 rec = Record(table,[0,"SMAIL"])
@@ -43,31 +43,26 @@ rec3 = Record(table,[3,"CHOPPER"])
 ON AJOUTE UN PAGEID VIDE DANS LA LISTE CHAINEE
 '''
 pageId = file_manager.addDataPage(table) #pageId vide
-bf=bfManager.GetPage(pageId)
-bf.set_position(0)
 print(pageId)
-print(bf.read_int())
-bfManager.FreePage(pageId,False)
-
 
 """
 ECRIRE LE RECORD DANS LE BUFFER
 """
-
+#print('---------pageId1--------')
 file_manager.writeRecordToDataPage(rec,pageId)
 file_manager.writeRecordToDataPage(rec2,pageId)
-file_manager.writeRecordToDataPage(rec3,pageId)
+file_manager.getRecordsInDataPage(table,pageId)[0]
+file_manager.getRecordsInDataPage(table,pageId)[1]
 
-print(file_manager.getRecordsInDataPage(table,pageId)[0])
-print(file_manager.getRecordsInDataPage(table,pageId)[1])
 
-print('-----------------')
+#print('---------pageId2--------')
 pageId2 = file_manager.addDataPage(table)
-file_manager.writeRecordToDataPage(rec2,pageId2)
+print(pageId2)
+file_manager.writeRecordToDataPage(rec3,pageId2)
+file_manager.getRecordsInDataPage(table,pageId2)[0]
 
+print('---------getFreePageId--------')
 #HeaderPage(bfManager.GetPage(table.headerPageId))
 pageIdFree=file_manager.getFreeDataPageId(table,4049)
-print(pageIdFree)
-
-
+#print(pageIdFree)
 

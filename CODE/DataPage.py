@@ -22,6 +22,7 @@ class DataPage :
         self.buff.set_position(0)
         pageId = PageId(self.buff.read_int(),self.buff.read_int())
         self.buff.set_position(0)
+        #print('dans next pageid ',pageId)
         return pageId
 
     def getPosition(): return

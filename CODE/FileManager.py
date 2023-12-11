@@ -27,16 +27,16 @@ class FileManager:
     def addDataPage(self,tabInfo)->PageId:
         #charger notre headerPage en RAM
         pageIdHeader= tabInfo.headerPageId
-        print("1 :",pageIdHeader)
+        #print("1 :",pageIdHeader)
 
         headerPageBuff=self.bdd.buffer_manager.GetPage(pageIdHeader)
-        print("2 : ",headerPageBuff.read_int(),headerPageBuff.read_int())
+        #print("2 : ",headerPageBuff.read_int(),headerPageBuff.read_int())
 
         headerPage=HeaderPage(headerPageBuff)
         #Faire la meme chose avec notre data page
         #on harge une nouvelle page
         pageIdData=self.bdd.disk_manager.AllocPage()
-        print("3 :",pageIdData)
+        #print("3 :",pageIdData)
         #on recup son buffer
         dataPageBuff=self.bdd.buffer_manager.GetPage(pageIdData)
         dataPage = DataPage(dataPageBuff)
@@ -44,15 +44,15 @@ class FileManager:
         dataPage.initialisation()
 
         #dataPage.buff.set_position(4088)
-        print("4 : ",dataPage.buff.read_int(),dataPage.buff.read_int())
+        #print("4 : ",dataPage.buff.read_int(),dataPage.buff.read_int())
        
         #on fait le chainage
         dataPage.setPageId(headerPage.getFreePageId())
-        print("5 : header page free pageid : ",dataPage.buff.read_int(),dataPage.buff.read_int())
+        #print("5 : header page free pageid : ",dataPage.buff.read_int(),dataPage.buff.read_int())
         dataPageBuff.set_position(0)
         headerPage.setFreePageId(pageIdData)
         #headerPage.buff.set_position(0)
-        print("6 : prochaine page : ",headerPage.buff.read_int(),headerPage.buff.read_int())
+        #print("6 : prochaine page : ",headerPage.buff.read_int(),headerPage.buff.read_int())
         self.bdd.buffer_manager.FreePage(pageIdHeader,True)
         self.bdd.buffer_manager.FreePage(pageIdData,True)
         #print('#########',pageIdData)
@@ -64,8 +64,9 @@ class FileManager:
         headerPage = HeaderPage(headerBuffer)
         #premiere page libre de la liste chainee
         pageId = headerPage.getFreePageId()
+        print('1:',pageId)
         pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
-        pageBuffer.set_position(0)
+
         dataPage = DataPage(pageBuffer)  
         self.bdd.buffer_manager.FreePage(tabInfo.headerPageId,False)
         
@@ -80,7 +81,7 @@ class FileManager:
                     print("PAS ENCORE ARRIVEE A LA FIN",pageId)
                     buff = self.bdd.buffer_manager.GetPage(pageId) 
                     buff.set_position(4088)
-                    print('----------------',buff.read_int(),buff.read_int())
+                    print('----------------',pageId,buff.read_int(),buff.read_int())
                     #ici notre data age contient -1 0
                     dataPage = DataPage(buff)
                     print(dataPage.getEspaceDisponible())
@@ -97,7 +98,7 @@ class FileManager:
         buffPage = self.bdd.buffer_manager.GetPage(pageId)
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots= buffPage.read_int()
-        #print(nbSlots)
+        #print('ici nb slots+pageId avant ecriture ',pageId,nbSlots)
         debutEspaceDispo=buffPage.read_int()
         tailleRecord=record.getTailleRecord()
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-16-(nbSlots*8)) #le -16 pour pas ecrase les deux derniers entiers
@@ -113,6 +114,9 @@ class FileManager:
         debutEspaceDispo+=tailleRecord
         buffPage.put_int(debutEspaceDispo)
         self.bdd.buffer_manager.FreePage(pageId,True)
+        #buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
+        #nbSlots= buffPage.read_int()
+        #print('ici nb slots+pageId apres ecriture ',pageId,nbSlots)
         return RecordId(pageId,nbSlots)
     
     def getRecordsInDataPage(self,tabInfo,pageId):

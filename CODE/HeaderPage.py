@@ -16,12 +16,14 @@ class HeaderPage :
         self.buff.set_position(8)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
+        
         return 
     
     def getFreePageId (self)->PageId:
         self.buff.set_position(0)
         fileId=self.buff.read_int()
         pageId=self.buff.read_int()
+        #print('dans get free pageid ',fileId,pageId)
         return PageId(fileId,pageId)
 
     def getFullPageId (self)->PageId:

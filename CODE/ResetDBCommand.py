@@ -10,11 +10,12 @@ class ResetDBCommand():
         self.bufferManager = bdd.buffer_manager
         self.databaseInfo = bdd.data_base_info
 
-    def Reset(self):
+    def Execute(self):
         print("-------------RESETDB-----------")
-        BufferManager.reset()
-        DataBaseInfo.reset()
-        DiskManager.reset()
+        self.diskManager.reset()
+        self.bufferManager.reset()
+        self.databaseInfo.reset()
+        
         
         '''
          supprimer tous les fichiers du dossier DB

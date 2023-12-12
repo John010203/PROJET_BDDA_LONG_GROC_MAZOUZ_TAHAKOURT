@@ -89,7 +89,9 @@ class BufferManager :
         self.bdd.disk_manager.ReadPage(pageId, frameId.buffer)
         frameId.pin_count+=1
         frameId.LFU+=1
-        
+        #print('fin frame 1 ',self.listFrame[0])
+        #print('fin frame 2',self.listFrame[1])
+        #print('fin frame 3',self.listFrame[2])
         return self.listFrame[i].buffer
 
     def FreePage(self, pageId : PageId, valdirty) -> None:

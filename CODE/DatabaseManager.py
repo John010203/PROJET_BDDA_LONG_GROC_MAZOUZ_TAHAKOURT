@@ -14,6 +14,7 @@ class DatabaseManager:
     def Finish(self):
         self.databaseInfo.Finish()
         self.bufferManager.FlushAll()
+        self.diskManager.reset()
 
     def createTable(self,cmd):
         typeComande = cmd.split(' ')
@@ -37,8 +38,7 @@ class DatabaseManager:
             return False
 
     def reset(self,cmd):
-        typeComande = cmd.split(' ')
-        if typeComande[0] == "RESETDB":
+        if cmd == "RESETDB":
             return True
         else :
             return False
@@ -53,12 +53,16 @@ class DatabaseManager:
         
         if self.createTable(cmd):
             CreateTableCommand(cmd,self.bdd).Execute()
+
         if self.reset(cmd):
-            ResetDBCommand(cmd).Reset()
+            ResetDBCommand(self.bdd).Execute()
+
         if self.insert(cmd):
             InsertCommand(cmd,self.bdd).Execute()
+
         if self.select(cmd):
-            SelectCommand(cmd).Execute()
+            SelectCommand(cmd,self.bdd).Execute()
+
         if self.imprt(cmd):
             ImportCommand(cmd,self.bdd).Execute()
             

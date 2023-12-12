@@ -10,7 +10,7 @@ class DiskManager :
         self.pagesDisponibles = []
 
     def reset(self):
-        self.fileCounter = []
+        self.fileCounter = [0]*self.bdd.DBParams.DMFileCount
         self.pagesDisponibles = []
         
     def AllocPage(self) -> PageId :

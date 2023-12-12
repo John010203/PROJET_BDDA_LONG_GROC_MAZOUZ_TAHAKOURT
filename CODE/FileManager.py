@@ -38,12 +38,14 @@ class FileManager:
         pageIdData=self.bdd.disk_manager.AllocPage()
         #print("3 :",pageIdData)
         #on recup son buffer
+        print('---------------dans dataOage-------------',pageIdData)
+        print(self.bdd.buffer_manager)
         dataPageBuff=self.bdd.buffer_manager.GetPage(pageIdData)
         dataPage = DataPage(dataPageBuff)
         #on initialise son buffer
         dataPage.initialisation()
 
-        #dataPage.buff.set_position(4088)
+        dataPage.buff.set_position(0)
         #print("4 : ",dataPage.buff.read_int(),dataPage.buff.read_int())
        
         #on fait le chainage
@@ -71,7 +73,7 @@ class FileManager:
         self.bdd.buffer_manager.FreePage(tabInfo.headerPageId,False)
         
         while not(pageId.FileIdx == -1):
-            if sizeRecord > dataPage.getEspaceDisponible():
+            if sizeRecord > dataPage.getEspaceDisponible():  
                 print("page libre de la liste chainee",pageId)
                 print("espace libre dans cette page",dataPage.getEspaceDisponible())
                 pageIdPrev=pageId
@@ -87,8 +89,14 @@ class FileManager:
                     print(dataPage.getEspaceDisponible())
                     self.bdd.buffer_manager.FreePage(pageIdPrev,False)
                 else:
+                    #a verifier
+                    self.bdd.buffer_manager.FreePage(pageIdPrev,False)
+                    self.bdd.buffer_manager.FreePage(pageId,False)
                     print("Vous n'avez plus d'espace.")
+                    return self.addDataPage(tabInfo)
+                    
             else:
+                self.bdd.buffer_manager.FreePage(pageId,False)
                 return pageId
 
         

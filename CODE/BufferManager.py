@@ -32,6 +32,13 @@ class BufferManager :
         • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
         """
         #LFU
+        #il ya une case libre
+        for i in range(len(self.listFrame)) :
+            if self.listFrame[i].page_id==None :
+                print("je suis nul. ca sera moi le prochain")
+                index=i 
+                return index 
+        #on remplace
         min=None
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:
@@ -43,16 +50,15 @@ class BufferManager :
                     if min>self.listFrame[i].LFU:
                         min=self.listFrame[i].LFU
                         index=i
-        if min == None:
-            for i in range(len(self.listFrame)) :
-                if self.listFrame[i].page_id==None :
-                    print("je suis nul. ca sera moile prochain")
-                    index=i 
-                    return index 
+
                     
         if index==None : 
             raise Exception("Aucune frame disponible")
-            
+        # a verifier dans le cas d'une case vide
+        if(self.listFrame[index].dirty):
+            self.disk_manager.WritePage(self.listFrame[index].page_id,self.listFrame[index].buffer)
+
+        self.listFrame[index].clear() 
         return index
 
     def FindFrame(self, pageId : PageId):#verifie si la page est deja chargee
@@ -93,11 +99,13 @@ class BufferManager :
     
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].page_id == pageId :
+                    #print("PAGE TROUVE ----------------")
                     self.listFrame[i].pin_count-=1
-                    self.listFrame[i].dirty = valdirty
+                    if valdirty:
+                        self.listFrame[i].dirty = valdirty
                     self.listFrame[i].buffer.set_position(0)
-                    if(valdirty):
-                        self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
+                    #if valdirty:
+                        #self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
              
                     #On a deja incremente le LFU dans GetPage
                 

@@ -61,6 +61,9 @@ print(pageId2)
 file_manager.writeRecordToDataPage(rec3,pageId2)
 file_manager.getRecordsInDataPage(table,pageId2)[0]
 
+
+#pageId2 = file_manager.addDataPage(table)
+#print(pageId2)
 print('\n---------getFreePageId--------\n')
 #HeaderPage(bfManager.GetPage(table.headerPageId))
 pageIdFree=file_manager.getFreeDataPageId(table,4049)

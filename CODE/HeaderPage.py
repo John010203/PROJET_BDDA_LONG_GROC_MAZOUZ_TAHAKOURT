@@ -44,6 +44,8 @@ class HeaderPage :
             nextPage = nextPage.getNextPageId()
             listePage.append(nextPage)
             self.bdd.buffer_manager.FreePage(nextPage,False)
+            
+        self.bdd.buffer_manager.FreePage(nextPage,False)
         return listePage
 
 

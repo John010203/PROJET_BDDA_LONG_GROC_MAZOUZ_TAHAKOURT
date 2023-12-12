@@ -66,41 +66,25 @@ class FileManager:
         headerPage = HeaderPage(headerBuffer)
         #premiere page libre de la liste chainee
         pageId = headerPage.getFreePageId()
-        print('1:',pageId)
-        pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
-
-        dataPage = DataPage(pageBuffer)  
         self.bdd.buffer_manager.FreePage(tabInfo.headerPageId,False)
-        
+        print('1:',pageId)
+
         while not(pageId.FileIdx == -1):
+
+            pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
+            dataPage = DataPage(pageBuffer)      
             if sizeRecord > dataPage.getEspaceDisponible():  
                 print("page libre de la liste chainee",pageId)
                 print("espace libre dans cette page",dataPage.getEspaceDisponible())
                 pageIdPrev=pageId
                 pageId = dataPage.nextPageId()
-                print('Next PageId',pageId)
-                if(pageId.FileIdx!=-1):
-                    print("PAS ENCORE ARRIVEE A LA FIN",pageId)
-                    buff = self.bdd.buffer_manager.GetPage(pageId) 
-                    buff.set_position(4088)
-                    print('----------------',pageId,buff.read_int(),buff.read_int())
-                    #ici notre data age contient -1 0
-                    dataPage = DataPage(buff)
-                    print(dataPage.getEspaceDisponible())
-                    self.bdd.buffer_manager.FreePage(pageIdPrev,False)
-                else:
-                    #a verifier
-                    self.bdd.buffer_manager.FreePage(pageIdPrev,False)
-                    self.bdd.buffer_manager.FreePage(pageId,False)
-                    print("Vous n'avez plus d'espace.")
-                    return self.addDataPage(tabInfo)
-                    
+                self.bdd.buffer_manager.FreePage(pageIdPrev,False)
+                print('Next PageId',pageId)    
+
             else:
                 self.bdd.buffer_manager.FreePage(pageId,False)
                 return pageId
-
-        
-        return pageId if pageId.FileIdx!=-1 else None
+        return  None
     
     def writeRecordToDataPage(self,record,pageId)->RecordId:
         buffPage = self.bdd.buffer_manager.GetPage(pageId)
@@ -158,7 +142,11 @@ class FileManager:
         return listePagesFree+listePagesFull
     
     def InsertRecordIntoTable(self, record):
-        freeDataPage=self.getFreeDataPageId(record.tabInfo,record.getTaille())
+        getFree = self.getFreeDataPageId(record.tabInfo,record.getTaille())
+        if getFree!=None :
+            freeDataPage =  getFree
+        else : 
+            freeDataPage = self.addDataPage(record.tabInfo)       
         return self.writeRecordToDataPage(record,freeDataPage)
     
     def GetAllRecords(self,tabInfo):

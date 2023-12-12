@@ -67,5 +67,7 @@ file_manager.getRecordsInDataPage(table,pageId2)[0]
 print('\n---------getFreePageId--------\n')
 #HeaderPage(bfManager.GetPage(table.headerPageId))
 pageIdFree=file_manager.getFreeDataPageId(table,4049)
+
+print(bfManager)
 #print(pageIdFree)
 

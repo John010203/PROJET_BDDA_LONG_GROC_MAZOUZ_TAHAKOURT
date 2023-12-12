@@ -33,8 +33,6 @@ print(dm.GetCurrentCountAllocPages())
 dm.Dealloc(page_id)
 print(dm.GetCurrentCountAllocPages())
 
-
-
 def main():
     dbb = BDD(DP.DBParams("../DB",4096, 4, 2))
     reponse = ""

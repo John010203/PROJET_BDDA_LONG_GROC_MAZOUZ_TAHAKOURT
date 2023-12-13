@@ -10,7 +10,7 @@ from PageId import PageId
 '''
 initialisation de la BDD
 '''
-bdd = BDD(DBP.DBParams("../DB/",4096, 4, 2))
+bdd = BDD(DBP.DBParams("../DB/",4096, 4, 5))
 diskManager = bdd.disk_manager
 bfManager = bdd.buffer_manager
 data_base_info = bdd.data_base_info
@@ -33,10 +33,9 @@ table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T
 '''
 CREATION Des RECORDS
 '''
-
-rec2 = Record(table,[0,"SMAIL"])
 rec = Record(table,[1,"SIMBA"])
-#rec3 = Record(table,[3,"CHOPP"])
+rec2 = Record(table,[0,"SMAIL"])
+rec3 = Record(table,[3,"CHOPP"])
 
 
 '''
@@ -52,13 +51,13 @@ ECRIRE LE RECORD DANS LE BUFFER
 print('----------insert------------')
 file_manager.InsertRecordIntoTable(rec)
 file_manager.InsertRecordIntoTable(rec2)
-# file_manager.InsertRecordIntoTable(rec3)
+file_manager.InsertRecordIntoTable(rec3)
 
 #print(file_manager.GetAllRecords(table))
 pageId2 = PageId(1,0)
 print('----------------read--------------')
 print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[0])
-#print(file_manager.getRecordsInDataPage(table,pageId2)[2])
+print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[1])
 
 
 #print('\n---------pageId2--------\n')

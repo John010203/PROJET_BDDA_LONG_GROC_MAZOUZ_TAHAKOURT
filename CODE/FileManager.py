@@ -84,6 +84,7 @@ class FileManager:
                 return pageId
         return  None
     
+    
     def writeRecordToDataPage(self,record,pageId)->RecordId:
         buffPage = self.bdd.buffer_manager.GetPage(pageId)
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
@@ -93,9 +94,12 @@ class FileManager:
         tailleRecord=record.getTailleRecord()
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-16-(nbSlots*8)) #le -16 pour pas ecrase les deux derniers entiers
         buffPage.put_int(debutEspaceDispo)
+        print('pitieeeeee',debutEspaceDispo)
         buffPage.put_int(tailleRecord)
         buffPage.set_position(debutEspaceDispo)
-        record.writeToBuffer(buffPage,buffPage.get_pos())
+        p=buffPage.get_pos()
+        print('tktkkkkk',p)
+        record.writeToBuffer(buffPage,p)
         buffPage.set_position(self.bdd.DBParams.SGBDPageSize-8)
         nbSlots+=1
         buffPage.put_int(nbSlots)
@@ -119,9 +123,12 @@ class FileManager:
         nbSlots= buffPage.read_int()
         buffPage.set_position(8)
         listeRecords=[]
+        #print (nbSlots)
         for i in range(0,nbSlots):
             pos=buffPage.get_pos()
+            #print('whyyy',i,pos)
             record=Record(tabInfo,[])
+            #print('appelle numero',i)
             taille=record.readFromBuffer(buffPage,pos)
             listeRecords.append(record)
             buffPage.set_position(pos+taille)
@@ -146,13 +153,15 @@ class FileManager:
     
     def InsertRecordIntoTable(self, record):
         getFree = self.getFreeDataPageId(record.tabInfo,record.getTailleRecord())
+        
         freeDataPage = None
         if getFree!=None :
             freeDataPage =  getFree
         else : 
             freeDataPage = self.addDataPage(record.tabInfo)  
-            
+   
         return self.writeRecordToDataPage(record,freeDataPage)
+
     
     def GetAllRecords(self,tabInfo):
         listePages=self.getDataPages(tabInfo)

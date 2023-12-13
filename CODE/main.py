@@ -35,7 +35,6 @@ dm.Dealloc(page_id)
 print(dm.GetCurrentCountAllocPages())
 '''
 
-#CREATE TABLE NomRelation (NomCol_1:TypeCol_1,NomCol_2)
 #CREATE TABLE PremiereRelation(Nom:STRING(20),Prenom:STRING(10))
 #INSERT INTO PremiereRelation VALUES (Mazouz,Camelia)
 

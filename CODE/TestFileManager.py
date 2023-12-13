@@ -26,7 +26,7 @@ headerPage = file_manager.createNewHeaderPage()
 """
 Creation tableInfo(relation)
 """
-table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T)",20))],headerPage)
+table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T)",5))],headerPage)
 #tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARCHAR(T)",15)),ColInfo("ID",("INT",4))],headerPage)
 #print("Dans la table ->",table.headerPageId)
 
@@ -34,40 +34,46 @@ table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T
 CREATION Des RECORDS
 '''
 
-rec = Record(table,[0,"SMAIL"])
-rec2 = Record(table,[1,"SIMBA"])
-rec3 = Record(table,[3,"CHOPPER"])
+rec2 = Record(table,[0,"SMAIL"])
+rec = Record(table,[1,"SIMBA"])
+#rec3 = Record(table,[3,"CHOPP"])
 
 
 '''
 ON AJOUTE UN PAGEID VIDE DANS LA LISTE CHAINEE
-'''
+
 pageId = file_manager.addDataPage(table) #pageId vide
 print(pageId)
-
+'''
 """
 ECRIRE LE RECORD DANS LE BUFFER
 """
 #print('---------pageId1--------')
-file_manager.writeRecordToDataPage(rec,pageId)
-file_manager.writeRecordToDataPage(rec2,pageId)
-file_manager.getRecordsInDataPage(table,pageId)[0]
-file_manager.getRecordsInDataPage(table,pageId)[1]
+print('----------insert------------')
+file_manager.InsertRecordIntoTable(rec)
+file_manager.InsertRecordIntoTable(rec2)
+# file_manager.InsertRecordIntoTable(rec3)
+
+#print(file_manager.GetAllRecords(table))
+pageId2 = PageId(1,0)
+print('----------------read--------------')
+print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[0])
+#print(file_manager.getRecordsInDataPage(table,pageId2)[2])
 
 
-print('\n---------pageId2--------\n')
-pageId2 = file_manager.addDataPage(table)
-print(pageId2)
-file_manager.writeRecordToDataPage(rec3,pageId2)
-file_manager.getRecordsInDataPage(table,pageId2)[0]
+#print('\n---------pageId2--------\n')
+#pageId2 = file_manager.addDataPage(table)
+#print(pageId2)
+#file_manager.writeRecordToDataPage(rec3,pageId2)
+#file_manager.getRecordsInDataPage(table,pageId2)[0]
 
 
 #pageId2 = file_manager.addDataPage(table)
 #print(pageId2)
-print('\n---------getFreePageId--------\n')
+#print('\n---------getFreePageId--------\n')
 #HeaderPage(bfManager.GetPage(table.headerPageId))
-pageIdFree=file_manager.getFreeDataPageId(table,4049)
+#pageIdFree=file_manager.getFreeDataPageId(table,4049)
 
-print(bfManager)
+#print(bfManager)
 #print(pageIdFree)
 

@@ -1,7 +1,8 @@
 from PageId import PageId
 from DataPage import DataPage
 class HeaderPage : 
-    def __init__(self,buff):
+    def __init__(self,buff,bdd):
+        self.bdd = bdd
         self.buff = buff
         dirty = False
 
@@ -33,16 +34,18 @@ class HeaderPage :
         return PageId(fileId,pageId)
     
     def getPagesFromListe(self,pageId):
-        listePage=[pageId]
+        listePage= []
+        listePage.append(pageId)
         buffPage=self.bdd.buffer_manager.GetPage(pageId)
         dataPage= DataPage(buffPage)
-        nextPage= dataPage.getNextPageId()
+        nextPage= dataPage.nextPageId()
+
         self.bdd.buffer_manager.FreePage(pageId,False)
-        while(nextPage!=-1):
+        while(nextPage.FileIdx!=-1):
             buffPage=self.bdd.buffer_manager.GetPage(nextPage)
             dataPage= DataPage(buffPage)
             nextPage = nextPage.getNextPageId()
-            listePage.append(nextPage)
+            listePage = listePage + nextPage
             self.bdd.buffer_manager.FreePage(nextPage,False)
             
         self.bdd.buffer_manager.FreePage(nextPage,False)

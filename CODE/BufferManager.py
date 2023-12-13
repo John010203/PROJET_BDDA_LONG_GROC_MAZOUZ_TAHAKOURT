@@ -35,7 +35,7 @@ class BufferManager :
         #il ya une case libre
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
-                print("je suis nul. ca sera moi le prochain")
+                #print("je suis nul. ca sera moi le prochain")
                 index=i 
                 return index 
         #on remplace
@@ -106,8 +106,8 @@ class BufferManager :
                     if valdirty:
                         self.listFrame[i].dirty = valdirty
                     self.listFrame[i].buffer.set_position(0)
-                    #if valdirty:
-                        #self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
+                    if valdirty:
+                        self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
              
                     #On a deja incremente le LFU dans GetPage
                 

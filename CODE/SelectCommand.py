@@ -55,7 +55,7 @@ class SelectCommand:
         colonne = colonnes.index(opParsed[0])
         
         op1,op2 = opParsed[0],opParsed[1]
-        tuples = self.bdd.disk_manager.GetAllRecords(relation)
+        tuples = self.bdd.file_manager.GetAllRecords(relation)
 
         match(operande):
             case ">=":
@@ -76,5 +76,10 @@ class SelectCommand:
     def Execute(self):
         print("-------------SELECTION-----------")
         res = []
-        for op in self.operations:
-            res.append(self.evaluerOp(op))
+        if not(self.operations) :
+            for op in self.operations:
+                res.append(self.evaluerOp(op))
+        else : 
+            relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
+            res = self.bdd.file_manager.GetAllRecords(relation)
+        print(res)

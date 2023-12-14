@@ -1,5 +1,5 @@
 RESETDB
-CREATE TABLE PremiereRelation(premier:INT,second:FLOAT,trois:INT,quatre:INT,cinq:INT)
+CREATE TABLE PremiereRelation (premier:INT,second:FLOAT,trois:INT,quatre:INT,cinq:INT)
 IMPORT INTO PremiereRelation S.csv
 SELECT * FROM PremiereRelation
 

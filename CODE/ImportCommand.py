@@ -12,7 +12,8 @@ class ImportCommand:
     
     def Execute(self)->None:
         print('-----------import----------------------')
-
+        print('import'+self.bdd.data_base_info.__str__())
+        
         insertion = InsertCommand("",self.bdd)
         insertion.nomRelation = self.nomRelation
         with  open("../"+self.nomFichier,"r") as fichier : 

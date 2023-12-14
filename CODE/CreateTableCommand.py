@@ -11,7 +11,7 @@ class CreateTableCommand:
     def parseCommandeCreateTable(self,string):
         args = string[12:len(string)-1]
         nomRelation = (args.split('(')[0]).strip()
-        cols = args.split(nomRelation+'(')[1].split(',')
+        cols = args.split(nomRelation+' (')[1].split(',')
         listCols = []
 
         for c in cols:
@@ -34,7 +34,7 @@ class CreateTableCommand:
         relation = TableInfo(self.nomRelation,self.nbColonne,self.colInfos,headerPage)
         self.db.data_base_info.AddTableInfo(relation)
 
-        print(self.db.data_base_info)
+        print('creation'+self.db.data_base_info.__str__())
         
         return
     

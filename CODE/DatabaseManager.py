@@ -3,6 +3,7 @@ from ResetDBCommand import ResetDBCommand
 from InsertCommand import InsertCommand
 from SelectCommand import SelectCommand
 from ImportCommand import ImportCommand
+import pickle
 class DatabaseManager:
 
     def __init__(self,bdd):
@@ -11,6 +12,14 @@ class DatabaseManager:
         self.bufferManager = bdd.buffer_manager
         self.databaseInfo = bdd.data_base_info
 
+    def savedData(self):
+        with open (self.bdd.DBParams.DBPath+'DBInfo.save','rb') as f1:
+           data =  pickle.load(f1)
+        for relation in data :
+            if relation != None:
+                self.databaseInfo.AddTableInfo(relation)
+                
+        print('on recup les donnees saved',self.databaseInfo)
     def Finish(self):
         self.databaseInfo.Finish()
         self.bufferManager.FlushAll()

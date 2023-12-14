@@ -43,17 +43,18 @@ def main():
     dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 2)))
     run = True
     commande = ""
-    # while(run):
-    #     commande = input("=>")
-    #     if(commande == "EXIT"):
-    #         dataBaseManager.Finish()
-    #         run = False
-    #     else:
-    #         dataBaseManager.ProcessCommand(commande)
-    with  open("commande.txt","r") as fichier : 
-        for ligne in fichier : 
-            ligne = ligne.strip()
-            dataBaseManager.ProcessCommand(ligne)
+    # dataBaseManager.savedData()
+    while(run):
+        commande = input("=>")
+        if(commande == "EXIT"):
+            dataBaseManager.Finish()
+            run = False
+        else:
+            dataBaseManager.ProcessCommand(commande)
+    # with  open("commande.txt","r") as fichier : 
+    #     for ligne in fichier : 
+    #         ligne = ligne.strip()
+    #         dataBaseManager.ProcessCommand(ligne)
     
     return
 main()

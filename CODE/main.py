@@ -40,7 +40,7 @@ print(dm.GetCurrentCountAllocPages())
 #SELECT * FROM PremiereTable
 #SELECT * FROM PremiereRelation WHERE Id=2 AND Id=0
 def main():
-    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 5)))
+    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 2)))
     run = True
     commande = ""
     # while(run):

@@ -30,6 +30,5 @@ class InsertCommand :
         return "",""
     
     def Execute(self):
-        print("-------------INSERTION-----------")
         self.bdd.file_manager.InsertRecordIntoTable(self.values)
         return 0

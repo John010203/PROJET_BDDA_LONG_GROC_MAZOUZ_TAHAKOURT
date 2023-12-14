@@ -37,7 +37,7 @@ class BufferManager :
             if self.listFrame[i].page_id==None :
                 index=i 
                 return index 
-        #on remplace avec LFU
+        #on remplace
         min=None
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].pin_count == 0:
@@ -49,7 +49,8 @@ class BufferManager :
                     if min>self.listFrame[i].LFU:
                         min=self.listFrame[i].LFU
                         index=i
-  
+
+                    
         if index==None : 
             raise Exception("Aucune frame disponible")
         # a verifier dans le cas d'une case vide
@@ -93,15 +94,12 @@ class BufferManager :
     
          for i in range(len(self.listFrame)) : 
                 if self.listFrame[i].page_id == pageId :
-                    if self.listFrame[i].pin_count == 0:
-                        if valdirty:
-                            self.listFrame[i].dirty = valdirty
-                        self.listFrame[i].buffer.set_position(0)
-                        if valdirty:
-                            self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
-                    
                     self.listFrame[i].pin_count-=1
-
+                    if valdirty:
+                        self.listFrame[i].dirty = valdirty
+                    self.listFrame[i].buffer.set_position(0)
+                    if valdirty:
+                        self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
              
                     #On a deja incremente le LFU dans GetPage
                 

@@ -35,22 +35,21 @@ class HeaderPage :
     def getPagesFromListe(self,pageId):
         listePage= []
         listePage.append(pageId)
-        buffPage=self.bdd.buffer_manager.GetPage(pageId)
-        dataPage= DataPage(buffPage)
-        nextPage= dataPage.nextPageId()
-        self.bdd.buffer_manager.FreePage(pageId,False)
-        print("avant while ",nextPage)
-        while(nextPage.FileIdx!=-1):
-            print('dans le while',nextPage)
-            buffPage=self.bdd.buffer_manager.GetPage(nextPage)
+        
+        if pageId.FileIdx != -1 :
+            buffPage=self.bdd.buffer_manager.GetPage(pageId)
             dataPage= DataPage(buffPage)
-            nextPage = dataPage.nextPageId()
-            print('nextpage',nextPage)
-            self.bdd.buffer_manager.FreePage(nextPage,False)
-            print(self.bdd.buffer_manager)
+            nextPage= dataPage.nextPageId()
+            self.bdd.buffer_manager.FreePage(pageId,False)
             listePage = listePage + [nextPage]
-        print('ListePage',listePage)
-        self.bdd.buffer_manager.FreePage(nextPage,False)
+            while(nextPage.FileIdx!=-1):
+                buffPage=self.bdd.buffer_manager.GetPage(nextPage)
+                dataPage= DataPage(buffPage)
+                nextPage = dataPage.nextPageId()
+                if nextPage.FileIdx !=-1:
+                    self.bdd.buffer_manager.FreePage(nextPage,False)
+                listePage = listePage + [nextPage]
+            self.bdd.buffer_manager.FreePage(nextPage,False)
         return listePage
 
 

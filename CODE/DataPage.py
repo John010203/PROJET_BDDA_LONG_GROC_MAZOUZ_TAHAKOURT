@@ -20,7 +20,6 @@ class DataPage :
     def nextPageId(self):
         self.buff.set_position(0)
         pageId = PageId(self.buff.read_int(),self.buff.read_int())
-        print("pid dans nextPage : ",pageId)
         self.buff.set_position(0)
         return pageId
 

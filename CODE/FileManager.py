@@ -97,7 +97,6 @@ class FileManager:
         return RecordId(pageId,nbSlots)
     
     def getRecordsInDataPage(self,tabInfo,pageId):
-        print('pageId datapage ', pageId)
         buffPage=self.bdd.buffer_manager.GetPage(pageId)
         dataPage = DataPage(buffPage)
 
@@ -129,7 +128,7 @@ class FileManager:
         listePagesFull = []
         if(fullPageId.FileIdx != -1):
             listePagesFull=headerPage.getPagesFromListe(headerPage.getFullPageId())
-        print('listes free et full :',listePagesFree + listePagesFull)
+        print('bfffffffff',self.bdd.buffer_manager)
         return listePagesFree + listePagesFull
     
     def InsertRecordIntoTable(self, record):
@@ -147,7 +146,7 @@ class FileManager:
     def GetAllRecords(self,tabInfo):
         listePages=self.getDataPages(tabInfo)
         res = []
-        print(listePages)
         for p in listePages :
-            res += self.getRecordsInDataPage(tabInfo,p)
+            if p.FileIdx !=-1:
+                res += self.getRecordsInDataPage(tabInfo,p)
         return [t.__str__() for t in res]

@@ -9,7 +9,6 @@ class CreateTableCommand:
         self.nomRelation,self.nbColonne,self.colInfos = self.parseCommandeCreateTable(chaineCommande)
     
     def parseCommandeCreateTable(self,string):
-        #print("DANS L AUTRE CLASSE")
         args = string[12:len(string)-1]
         nomRelation = (args.split('(')[0]).strip()
         cols = args.split(nomRelation+'(')[1].split(',')
@@ -19,16 +18,15 @@ class CreateTableCommand:
             nomCol = c.split(':')[0]
             typeCol = c.split(':')[1]
             if "STRING" in typeCol:
-                typeCol = ("STRING", int(typeCol.split("(")[1][:-1]))
+                typeCol = ("STRING(T)", int(typeCol.split("(")[1][:-1]))
             if "VARCHAR" in typeCol:
-                typeCol = ("VARCHAR", int(typeCol.split("(")[1][:-1]))
+                typeCol = ("VARCHAR(T)", int(typeCol.split("(")[1][:-1]))
             if "INT" in typeCol:
                 typeCol = ("INT", 4)
             if "FLOAT" in typeCol:
                 typeCol = ("FLOAT", 4)
 
             listCols.append(ColInfo(nomCol.strip(),typeCol))
-        #print(nomRelation,len(listCols),cols)
         return nomRelation,len(listCols),listCols
     
     def Execute(self)->None:

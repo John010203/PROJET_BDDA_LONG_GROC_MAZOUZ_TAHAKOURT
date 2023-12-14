@@ -6,19 +6,21 @@ class SelectCommand:
         self.nomRelation,self.operations = self.parserCommandeSelect(chaineCommande)
 
     def parserCommandeSelect(self,string):
-        nomRelation = nomRelation = string.split("FROM")[1].strip()
+        nomRelation = string.split("FROM")[1].strip()
+        liste = []
         if "WHERE" in string:
             condition = string.split("WHERE")[1].strip()
-            #SELECT * FROM nomRelation WHERE 
             nomRelation = string.split("WHERE")[0][14:].strip()
             
             if "AND" in string:
                 operations = condition.split("AND ")
+                for c in operations : 
+                    c = c.split()
                 nbOperations = len(operations)
-                print(nbOperations)
             else :
-                return nomRelation,[].append(condition)
-              
+                liste.append(condition)
+                return nomRelation,liste
+
             return nomRelation,operations
         else : 
             return nomRelation,[]
@@ -34,6 +36,7 @@ class SelectCommand:
         for c in operationsSolo:
             if c in op:
                 return c
+            
     def cast(self,valeur,relation,index):
         listType = [c.typeColonne[0] for c in relation.cols]
 
@@ -45,9 +48,7 @@ class SelectCommand:
         return valeur
 
     def evaluerOp(self,op):
-
         opParsed = op.split(self.parseOperation(op))
-
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
         colonnes = [i.nomColonne for i in relation.cols]
 
@@ -59,15 +60,15 @@ class SelectCommand:
 
         match(operande):
             case ">=":
-                return [i for i in tuples if i[colonne] >= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i[colonne],relation,colonne) >= self.cast(op2,relation,colonne)]
             case "=<":
-                return [i for i in tuples if i[colonne] <= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i[colonne],relation,colonne) <= self.cast(op2,relation,colonne)]
             case ">":
-                return [i for i in tuples if i[colonne] > self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i[colonne],relation,colonne) > self.cast(op2,relation,colonne)]
             case "<":
-                return [i for i in tuples if i[colonne] < self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i[colonne],relation,colonne) < self.cast(op2,relation,colonne)]
             case "=":
-                return [i for i in tuples if i[colonne] == self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i[colonne],relation,colonne) == self.cast(op2,relation,colonne)]
         #pour toutes les colonnes op1 on check la valeur op2
 
         #un truc comme ca
@@ -76,10 +77,10 @@ class SelectCommand:
     def Execute(self):
         print("-------------SELECTION-----------")
         res = []
-        if not(self.operations) :
+        if "WHERE" in self.commande :
             for op in self.operations:
-                res.append(self.evaluerOp(op))
+                res+=self.evaluerOp(op)
         else : 
             relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
             res = self.bdd.file_manager.GetAllRecords(relation)
-        print(res)
+        print("Tuples trouve :",res)

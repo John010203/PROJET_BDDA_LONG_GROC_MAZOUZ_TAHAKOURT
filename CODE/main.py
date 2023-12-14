@@ -37,19 +37,23 @@ print(dm.GetCurrentCountAllocPages())
 
 #CREATE TABLE PremiereRelation(Nom:STRING(20),Prenom:STRING(10))
 #INSERT INTO PremiereRelation VALUES (Mazouz,Camelia)
-
+#SELECT * FROM PremiereTable
+#SELECT * FROM PremiereRelation WHERE Id=2 AND Id=0
 def main():
-    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 2)))
+    dataBaseManager = DatabaseManager(BDD(DP.DBParams("../DB/",4096, 4, 5)))
     run = True
     commande = ""
-    while(run):
-        commande = input("=>")
-        if(commande == "EXIT"):
-            dataBaseManager.Finish()
-            run = False
-        else:
-            dataBaseManager.ProcessCommand(commande)
-    
+    # while(run):
+    #     commande = input("=>")
+    #     if(commande == "EXIT"):
+    #         dataBaseManager.Finish()
+    #         run = False
+    #     else:
+    #         dataBaseManager.ProcessCommand(commande)
+    with  open("commande.txt","r") as fichier : 
+        for ligne in fichier : 
+            ligne = ligne.strip()
+            dataBaseManager.ProcessCommand(ligne)
     
     return
 main()

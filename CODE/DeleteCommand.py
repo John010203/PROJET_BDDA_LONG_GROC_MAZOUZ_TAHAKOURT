@@ -7,11 +7,9 @@ class DeleteCommand:
         condition = string.split("WHERE")[1].strip()
         operations = condition.split(" ")
         operations[-1] = operations.pop(-1)
-        print(condition,end='\n')
-        print(operations,end='\n')
+
         
         nomRelation = string.split(" ")[2].strip()
-        print(nomRelation,end='\n')
 
         return nomRelation,operations
     

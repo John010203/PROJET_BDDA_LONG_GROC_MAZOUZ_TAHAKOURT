@@ -24,7 +24,6 @@ class HeaderPage :
         self.buff.set_position(0)
         fileId=self.buff.read_int()
         pageId=self.buff.read_int()
-        #print('dans get free pageid ',fileId,pageId)
         return PageId(fileId,pageId)
 
     def getFullPageId (self)->PageId:
@@ -39,15 +38,18 @@ class HeaderPage :
         buffPage=self.bdd.buffer_manager.GetPage(pageId)
         dataPage= DataPage(buffPage)
         nextPage= dataPage.nextPageId()
-
         self.bdd.buffer_manager.FreePage(pageId,False)
+        print("avant while ",nextPage)
         while(nextPage.FileIdx!=-1):
+            print('dans le while',nextPage)
             buffPage=self.bdd.buffer_manager.GetPage(nextPage)
             dataPage= DataPage(buffPage)
-            nextPage = nextPage.getNextPageId()
-            listePage = listePage + nextPage
+            nextPage = dataPage.nextPageId()
+            print('nextpage',nextPage)
             self.bdd.buffer_manager.FreePage(nextPage,False)
-            
+            print(self.bdd.buffer_manager)
+            listePage = listePage + [nextPage]
+        print('ListePage',listePage)
         self.bdd.buffer_manager.FreePage(nextPage,False)
         return listePage
 

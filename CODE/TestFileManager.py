@@ -21,7 +21,7 @@ CREATION D'UN HEADERPAGE
 '''
 headerPage = file_manager.createNewHeaderPage()
 #premiere page de notre relation
-#print("Header Page -> ",headerPage)
+
 
 """
 Creation tableInfo(relation)

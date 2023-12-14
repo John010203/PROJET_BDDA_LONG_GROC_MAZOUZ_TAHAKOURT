@@ -31,6 +31,7 @@ class DataBaseInfo :
         self.tableInfo.append(TableInfo)
     
     def GetTableInfo(self, nomRelation) -> TableInfo:
+        table = None
         for i in self.tableInfo : 
             if i.nomRelation == nomRelation :
                 table = i

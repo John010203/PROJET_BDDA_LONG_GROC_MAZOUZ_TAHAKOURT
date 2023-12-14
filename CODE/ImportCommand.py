@@ -1,6 +1,9 @@
+from InsertCommand import InsertCommand
+from Record import Record
 class ImportCommand:
     #IMPORT INTO nomRelation nomFichier.csv
-    def __init__(self,chaineCommande):
+    def __init__(self,chaineCommande,bdd):
+        self.bdd = bdd
         self.commande = chaineCommande
         self.nomRelation,self.nomFichier = self.parseCommandeImport(chaineCommande)
         
@@ -8,19 +11,17 @@ class ImportCommand:
         return string.split(" ")[2].strip(),string.split(" ")[3].strip()
     
     def Execute(self)->None:
-        #contenu csv : 97,180,25,23,0 dnas chaque ligne ya un record
-        #parser une ligne
-        print("------------IMPORT COMMAND-------------")
-        fichier = open("../"+self.nomFichier,"r")
-        #on recupere les tuples
-        tuples = fichier.readlines()
-        #les valeurs sont separees par des virgules
-        #diskManager et record et buffermanager
-        #for t in tuples :
-        #   on ecrit le tuple dans un buffer
-        #   r = Record(self.nomRelation,t)
-        #   r.writeToBuffer()
-        #   on ecrit le tuple dans un fichier
-        #   self.bdd.disk_manager.writePage(pageId,buff)
+        print('-----------import----------------------')
 
-        return
+        insertion = InsertCommand("",self.bdd)
+        insertion.nomRelation = self.nomRelation
+        with  open("../"+self.nomFichier,"r") as fichier : 
+            for ligne in fichier : 
+                
+                ligne = ligne.strip()
+                relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
+
+                rec = Record(relation,ligne.split(","))
+                insertion.values = rec
+
+                insertion.Execute()

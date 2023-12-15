@@ -5,4 +5,4 @@ class ColInfo :
         self.typeColonne = typecolonne #(TYPE DE LA COLONNE,TAILLE DU TYPE)
 
     def __str__(self):
-        return ""+self.nomColonne+":"+self.typeColonne
+        return ""+self.nomColonne+":"+self.typeColonne[0] +" "+str(self.typeColonne[1])

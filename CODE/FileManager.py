@@ -128,7 +128,7 @@ class FileManager:
         listePagesFull = []
         if(fullPageId.FileIdx != -1):
             listePagesFull=headerPage.getPagesFromListe(headerPage.getFullPageId())
-        print('bfffffffff',self.bdd.buffer_manager)
+        #print('bfffffffff',self.bdd.buffer_manager)
         return listePagesFree + listePagesFull
     
     def InsertRecordIntoTable(self, record):

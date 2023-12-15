@@ -4,6 +4,7 @@ from InsertCommand import InsertCommand
 from SelectCommand import SelectCommand
 from ImportCommand import ImportCommand
 import pickle
+import os
 class DatabaseManager:
 
     def __init__(self,bdd):
@@ -13,13 +14,17 @@ class DatabaseManager:
         self.databaseInfo = bdd.data_base_info
 
     def savedData(self):
-        with open (self.bdd.DBParams.DBPath+'DBInfo.save','rb') as f1:
-           data =  pickle.load(f1)
+        file = self.bdd.DBParams.DBPath+'DBInfo.save'
+        data = []
+        with open (file,'rb') as f1:
+           if(os.path.getsize(file)>0):
+                data =  pickle.load(f1)
         for relation in data :
             if relation != None:
                 self.databaseInfo.AddTableInfo(relation)
                 
         print('on recup les donnees saved',self.databaseInfo)
+        
     def Finish(self):
         self.databaseInfo.Finish()
         self.bufferManager.FlushAll()

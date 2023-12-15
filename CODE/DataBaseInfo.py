@@ -18,11 +18,7 @@ class DataBaseInfo :
     def Finish(self) -> None:
         with open (self.db.DBParams.DBPath+'DBInfo.save','wb') as f1:
             pickle.dump(self.tableInfo,f1)
-        
-        with open (self.db.DBParams.DBPath+'DBInfo.save','rb') as f1:
-           data =  pickle.load(f1)
 
-        print(data.__str__())
     #--------------------------------------------------------------------------------------------------------------
     def getNbRelations(self) -> int:
         return len(self.tableInfo)

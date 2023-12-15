@@ -8,7 +8,10 @@ class TableInfo :
         self.headerPageId = headerPageId #PageId
 
     def __str__(self):
-        return f"Table {self.nomRelation} with {len(self.cols)} columns"
+        res = f"Table {self.nomRelation} with"
+        for c in self.cols :
+            res += "\n\t- " + c.__str__()
+        return res
     
     def save(self):
         res = self.nomRelation + "("

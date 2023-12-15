@@ -33,6 +33,7 @@ class HeaderPage :
         return PageId(fileId,pageId)
     
     def getPagesFromListe(self,pageId):
+
         listePage= []
         listePage.append(pageId)
         
@@ -45,10 +46,13 @@ class HeaderPage :
             while(nextPage.FileIdx!=-1):
                 buffPage=self.bdd.buffer_manager.GetPage(nextPage)
                 dataPage= DataPage(buffPage)
-                nextPage = dataPage.nextPageId()
+                tmp = nextPage
                 if nextPage.FileIdx !=-1:
-                    self.bdd.buffer_manager.FreePage(nextPage,False)
-                listePage = listePage + [nextPage]
+                    self.bdd.buffer_manager.FreePage(tmp,False)
+                    listePage = listePage + [nextPage]
+                nextPage = dataPage.nextPageId()
+
+            
             self.bdd.buffer_manager.FreePage(nextPage,False)
         return listePage
 

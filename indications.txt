@@ -1,0 +1,5 @@
+Pour lancer le programme il suffit de ce deplacer dans le repertoire Code et lancer la commande : python3 main.py
+Les commandes sont ecritent dans le fichier commandes.txt et sont executees depuis le main  (pas de saisie lors du lancement du programme)
+on import les tuples du fichier S.csv
+Les insertions et selections marchent
+Les selections plantent en utilisant que 2 frames, marchent en utilisant 3

@@ -45,3 +45,26 @@ class DiskManager :
     def GetCurrentCountAllocPages(self) ->  int :
         """Retourne le nombre de pages allouées"""
         return sum(self.fileCounter)-len(self.pagesDisponibles)
+    
+    def Init(self) -> None :
+        with open (self.bdd.DBParams.DBPath+'DBDisk.save','r') as f1:
+            # premier ligne info tablaux self.fileCounter et taille self.pagesDisponibles 
+            param = f1.readline().split(" ")
+            param[-1] = param[-1][:-1]
+            print("---------------------------",param)
+            for i in range(4):
+                self.fileCounter[i] = int(param[i])
+            nbPagesDisponibles = int(param[4])
+            # les autre ligne represante les PageId
+            for f in f1:
+                self.pagesDisponibles.append(PageId(f.split(" ")[0], f.split(" ")[1]))
+                
+    def Finish(self) -> None:
+        with open (self.bdd.DBParams.DBPath+'DBDisk.save','w') as f1:
+            # premier ligne info tablaux self.fileCounter et taille self.pagesDisponibles 
+            for i in range(4):
+                f1.write(str(self.fileCounter[i]) + " ")
+            f1.write(str(len(self.pagesDisponibles)) + "\n")
+            for i in range(len(self.pagesDisponibles)):
+                f1.write(str(self.pagesDisponibles[i].FileIdx) + " " + str(self.pagesDisponibles[i].PageIdx) + "\n")
+            

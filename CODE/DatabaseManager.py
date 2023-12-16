@@ -15,20 +15,15 @@ class DatabaseManager:
 
     def savedData(self):
         file = self.bdd.DBParams.DBPath+'DBInfo.save'
-        data = []
-        with open (file,'rb') as f1:
-           if(os.path.getsize(file)>0):
-                data =  pickle.load(f1)
-        for relation in data :
-            if relation != None:
-                self.databaseInfo.AddTableInfo(relation)
-                
-        #print('on recup les donnees saved',self.databaseInfo)
+        self.diskManager.Init()
+        self.databaseInfo.Init()
+        print('on recup les donnees saved',self.databaseInfo)
         
     def Finish(self):
         self.databaseInfo.Finish()
         self.bufferManager.FlushAll()
-        self.diskManager.reset()
+        self.diskManager.Finish()
+        
 
     def createTable(self,cmd):
         typeComande = cmd.split(' ')

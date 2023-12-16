@@ -10,7 +10,7 @@ class TableInfo :
     def __str__(self):
         res = f"Table {self.nomRelation} with"
         for c in self.cols :
-            res += "\n\t- " + c.__str__()
+            res += "\t" + c.nomColonne
         return res
     
     def save(self):

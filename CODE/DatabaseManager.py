@@ -17,7 +17,7 @@ class DatabaseManager:
         file = self.bdd.DBParams.DBPath+'DBInfo.save'
         self.diskManager.Init()
         self.databaseInfo.Init()
-        print('on recup les donnees saved',self.databaseInfo)
+        print(self.databaseInfo)
         
     def Finish(self):
         self.databaseInfo.Finish()

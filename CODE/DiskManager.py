@@ -51,7 +51,6 @@ class DiskManager :
             # premier ligne info tablaux self.fileCounter et taille self.pagesDisponibles 
             param = f1.readline().split(" ")
             param[-1] = param[-1][:-1]
-            print("---------------------------",param)
             for i in range(4):
                 self.fileCounter[i] = int(param[i])
             nbPagesDisponibles = int(param[4])

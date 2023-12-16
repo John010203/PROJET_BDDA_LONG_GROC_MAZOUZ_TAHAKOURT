@@ -42,7 +42,7 @@ class HeaderPage :
             dataPage= DataPage(buffPage)
             nextPage= dataPage.nextPageId()
             self.bdd.buffer_manager.FreePage(pageId,False)
-            listePage = listePage + [nextPage]
+            
             while(nextPage.FileIdx!=-1):
                 buffPage=self.bdd.buffer_manager.GetPage(nextPage)
                 dataPage= DataPage(buffPage)

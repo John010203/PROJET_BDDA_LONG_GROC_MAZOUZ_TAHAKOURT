@@ -27,7 +27,6 @@ class Record :
         for i in range(nbColonnes):
             match self.tabInfo.cols[i].typeColonne[0] :
                 case "INT": 
-
                     val = int(self.recvalues[i])
                     buff.put_int(val)
 

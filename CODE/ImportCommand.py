@@ -10,10 +10,7 @@ class ImportCommand:
     def parseCommandeImport(self,string):
         return string.split(" ")[2].strip(),string.split(" ")[3].strip()
     
-    def Execute(self)->None:
-        print('-----------import----------------------')
-        print('import'+self.bdd.data_base_info.__str__())
-        
+    def Execute(self)->None:        
         insertion = InsertCommand("",self.bdd)
         insertion.nomRelation = self.nomRelation
         with  open("../"+self.nomFichier,"r") as fichier : 

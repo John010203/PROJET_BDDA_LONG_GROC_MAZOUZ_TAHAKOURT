@@ -23,7 +23,7 @@ class DatabaseManager:
             if relation != None:
                 self.databaseInfo.AddTableInfo(relation)
                 
-        print('on recup les donnees saved',self.databaseInfo)
+        #print('on recup les donnees saved',self.databaseInfo)
         
     def Finish(self):
         self.databaseInfo.Finish()

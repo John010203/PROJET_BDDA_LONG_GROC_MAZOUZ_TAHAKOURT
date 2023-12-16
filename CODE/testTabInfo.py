@@ -18,7 +18,7 @@ data_base_info = bdd.data_base_info
 Creation tableInfo(relation)
 """
 table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T)",20))])
-tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARCHAR(T)",15)),ColInfo("ID",("INT",4))])
+tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARSTRING(T)",15)),ColInfo("ID",("INT",4))])
 
 '''
 CREATION D"UN RECORD

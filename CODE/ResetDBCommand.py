@@ -11,7 +11,7 @@ class ResetDBCommand():
         self.databaseInfo = bdd.data_base_info
 
     def Execute(self):
-        print("-------------RESETDB-----------")
+        # print("-------------RESETDB-----------")
         self.diskManager.reset()
         self.bufferManager.reset()
         self.databaseInfo.reset()

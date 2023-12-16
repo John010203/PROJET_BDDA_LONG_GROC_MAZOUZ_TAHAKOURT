@@ -27,7 +27,7 @@ headerPage = file_manager.createNewHeaderPage()
 Creation tableInfo(relation)
 """
 table = TableInfo("Personne",2,[ColInfo("Id",("INT",4)),ColInfo("Nom",("STRING(T)",5))],headerPage)
-#tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARCHAR(T)",15)),ColInfo("ID",("INT",4))],headerPage)
+#tabVar = TableInfo("Prsn",2,[ColInfo("PRENOM",("VARSTRING(T)",15)),ColInfo("ID",("INT",4))],headerPage)
 #print("Dans la table ->",table.headerPageId)
 
 '''

@@ -50,7 +50,7 @@ def main():
     #         dataBaseManager.Finish()
     #         run = False
     #     else:
-    #         dataBaseManager.ProcessCommand(commande)
+            # dataBaseManager.ProcessCommand(commande)
     with  open("commande.txt","r") as fichier : 
         for ligne in fichier : 
             ligne = ligne.strip()

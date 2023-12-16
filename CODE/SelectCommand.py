@@ -60,22 +60,22 @@ class SelectCommand:
 
         match(operande):
             case ">=":
-                return [i for i in tuples if self.cast(i[colonne],relation,colonne) >= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) >= self.cast(op2,relation,colonne)]
             case "=<":
-                return [i for i in tuples if self.cast(i[colonne],relation,colonne) <= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i.revalues[colonne],relation,colonne) <= self.cast(op2,relation,colonne)]
             case ">":
-                return [i for i in tuples if self.cast(i[colonne],relation,colonne) > self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) > self.cast(op2,relation,colonne)]
             case "<":
-                return [i for i in tuples if self.cast(i[colonne],relation,colonne) < self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) < self.cast(op2,relation,colonne)]
             case "=":
-                return [i for i in tuples if self.cast(i[colonne],relation,colonne) == self.cast(op2,relation,colonne)]
+                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) == self.cast(op2,relation,colonne)]
         #pour toutes les colonnes op1 on check la valeur op2
 
         #un truc comme ca
         #apres on cherche parmis les tuples 
     #dans une operation ya 2 operandes et nomColonne> = < >= <=Valeur
     def Execute(self):
-        print("-------------SELECTION-----------")
+        # print("-------------SELECTION-----------")
         res = []
         if "WHERE" in self.commande :
             for op in self.operations:
@@ -83,4 +83,13 @@ class SelectCommand:
         else : 
             relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
             res = self.bdd.file_manager.GetAllRecords(relation)
-        print("Tuples trouve :",res)
+
+        unique = [res[0]] if len(res)>0 else []
+
+        for i in range(len(res)):
+            if not(res[i] in unique):
+                unique.append(res[i])
+        print(len(unique), 'tuples : ')
+        for t in unique:
+            print(t)
+        

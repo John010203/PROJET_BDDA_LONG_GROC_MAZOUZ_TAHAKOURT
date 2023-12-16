@@ -17,10 +17,10 @@ class CreateTableCommand:
         for c in cols:
             nomCol = c.split(':')[0]
             typeCol = c.split(':')[1]
+            if "VARSTRING" in typeCol:
+                typeCol = ("VARSTRING(T)", int(typeCol.split("(")[1][:-1]))
             if "STRING" in typeCol:
                 typeCol = ("STRING(T)", int(typeCol.split("(")[1][:-1]))
-            if "VARCHAR" in typeCol:
-                typeCol = ("VARCHAR(T)", int(typeCol.split("(")[1][:-1]))
             if "INT" in typeCol:
                 typeCol = ("INT", 4)
             if "FLOAT" in typeCol:
@@ -34,7 +34,7 @@ class CreateTableCommand:
         relation = TableInfo(self.nomRelation,self.nbColonne,self.colInfos,headerPage)
         self.db.data_base_info.AddTableInfo(relation)
 
-        print('creation'+self.db.data_base_info.__str__())
+        #print('creation'+self.db.data_base_info.__str__())
         
         return
     

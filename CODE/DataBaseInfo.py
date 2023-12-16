@@ -1,4 +1,6 @@
-import TableInfo as TableInfo
+from TableInfo import TableInfo
+from PageId import *
+from ColInfo import *
 import pickle
 
 class DataBaseInfo :
@@ -11,13 +13,23 @@ class DataBaseInfo :
         self.tableInfo = []
     #init lit un fichier et recupere  les definitions des tables    
     def Init(self) -> None :
-        with open (self.db.DBParams.DBPath+'DBInfo.save','rb') as f1:
-            self.tableInfo+= pickle.load(f1)
+        with open (self.db.DBParams.DBPath+'DBInfo.save','r') as f1:
+            for f in f1:
+                param = f.split(" ")
+                nomRelation = param[0]
+                nbColonnes = int(param[1])
+                headerPageId = PageId(int(param[2]), int(param[3]))
+                cols = []
+                for c in range(4, nbColonnes*2+3, 2):
+                    cols.append(ColInfo(param[c].split(":")[0], (param[c].split(":")[1], int(param[c+1]))))
+                self.tableInfo.append(TableInfo(nomRelation, nbColonnes, cols, headerPageId))
+
     #--------------------------------------------------------------------------------------------------------------
     #enregistre les definitions des tables
     def Finish(self) -> None:
-        with open (self.db.DBParams.DBPath+'DBInfo.save','wb') as f1:
-            pickle.dump(self.tableInfo,f1)
+        with open (self.db.DBParams.DBPath+'DBInfo.save','w') as f1:
+            for tb in self.tableInfo:
+                f1.write(tb.save())
 
     #--------------------------------------------------------------------------------------------------------------
     def getNbRelations(self) -> int:

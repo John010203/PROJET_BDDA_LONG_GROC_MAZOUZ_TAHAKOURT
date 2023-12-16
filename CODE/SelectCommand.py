@@ -93,8 +93,8 @@ class SelectCommand:
             match(operande):
                 case ">=":
                     bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
-                case "=<":
-                    bool = bool and tuple.revalues[colonne] <= self.cast(op2,relation,colonne)
+                case "<=":
+                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
                 case ">":
                     bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
                 case "<":
@@ -121,5 +121,6 @@ class SelectCommand:
         print(len(unique), 'tuples : ')
         for t in unique:
             print(t)
+        print('Total records=',len(unique))
 
         

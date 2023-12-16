@@ -14,7 +14,7 @@ class TableInfo :
         return res
     
     def save(self):
-        res = self.nomRelation + "("
+        res = str(self.nomRelation) + " " + str(self.nbColonne) + " " + str(self.headerPageId.FileIdx) + " " + str(self.headerPageId.PageIdx) + " "
         for c in self.cols :
-            res+= c.__str__()+","
-        return res+")"
+            res+= c.__str__()+" " 
+        return res

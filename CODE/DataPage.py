@@ -62,4 +62,22 @@ class DataPage :
         self.buff.put_int(debutEspaceDispo)
         self.buff.put_int(tailleRecord)
         self.buff.set_position(0)
+
+    def remove(self,numSlot,bdd):
+        self.buff.set_position(bdd.DBParams.SGBDPageSize-8-(numSlot*8))
+        #on va fixer la taille a -1
+        self.buff.put_int(-1)
+        self.buff.put_int(0)#je ne sais plus par quoi remplacer la position du debut du record
+        self.buff.set_position(0)
     
+    def getValeurSlotAt(self,numSlot,bdd,pos):
+        self.buff.set_position(bdd.DBParams.SGBDPageSize-8-(numSlot*8))
+        value=self.buff.read_int()
+        self.buff.set_position(pos)#pour remettre le buffer ou il etait pour etre SAFE
+        return value
+    
+    def getNextEspaceDispo(self,numSlot,bdd):
+        #on veut acceder a la position du debut du prochain record
+        self.buff.set_position(bdd.DBParams.SGBDPageSize-8-(numSlot*8)+4)#je laisse le -8 et +4 a part pour quece soit plus clair
+        return self.buff.read_int()
+        

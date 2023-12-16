@@ -96,6 +96,15 @@ class FileManager:
 
         return RecordId(pageId,nbSlots)
     
+    def DeleteRecordFromDataPage(self, recordId):
+        pageRec= recordId.pageId
+        numSlot=recordId.slotId
+        buffPage = self.bdd.buffer_manager.GetPage(pageRec)
+        dataPage = DataPage(buffPage)
+        dataPage.remove(numSlot,self.bdd)
+        self.bdd.buffer_manager.FreePage(pageRec,True)
+    
+    
     def getRecordsInDataPage(self,tabInfo,pageId):
         buffPage=self.bdd.buffer_manager.GetPage(pageId)
         dataPage = DataPage(buffPage)
@@ -105,17 +114,19 @@ class FileManager:
         listeRecords=[]
         for i in range(0,nbSlots):
             pos=buffPage.get_pos()
-
+            valeurSlot = dataPage.getValeurSlotAt(i,self.bdd,pos)
             record=Record(tabInfo,[])
             taille=record.readFromBuffer(buffPage,pos)
-
-            listeRecords.append(record)
             buffPage.set_position(pos+taille+4*len(tabInfo.cols))
+            if(valeurSlot!=-1):
+                listeRecords.append(record)
+
         
         self.bdd.buffer_manager.FreePage(pageId,False)
         return listeRecords
     
     
+
     def getDataPages(self,tabInfo):
 
         headerPageId=tabInfo.headerPageId
@@ -131,6 +142,8 @@ class FileManager:
         #print('bfffffffff',self.bdd.buffer_manager)
         return listePagesFree + listePagesFull
     
+    
+
     def InsertRecordIntoTable(self, record):
         getFree = self.getFreeDataPageId(record.tabInfo,record.getTailleRecord())
         

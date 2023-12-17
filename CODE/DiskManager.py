@@ -51,13 +51,12 @@ class DiskManager :
             # premier ligne info tablaux self.fileCounter et taille self.pagesDisponibles 
             param = f1.readline().split(" ")
             param[-1] = param[-1][:-1]
-            print("---------------------------",param)
             for i in range(4):
                 self.fileCounter[i] = int(param[i])
             nbPagesDisponibles = int(param[4])
             # les autre ligne represante les PageId
             for f in f1:
-                self.pagesDisponibles.append(PageId(f.split(" ")[0], f.split(" ")[1]))
+                self.pagesDisponibles.append(PageId(int(f.split(" ")[0]), int(f.split(" ")[1])))
                 
     def Finish(self) -> None:
         with open (self.bdd.DBParams.DBPath+'DBDisk.save','w') as f1:

@@ -7,6 +7,8 @@ class SelectCommand:
 
     def parserCommandeSelect(self,string):
         nomRelation = string.split("FROM")[1].strip()
+        if "," in nomRelation:
+            return self.parserJointure(string)
         liste = []
         if "WHERE" in string:
             condition = string.split("WHERE")[1].strip()
@@ -25,6 +27,25 @@ class SelectCommand:
         else : 
             return nomRelation,[]
     
+    def parserJointure(self,string):
+        relations=string.split("FROM")[1].split("WHERE ")[0].split(",")
+        liste = []
+        if "WHERE" in string:
+            condition=string.split("WHERE ")[1]
+
+            if "AND" in string:
+                operations = condition.split("AND ")
+                for c in operations : 
+                    c = c.split()
+            else :
+                liste.append(condition)
+                return relations,liste
+
+            return relations,operations
+        else : 
+            return relations,[]
+
+
     def parseOperation(self,op):#> < = >= <=
         operationsSolo= ['>','<','=']
         operationsDuo = [">=","<="]
@@ -36,7 +57,9 @@ class SelectCommand:
         for c in operationsSolo:
             if c in op:
                 return c
-            
+
+
+
     def cast(self,valeur,relation,index):
         listType = [c.typeColonne[0] for c in relation.cols]
 
@@ -47,33 +70,8 @@ class SelectCommand:
 
         return valeur
 
-    def evaluerOp(self,op):
-        opParsed = op.split(self.parseOperation(op))
-        relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
-        colonnes = [i.nomColonne for i in relation.cols]
-
-        operande = self.parseOperation(op)
-        colonne = colonnes.index(opParsed[0])
-        
-        op1,op2 = opParsed[0],opParsed[1]
-        tuples = self.bdd.file_manager.GetAllRecords(relation)
-
-        match(operande):
-            case ">=":
-                return [i for i in tuples if i.recvalues[colonne] >= self.cast(op2,relation,colonne)]
-            case "=<":
-                return [i for i in tuples if i.revalues[colonne] <= self.cast(op2,relation,colonne)]
-            case ">":
-                return [i for i in tuples if i.recvalues[colonne] > self.cast(op2,relation,colonne)]
-            case "<":
-                return [i for i in tuples if i.recvalues[colonne] < self.cast(op2,relation,colonne)]
-            case "=":
-                return [i for i in tuples if i.recvalues[colonne] == self.cast(op2,relation,colonne)]
-        #pour toutes les colonnes op1 on check la valeur op2
-
-        #un truc comme ca
-        #apres on cherche parmis les tuples 
-    #dans une operation ya 2 operandes et nomColonne> = < >= <=Valeur
+            
+    
     def evaluer(self,tuple):
         #operation colonne>2
         #on split pour recup la colonne et la valeur
@@ -103,7 +101,47 @@ class SelectCommand:
                     bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
                     
         return bool 
+
+    def evaluerJointure(self,op):
+        #operation colonne>2
+        #on split pour recup la colonne et la valeur
+        relation1 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
+        relation2 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
+        colonnes1 = [i.nomColonne for i in relation1]
+        colonnes2 = [i.nomColonne for i in relation2]
+
+
+        for op in self.operations:#op = R1.C1 > R2.C2
+            typeOperation=self.parseOperation(op) #operande= ">"
+            opParsed=op.split(typeOperation) 
+            relCol1=self.parserOPJointure(opParsed[0])#"[R1,C1]"
+            relCol2=self.parserOPJointure(opParsed[1])#"[R2,C2]"
+            colonne1= colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
+            colonne2=colonnes2.index(relCol2[1])
+            bool=True
+            match(typeOperation):
+                case ">=":
+                    bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
+                case "=<":
+                    bool = bool and tuple.revalues[colonne] <= self.cast(op2,relation,colonne)
+                case ">":
+                    bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
+                case "<":
+                    bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
+                case "=":
+                    bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
+
             
+
+        
+        bool = True
+
+    def parserOPJointure(self,opi):
+        relCol=opi.split(".")
+        relation=relCol[0]
+        colonne=relCol[1]
+        return relation,colonne
+        
 
     def Execute(self):
         # print("-------------SELECTION-----------")

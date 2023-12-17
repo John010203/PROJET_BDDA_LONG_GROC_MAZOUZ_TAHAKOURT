@@ -19,7 +19,13 @@ class DiskManager :
         else:
             index = self.fileCounter.index(min(self.fileCounter))
             self.fileCounter[index]+=1
-            #VERIFIER QUE CA MARCHE DANS TOUS LES CAS
+
+            pos = 4096*(self.fileCounter[index]-1)
+
+            print(index, self.fileCounter[index]-1)
+            with open(self.bdd.DBParams.DBPath+"F"+str(index)+".data","wb") as f:
+                f.seek(pos)
+                f.write(bytearray(4096))
             return PageId(index, self.fileCounter[index]-1)
 
     def ReadPage(self,pageId: PageId, buff : ByteBuffer) -> None:
@@ -34,6 +40,7 @@ class DiskManager :
     def WritePage(self,pageId: PageId, buff) -> None:
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
+        print('kkkk',pageId)
         pos = 4096*numPage
         with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","wb") as f:
             f.seek(pos)

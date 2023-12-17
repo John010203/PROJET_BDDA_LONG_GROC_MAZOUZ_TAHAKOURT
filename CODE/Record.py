@@ -27,7 +27,6 @@ class Record :
         for i in range(nbColonnes):
             match self.tabInfo.cols[i].typeColonne[0] :
                 case "INT": 
-
                     val = int(self.recvalues[i])
                     buff.put_int(val)
 
@@ -98,7 +97,11 @@ class Record :
     def __str__(self):
         res = ""
         for i in self.recvalues :
-            res += str(i)+ ' '
+            if i == self.recvalues[-1]:
+                res += str(i)+ '.'
+            else:
+                 res += str(i)+ ' ; '
+
         return res
     
     def __eq__(self,rec):

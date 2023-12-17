@@ -60,36 +60,67 @@ class SelectCommand:
 
         match(operande):
             case ">=":
-                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) >= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if i.recvalues[colonne] >= self.cast(op2,relation,colonne)]
             case "=<":
-                return [i for i in tuples if self.cast(i.revalues[colonne],relation,colonne) <= self.cast(op2,relation,colonne)]
+                return [i for i in tuples if i.revalues[colonne] <= self.cast(op2,relation,colonne)]
             case ">":
-                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) > self.cast(op2,relation,colonne)]
+                return [i for i in tuples if i.recvalues[colonne] > self.cast(op2,relation,colonne)]
             case "<":
-                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) < self.cast(op2,relation,colonne)]
+                return [i for i in tuples if i.recvalues[colonne] < self.cast(op2,relation,colonne)]
             case "=":
-                return [i for i in tuples if self.cast(i.recvalues[colonne],relation,colonne) == self.cast(op2,relation,colonne)]
+                return [i for i in tuples if i.recvalues[colonne] == self.cast(op2,relation,colonne)]
         #pour toutes les colonnes op1 on check la valeur op2
 
         #un truc comme ca
         #apres on cherche parmis les tuples 
     #dans une operation ya 2 operandes et nomColonne> = < >= <=Valeur
+    def evaluer(self,tuple):
+        #operation colonne>2
+        #on split pour recup la colonne et la valeur
+        relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
+        colonnes = [i.nomColonne for i in relation.cols]
+        bool = True
+        #teste pour une seule colonne
+        for op in self.operations:
+            #on recupere l'operande
+            operande = self.parseOperation(op)
+            opParsed = op.split(operande)
+            #on recupere la colonne
+            colonne = colonnes.index(opParsed[0])
+    
+            op2 = opParsed[1]
+
+            match(operande):
+                case ">=":
+                    bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
+                case "<=":
+                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
+                case ">":
+                    bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
+                case "<":
+                    bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
+                case "=":
+                    bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
+                    
+        return bool 
+            
+
     def Execute(self):
         # print("-------------SELECTION-----------")
-        res = []
+        unique = []
+        relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
+        res = self.bdd.file_manager.GetAllRecords(relation)
+        
         if "WHERE" in self.commande :
-            for op in self.operations:
-                res+=self.evaluerOp(op)
-        else : 
-            relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
-            res = self.bdd.file_manager.GetAllRecords(relation)
-
-        unique = [res[0]] if len(res)>0 else []
-
-        for i in range(len(res)):
-            if not(res[i] in unique):
-                unique.append(res[i])
+            for t in res:
+                if self.evaluer(t):
+                    unique.append(t)
+        else :
+            unique = res
+        
         print(len(unique), 'tuples : ')
         for t in unique:
             print(t)
+        print('Total records=',len(unique))
+
         

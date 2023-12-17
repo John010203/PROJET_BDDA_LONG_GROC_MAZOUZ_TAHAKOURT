@@ -20,11 +20,11 @@ class DiskManager :
             index = self.fileCounter.index(min(self.fileCounter))
             self.fileCounter[index]+=1
 
-            pos = 4096*(self.fileCounter[index]-1)
+            #pos = 4096*(self.fileCounter[index]-1)
+            #print(index, self.fileCounter[index]-1)
 
-            print(index, self.fileCounter[index]-1)
-            with open(self.bdd.DBParams.DBPath+"F"+str(index)+".data","wb") as f:
-                f.seek(pos)
+            with open(self.bdd.DBParams.DBPath+"F"+str(index)+".data","ab") as f:
+                #f.seek(pos)
                 f.write(bytearray(4096))
             return PageId(index, self.fileCounter[index]-1)
 
@@ -42,7 +42,7 @@ class DiskManager :
         numFile = pageId.FileIdx
         print('kkkk',pageId)
         pos = 4096*numPage
-        with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","wb") as f:
+        with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb+") as f:
             f.seek(pos)
             f.write(buff.to_bytes())
 
@@ -72,5 +72,4 @@ class DiskManager :
                 f1.write(str(self.fileCounter[i]) + " ")
             f1.write(str(len(self.pagesDisponibles)) + "\n")
             for i in range(len(self.pagesDisponibles)):
-                f1.write(str(self.pagesDisponibles[i].FileIdx) + " " + str(self.pagesDisponibles[i].PageIdx) + "\n")
-            
+                f1.write(str(self.pagesDisponibles[i].FileIdx) + " " + str(self.pagesDisponibles[i].PageIdx) + "\n")    

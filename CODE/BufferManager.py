@@ -24,33 +24,26 @@ class BufferManager :
         return res
     
     def FindFrameLibre(self)->int:
-        index : int = None
         """
         LFU : 
         Une page peut être remplacée ssi son pin_count = 0
-        • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu ;
+        • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu;
         • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
         """
         #LFU
+        index : int = None
+        min=None
         #il ya une case libre
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
                 index=i 
                 return index 
         #on remplace
-        min=None
-        for i in range(len(self.listFrame)) :
-            if self.listFrame[i].pin_count == 0:
-                if min==None: #premier pincount a zero 
+            elif self.listFrame[i].pin_count == 0:
+                if min==None or min > self.listFrame[i].LFU: #premier pincount a zero 
                     min=self.listFrame[i].LFU
                     index=i
-                    
-                else: 
-                    if min>self.listFrame[i].LFU:
-                        min=self.listFrame[i].LFU
-                        index=i
 
-                    
         if index==None : 
             raise Exception("Aucune frame disponible")
         # a verifier dans le cas d'une case vide

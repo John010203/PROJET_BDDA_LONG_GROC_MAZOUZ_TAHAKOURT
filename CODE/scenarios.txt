@@ -19,3 +19,8 @@ SELECT * FROM S WHERE C3=12
 (résultat attendu : 10 tuples)
 DELETE * FROM S WHERE C3=12 AND C1=167
 (résultat attendu : 1 tuple supprimé)
+
+
+RESETDB
+CREATE TABLE R (C1:INT,C2:VARSTRING(13),C3:FLOAT,C4:INT,C5:INT,C6:VARSTRING(5))
+IMPORT INTO R R2.csv

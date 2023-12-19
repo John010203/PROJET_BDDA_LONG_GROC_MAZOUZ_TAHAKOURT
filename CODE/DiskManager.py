@@ -98,5 +98,4 @@ class DiskManager :
                 f1.write(str(self.fileCounter[i]) + " ")
             f1.write(str(len(self.pagesDisponibles)) + "\n")
             for i in range(len(self.pagesDisponibles)):
-            for i in range(len(self.pagesDisponibles)):
                 f1.write(str(self.pagesDisponibles[i].FileIdx) + " " + str(self.pagesDisponibles[i].PageIdx) + "\n")    

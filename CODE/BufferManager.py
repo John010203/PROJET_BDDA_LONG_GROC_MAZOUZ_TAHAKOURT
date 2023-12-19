@@ -76,7 +76,6 @@ class BufferManager :
         """
         Récupère une page à partir du bufferPool
         """
-        #print('dans buffer manager a la recherche d une frame GetPage',pageId)
         if pageId.FileIdx == -1 and pageId.PageIdx == 0:
             return None
 
@@ -111,7 +110,6 @@ class BufferManager :
                     #print('gogogaga',self.listFrame[i])
              
                     #On a deja incremente le LFU dans GetPage
-        #print('dans free page',self)
                 
     
     def FlushAll(self) -> None :

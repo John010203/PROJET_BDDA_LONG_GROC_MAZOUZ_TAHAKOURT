@@ -25,9 +25,7 @@ class DataBaseInfo :
                 nomRelation = param[0]
                 nbColonnes = int(param[1])
                 headerPageId = PageId(int(param[2]), int(param[3]))
-                #print('headddddddddddddddddddddddddddddddddd',headerPageId)
                 cols = []
-                # print('++++++',param)
                 for c in range(4, nbColonnes*2+3, 2):
                     # print('dans la boucle',param[c].split(":")[0], (param[c].split(":")[1], int(param[c+1])))
                     cols.append(ColInfo(param[c].split(":")[0], (param[c].split(":")[1], int(param[c+1]))))

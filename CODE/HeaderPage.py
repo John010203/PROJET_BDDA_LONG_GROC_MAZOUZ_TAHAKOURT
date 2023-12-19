@@ -14,7 +14,6 @@ class HeaderPage :
         Définit le 1er PageId livre
         """
         dirty=True
-        print('seeeeetfreeeee',pageId)
         self.buff.set_position(0)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
@@ -24,7 +23,6 @@ class HeaderPage :
         Définit le 1er PageId plein
         """
         dirty=True
-        print('seeeeeeeeeeeeeeetfulllllllllllllll',pageId)
         self.buff.set_position(8)
         self.buff.put_int(pageId.FileIdx)
         self.buff.put_int(pageId.PageIdx)
@@ -49,10 +47,7 @@ class HeaderPage :
         fileId=self.buff.read_int()
         pageId=self.buff.read_int()
         x = PageId(fileId,pageId)
-        print('pagee----------------------', fileId,pageId)
-        print(self.buff.get_pos())
         self.buff.set_position(8)
-        # print('DANS GETFULL ---------',x)
         return x
     
     def getPagesFromListe(self,pageId):
@@ -63,7 +58,6 @@ class HeaderPage :
         listePage.append(pageId)
         
         if pageId.FileIdx != -1 :
-            print('dans header page getPagesFromListe',pageId)
             buffPage=self.bdd.buffer_manager.GetPage(pageId)
             dataPage= DataPage(buffPage)
             nextPage= dataPage.nextPageId()

@@ -20,7 +20,6 @@ class FileManager:
         headerPage = HeaderPage(frameBuffer,self.bdd)
         headerPage.setFreePageId(PageId(-1,0))
         headerPage.setFullPageId(PageId(-1,0))
-        print('zhat',pageId)
         headerPage.buff.set_position(0)
         self.bdd.buffer_manager.FreePage(pageId,True)
         return pageId
@@ -146,7 +145,6 @@ class FileManager:
         fullPageId = headerPage.getFullPageId()
         listePagesFree = headerPage.getPagesFromListe(freePageId) 
         self.bdd.buffer_manager.FreePage(headerPageId,False)
-        #print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa3hhhhhhhhhhhh',headerPageId,fullPageId)
         listePagesFull = []
         
         if(fullPageId.FileIdx != -1):

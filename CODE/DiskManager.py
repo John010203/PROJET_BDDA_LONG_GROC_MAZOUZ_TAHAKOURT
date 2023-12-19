@@ -29,11 +29,7 @@ class DiskManager :
             index = self.fileCounter.index(min(self.fileCounter))
             self.fileCounter[index]+=1
 
-            #pos = 4096*(self.fileCounter[index]-1)
-            #print(index, self.fileCounter[index]-1)
-
             with open(self.bdd.DBParams.DBPath+"F"+str(index)+".data","ab") as f:
-                #f.seek(pos)
                 f.write(bytearray(4096))
             return PageId(index, self.fileCounter[index]-1)
 
@@ -41,7 +37,6 @@ class DiskManager :
         """
         Lit le contenu d'une page dans un fichier
         """
-        #print('dans disque manager',pageId)
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
         pos = self.bdd.DBParams.SGBDPageSize*numPage
@@ -56,7 +51,6 @@ class DiskManager :
         """
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
-        #print('kkkk',pageId)
         pos = 4096*numPage
         with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb+") as f:
             f.seek(pos)

@@ -15,6 +15,9 @@ class ResetDBCommand():
         self.diskManager.reset()
         self.bufferManager.reset()
         self.databaseInfo.reset()
+        for i in range(4):
+            with open(self.bdd.DBParams.DBPath+'F'+str(i)+'.data', 'w'):
+                pass
         
         
         '''

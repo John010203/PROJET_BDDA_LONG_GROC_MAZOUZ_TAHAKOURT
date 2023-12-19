@@ -207,5 +207,6 @@ class SelectCommand:
         print(len(unique), 'tuples : ')
         for t in unique:
             print(t)
+        print('Total records=',len(unique))
 
         

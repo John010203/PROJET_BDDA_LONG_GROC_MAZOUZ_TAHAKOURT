@@ -51,11 +51,11 @@ def main():
             run = False
         else:
             dataBaseManager.ProcessCommand(commande)
-    """
-    with  open("commande.txt","r") as fichier : 
-        for ligne in fichier : 
-            ligne = ligne.strip()
-            dataBaseManager.ProcessCommand(ligne)
-    """
+    
+    # with  open("commande.txt","r") as fichier : 
+    #     for ligne in fichier : 
+    #         ligne = ligne.strip()
+    #         dataBaseManager.ProcessCommand(ligne)
+    
     return
 main()

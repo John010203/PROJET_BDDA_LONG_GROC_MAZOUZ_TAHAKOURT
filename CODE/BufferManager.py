@@ -52,7 +52,7 @@ class BufferManager :
                 if min==None or min > self.listFrame[i].LFU: #premier pincount a zero 
                     min=self.listFrame[i].LFU
                     index=i
-                    
+
         if index==None : 
             raise Exception("Aucune frame disponible")
         # a verifier dans le cas d'une case vide
@@ -102,13 +102,15 @@ class BufferManager :
         for i in range(len(self.listFrame)) : 
             if self.listFrame[i].page_id == pageId :
                 self.listFrame[i].pin_count-=1
-                #if valdirty:
-                    #self.listFrame[i].dirty = valdirty
-                #self.listFrame[i].buffer.set_position(0)
+                if valdirty:
+                    self.listFrame[i].dirty = valdirty
+                self.listFrame[i].buffer.set_position(0)
                 #if valdirty:
                     #self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
+                    #print('gogogaga',self.listFrame[i])
              
                     #On a deja incremente le LFU dans GetPage
+        #print('dans free page',self)
                 
     
     def FlushAll(self) -> None :

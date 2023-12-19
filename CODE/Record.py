@@ -115,7 +115,11 @@ class Record :
         """
         res = ""
         for i in self.recvalues :
-            res += str(i)+ ' '
+            if i == self.recvalues[-1]:
+                res += str(i)+ '.'
+            else:
+                 res += str(i)+ ' ; '
+
         return res
     
     def __eq__(self,rec):

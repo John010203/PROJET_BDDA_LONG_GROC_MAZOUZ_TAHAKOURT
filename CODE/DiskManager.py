@@ -41,6 +41,7 @@ class DiskManager :
         """
         Lit le contenu d'une page dans un fichier
         """
+        #print('dans disque manager',pageId)
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
         pos = self.bdd.DBParams.SGBDPageSize*numPage

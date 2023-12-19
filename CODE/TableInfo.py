@@ -25,5 +25,6 @@ class TableInfo :
         """
         res = str(self.nomRelation) + " " + str(self.nbColonne) + " " + str(self.headerPageId.FileIdx) + " " + str(self.headerPageId.PageIdx) + " "
         for c in self.cols :
-            res+= c.__str__()+" " 
+            res+= c.__str__()+" "
+        res+="\n" 
         return res

@@ -25,6 +25,7 @@ class DataBaseInfo :
                 nomRelation = param[0]
                 nbColonnes = int(param[1])
                 headerPageId = PageId(int(param[2]), int(param[3]))
+                print('headddddddddddddddddddddddddddddddddd',headerPageId)
                 cols = []
                 # print('++++++',param)
                 for c in range(4, nbColonnes*2+3, 2):
@@ -35,8 +36,10 @@ class DataBaseInfo :
     #--------------------------------------------------------------------------------------------------------------
     #enregistre les definitions des tables
     def Finish(self) -> None:
+        
         with open (self.db.DBParams.DBPath+'DBInfo.save','w') as f1:
             for tb in self.tableInfo:
+                print(tb)
                 f1.write(tb.save())
 
     #--------------------------------------------------------------------------------------------------------------

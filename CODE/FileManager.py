@@ -20,6 +20,7 @@ class FileManager:
         headerPage = HeaderPage(frameBuffer,self.bdd)
         headerPage.setFreePageId(PageId(-1,0))
         headerPage.setFullPageId(PageId(-1,0))
+        print('zhat',pageId)
         headerPage.buff.set_position(0)
         self.bdd.buffer_manager.FreePage(pageId,True)
         return pageId
@@ -30,7 +31,6 @@ class FileManager:
         """
         #charger notre headerPage en RAM
         pageIdHeader= tabInfo.headerPageId
-
         headerPageBuff=self.bdd.buffer_manager.GetPage(pageIdHeader)
 
         headerPage=HeaderPage(headerPageBuff,self.bdd)
@@ -63,16 +63,19 @@ class FileManager:
         headerPage = HeaderPage(headerBuffer,self.bdd)
         #premiere page libre de la liste chainee
         pageId = headerPage.getFreePageId()
+
         self.bdd.buffer_manager.FreePage(tabInfo.headerPageId,False)
 
         while not(pageId.FileIdx == -1):
 
             pageBuffer = self.bdd.buffer_manager.GetPage(pageId) #on charge juste le buffer dans lequel on va ecrire
-            dataPage = DataPage(pageBuffer)      
+            dataPage = DataPage(pageBuffer)     
+ 
             if sizeRecord > dataPage.getEspaceDisponible():  
 
                 pageIdPrev=pageId
                 pageId = dataPage.nextPageId()
+
                 self.bdd.buffer_manager.FreePage(pageIdPrev,False)
 
             else:
@@ -138,16 +141,17 @@ class FileManager:
         headerPageId=tabInfo.headerPageId
         buffHeaderPage=self.bdd.buffer_manager.GetPage(headerPageId)
         headerPage=HeaderPage(buffHeaderPage,self.bdd)
+
         self.bdd.buffer_manager.FreePage(headerPageId,False)
 
         listePagesFree = headerPage.getPagesFromListe(headerPage.getFreePageId())
         
         fullPageId = headerPage.getFullPageId()
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa3hhhhhhhhhhhh',headerPageId,fullPageId)
         listePagesFull = []
         
         if(fullPageId.FileIdx != -1):
             listePagesFull=headerPage.getPagesFromListe(headerPage.getFullPageId())
-        
         return listePagesFree + listePagesFull
     
     def InsertRecordIntoTable(self, record):

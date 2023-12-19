@@ -7,6 +7,7 @@ from DataBaseInfo import DataBaseInfo
 import DBParams as DP
 from BDD import BDD
 from DatabaseManager import DatabaseManager
+from PageId import PageId
 
 
 '''
@@ -51,7 +52,11 @@ def main():
             run = False
         else:
             dataBaseManager.ProcessCommand(commande)
-    
+    buff = dataBaseManager.bdd.buffer_manager.GetPage(PageId(0,0))
+    print(buff.read_int())
+    print(buff.read_int())
+    print(buff.read_int())
+    print(buff.read_int())
     # with  open("commande.txt","r") as fichier : 
     #     for ligne in fichier : 
     #         ligne = ligne.strip()

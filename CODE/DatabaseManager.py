@@ -33,6 +33,7 @@ class DatabaseManager:
         self.bufferManager.FlushAll()
         self.diskManager.Finish()
         
+        
 
     def createTable(self,cmd):
         """

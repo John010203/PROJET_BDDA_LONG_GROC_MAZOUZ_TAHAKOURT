@@ -96,8 +96,8 @@ class Record :
     
     def __str__(self):
         res = ""
-        for i in self.recvalues :
-            if i == self.recvalues[-1]:
+        for i in range(len(self.recvalues)):
+            if i== len(self.recvalues)-1:
                 res += str(i)+ '.'
             else:
                  res += str(i)+ ' ; '

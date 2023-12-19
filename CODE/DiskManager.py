@@ -41,6 +41,7 @@ class DiskManager :
         """
         Lit le contenu d'une page dans un fichier
         """
+        #print('dans disque manager',pageId)
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
         pos = self.bdd.DBParams.SGBDPageSize*numPage
@@ -97,6 +98,5 @@ class DiskManager :
             for i in range(4):
                 f1.write(str(self.fileCounter[i]) + " ")
             f1.write(str(len(self.pagesDisponibles)) + "\n")
-            for i in range(len(self.pagesDisponibles)):
             for i in range(len(self.pagesDisponibles)):
                 f1.write(str(self.pagesDisponibles[i].FileIdx) + " " + str(self.pagesDisponibles[i].PageIdx) + "\n")    

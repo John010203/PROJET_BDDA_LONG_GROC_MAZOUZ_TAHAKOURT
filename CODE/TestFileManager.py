@@ -66,13 +66,17 @@ recItr=RecordIterator(bdd,table,i1.pageId)
 # print("ici",recTmp)
 # recTmp=recItr.GetNextRecord(3)
 # print("ici",recTmp)
-recTmp=recItr.GetNextRecord(0)
-i=1
 
-while recTmp !=None :
-    recTmp=recItr.GetNextRecord(i)
+nbSlots = recItr.dataPage.getNbSlots(bdd)
+print("nbSlots : ", nbSlots)
+recItr.buffRI.set_position(8)
+
+for i in range(0,nbSlots) :
+    x=recItr.GetNextRecord(i)
+    print("x : ",x)
+    recTmp=x
     print(recTmp)
-    i+=1
+    
 
 # for i in range(len(file_manager.getRecordsInDataPage)):
 #     print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[i])

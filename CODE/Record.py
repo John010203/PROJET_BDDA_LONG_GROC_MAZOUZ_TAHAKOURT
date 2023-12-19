@@ -127,6 +127,8 @@ class Record :
         Vérifie l'égalité entre 2 record
         """
         res = True
+        if(rec==None):
+            return False
         for c in range(len(self.recvalues)):
             if(rec.recvalues[c] != self.recvalues[c]):
                 res = False

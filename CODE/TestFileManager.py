@@ -7,6 +7,7 @@ from ColInfo import ColInfo
 from HeaderPage import HeaderPage
 from DataPage import DataPage
 from PageId import PageId
+from RecordIterator import RecordIterator
 '''
 initialisation de la BDD
 '''
@@ -48,16 +49,38 @@ print(pageId)
 ECRIRE LE RECORD DANS LE BUFFER
 """
 #print('---------pageId1--------')
-print('----------insert------------')
-file_manager.InsertRecordIntoTable(rec)
-file_manager.InsertRecordIntoTable(rec2)
-file_manager.InsertRecordIntoTable(rec3)
+# print('----------insert------------')
+i1=file_manager.InsertRecordIntoTable(rec)
+print('llllllll',file_manager.InsertRecordIntoTable(rec2))
+print('yyyyyyyyyyy',file_manager.InsertRecordIntoTable(rec3))
 
 #print(file_manager.GetAllRecords(table))
 pageId2 = PageId(1,0)
 print('----------------read--------------')
-print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[0])
-print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[1])
+recItr=RecordIterator(bdd,table,i1.pageId)
+
+
+
+# print("ici",recTmp)
+# recTmp=recItr.GetNextRecord(2)
+# print("ici",recTmp)
+# recTmp=recItr.GetNextRecord(3)
+# print("ici",recTmp)
+recTmp=recItr.GetNextRecord(0)
+i=1
+
+while recTmp !=None :
+    recTmp=recItr.GetNextRecord(i)
+    print(recTmp)
+    i+=1
+
+# for i in range(len(file_manager.getRecordsInDataPage)):
+#     print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[i])
+
+# print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[0])
+# print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[1])
+# print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[2])
+
 
 
 #print('\n---------pageId2--------\n')

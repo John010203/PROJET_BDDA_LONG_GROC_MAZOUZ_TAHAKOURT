@@ -10,16 +10,17 @@ class RecordIterator:
         self.buffer_manager=self.bdd.buffer_manager
         self.tabInfo=tabInfo
         self.pageId=pageId
-        buffRI=self.buffer_manager.GetPage(self.pageId)
-        dataPage=DataPage(buffRI)
-        dataPage.setBufferAt(8) #position du premier record.
+        self.buffRI=self.buffer_manager.GetPage(self.pageId)
+        self.dataPage=DataPage(self.buffRI)
+        self.dataPage.setBufferAt(8) #position du premier record.
 
     def GetNextRecord(self,index)->Record: #index correspond a l'index de la boucle sur laquelle on va iterer
         valSlot= self.dataPage.getValeurSlotAt(index,self.bdd,self.buffRI.get_pos())
         record=Record(self.tabInfo,[])
-        taille=record.readFromBuffer(self.buffRI,self.buff.get_pos())
-        self.buffRI.set_position(self.buffRI.get_pos()+taille+4*len(self.tabInfo.cols))
-        if(valSlot!=-1):
+        taille=record.readFromBuffer(self.buffRI,self.buffRI.get_pos())
+        #self.buffRI.set_position(self.buffRI.get_pos()+taille+4*len(self.tabInfo.cols))
+        if(valSlot!=-1 or record.getTailleRecord() != 0):
+            print("record : ", record.getTailleRecord())
             return record
         else:
             return None

@@ -142,12 +142,11 @@ class FileManager:
         buffHeaderPage=self.bdd.buffer_manager.GetPage(headerPageId)
         headerPage=HeaderPage(buffHeaderPage,self.bdd)
 
-        self.bdd.buffer_manager.FreePage(headerPageId,False)
-
         listePagesFree = headerPage.getPagesFromListe(headerPage.getFreePageId())
         
         fullPageId = headerPage.getFullPageId()
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa3hhhhhhhhhhhh',headerPageId,fullPageId)
+        self.bdd.buffer_manager.FreePage(headerPageId,False)
+        #print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa3hhhhhhhhhhhh',headerPageId,fullPageId)
         listePagesFull = []
         
         if(fullPageId.FileIdx != -1):

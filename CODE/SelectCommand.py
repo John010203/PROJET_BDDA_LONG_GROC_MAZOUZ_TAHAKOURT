@@ -161,22 +161,22 @@ class SelectCommand:
         print('Total records=',len(unique))
   
 
-    def executeJointure(self):
-        r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
-        s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
-        rt = self.bdd.file_manager.GetAllRecords(r)
-        st = self.bdd.file_manager.GetAllRecords(s)
+    # def executeJointure(self):
+    #     r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
+    #     s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
+    #     rt = self.bdd.file_manager.GetAllRecords(r)
+    #     st = self.bdd.file_manager.GetAllRecords(s)
         
-        if "WHERE" in self.commande :
-            for t in r:
-                if self.evaluer(t):
-                    unique.append(t)
-        else :
-            unique = res
+    #     if "WHERE" in self.commande :
+    #         for t in r:
+    #             if self.evaluer(t):
+    #                 unique.append(t)
+    #     else :
+    #         unique = res
         
-        for t in unique:
-            print(t)
-        print('Total records=',len(unique))
+    #     for t in unique:
+    #         print(t)
+    #     print('Total records=',len(unique))
 
     def Execute(self):
         """
@@ -186,6 +186,6 @@ class SelectCommand:
         if type(self.nomRelation)==str :
             self.executeSelectClassique()   
 
-        else:
-            self.executeJointure()
+        # else:
+        #     self.executeJointure()
         

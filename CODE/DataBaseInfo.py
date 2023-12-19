@@ -25,7 +25,7 @@ class DataBaseInfo :
                 nomRelation = param[0]
                 nbColonnes = int(param[1])
                 headerPageId = PageId(int(param[2]), int(param[3]))
-                print('headddddddddddddddddddddddddddddddddd',headerPageId)
+                #print('headddddddddddddddddddddddddddddddddd',headerPageId)
                 cols = []
                 # print('++++++',param)
                 for c in range(4, nbColonnes*2+3, 2):

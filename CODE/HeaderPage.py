@@ -63,7 +63,7 @@ class HeaderPage :
         listePage.append(pageId)
         
         if pageId.FileIdx != -1 :
-            # print('dans header page getPagesFromListe',pageId)
+            print('dans header page getPagesFromListe',pageId)
             buffPage=self.bdd.buffer_manager.GetPage(pageId)
             dataPage= DataPage(buffPage)
             nextPage= dataPage.nextPageId()

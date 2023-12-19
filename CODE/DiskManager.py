@@ -40,7 +40,7 @@ class DiskManager :
     def WritePage(self,pageId: PageId, buff) -> None:
         numPage = pageId.PageIdx
         numFile = pageId.FileIdx
-        print('kkkk',pageId)
+        #print('kkkk',pageId)
         pos = 4096*numPage
         with open(self.bdd.DBParams.DBPath+"F"+str(numFile)+".data","rb+") as f:
             f.seek(pos)

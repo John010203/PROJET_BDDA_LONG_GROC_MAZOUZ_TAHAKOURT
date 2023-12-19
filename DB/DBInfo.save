@@ -1,1 +1,1 @@
-R 5 0 0 premier:INT 4 second:FLOAT 4 trois:INT 4 quatre:INT 4 cinq:INT 4 
+R 6 0 0 C1:INT 4 C2:VARSTRING(T) 13 C3:FLOAT 4 C4:INT 4 C5:INT 4 C6:VARSTRING(T) 5 

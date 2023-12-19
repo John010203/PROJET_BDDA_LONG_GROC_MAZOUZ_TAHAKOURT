@@ -82,12 +82,12 @@ class SelectCommand:
 
         bool = True
 
-    def parseOperation(self,op):#> < = >= <=
+    def parseOperation(self,op):#> < = >= <= <> !=
         """
         Extrait l'opérateur de comparaison
         """
         operationsSolo= ['>','<','=']
-        operationsDuo = [">=","<="]
+        operationsDuo = [">=","<=","<>","!="]
         
         for c in operationsDuo:
             if c in op:
@@ -140,6 +140,10 @@ class SelectCommand:
                     bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
                 case "=":
                     bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
+                case "<>":
+                    bool = bool and tuple.recvalues[colonne] != self.cast(op2,relation,colonne)
+                case "!=":
+                    bool = bool and tuple.recvalues[colonne] != self.cast(op2,relation,colonne)
                     
         return bool 
 

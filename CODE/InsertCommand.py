@@ -1,15 +1,18 @@
 import DataBaseInfo
 from Record import Record
 class InsertCommand : 
-
     def __init__(self,chaineCommande,bdd):
+        """
+        Initialise une instance de la classe InsertCommand
+        """
         self.bdd = bdd
         self.commande = chaineCommande
         self.nomRelation,self.values = self.parserCommandeInsert(chaineCommande)
 
-    #INSERT INTO nomRelation VALUES (val1,val2,valn)
-
     def parserCommandeInsert(self,string):
+        """
+        Sépare la chaîne de commande d'insertion pour extraire le nom de la relation et les valeurs à insérer
+        """
         if string != "":
             values = string.split("VALUES")[1].strip()
             args = values[1:len(values)-1]
@@ -30,5 +33,9 @@ class InsertCommand :
         return "",""
     
     def Execute(self):
+        """
+        Exécute la méthode d'insertion
+        La méthode insère les valeurs dans la table correspondante de la BDD
+        """
         self.bdd.file_manager.InsertRecordIntoTable(self.values)
         return 0

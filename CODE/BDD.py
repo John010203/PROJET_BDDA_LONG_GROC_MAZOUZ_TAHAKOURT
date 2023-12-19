@@ -9,6 +9,9 @@ from FileManager import FileManager
 class BDD:
     #Chaque attribut prend la BDD (self) en parametre
     def __init__(self, DBParams):
+        """
+        Initialise une instance de la classe BDD
+        """
         self.DBParams = DBParams
         self.disk_manager = DiskManager(self)
         self.buffer_manager = BufferManager(self)

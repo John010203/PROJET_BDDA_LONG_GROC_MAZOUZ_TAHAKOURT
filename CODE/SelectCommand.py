@@ -1,11 +1,17 @@
 
 class SelectCommand:
     def __init__(self,chaineCommande,bdd):
+        """
+        Initialise une instance de la classe SelectCommand
+        """
         self.bdd =bdd
         self.commande = chaineCommande
         self.nomRelation,self.operations = self.parserCommandeSelect(chaineCommande)
 
     def parserCommandeSelect(self,string):
+        """
+        Sépare la chaîne de commande pour extraire le nom de la relation et les opérations
+        """
         nomRelation = string.split("FROM")[1].strip()
         if "," in nomRelation:
             return self.parserJointure(string)
@@ -45,8 +51,41 @@ class SelectCommand:
         else : 
             return relations,[]
 
+    def evaluerJointure(self,op):
+        #operation colonne>2
+        #on split pour recup la colonne et la valeur
+        relation1 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
+        relation2 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
+        colonnes1 = [i.nomColonne for i in relation1]
+        colonnes2 = [i.nomColonne for i in relation2]
+
+
+        for op in self.operations:#op = R1.C1 > R2.C2
+            typeOperation=self.parseOperation(op) #operande= ">"
+            opParsed=op.split(typeOperation) 
+            relCol1=self.parserOPJointure(opParsed[0])#"[R1,C1]"
+            relCol2=self.parserOPJointure(opParsed[1])#"[R2,C2]"
+            colonne1 = colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
+            colonne2 = colonnes2.index(relCol2[1])
+            bool=True
+            match(typeOperation):
+                case ">=":
+                    bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
+                case "<=":
+                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
+                case ">":
+                    bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
+                case "<":
+                    bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
+                case "=":
+                    bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
+        bool = True
+
 
     def parseOperation(self,op):#> < = >= <=
+        """
+        Extrait l'opérateur de comparaison
+        """
         operationsSolo= ['>','<','=']
         operationsDuo = [">=","<="]
         
@@ -61,6 +100,9 @@ class SelectCommand:
 
 
     def cast(self,valeur,relation,index):
+        """
+        Effectue une conversion de type pour la valeur en fonction du type de colonne
+        """
         listType = [c.typeColonne[0] for c in relation.cols]
 
         if listType[index] == "INT":
@@ -73,12 +115,15 @@ class SelectCommand:
             
     
     def evaluer(self,tuple):
+        """
+        Evalue toutes les opérations de sélection pour un tuple donné
+        """
         #operation colonne>2
-        #on split pour recup la colonne et la valeur
+        #on split pour récup la colonne et la valeur
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
         colonnes = [i.nomColonne for i in relation.cols]
         bool = True
-        #teste pour une seule colonne
+        #test pour une seule colonne
         for op in self.operations:
             #on recupere l'operande
             operande = self.parseOperation(op)
@@ -91,8 +136,8 @@ class SelectCommand:
             match(operande):
                 case ">=":
                     bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
-                case "=<":
-                    bool = bool and tuple.revalues[colonne] <= self.cast(op2,relation,colonne)
+                case "<=":
+                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
                 case ">":
                     bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
                 case "<":
@@ -122,8 +167,8 @@ class SelectCommand:
             match(typeOperation):
                 case ">=":
                     bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
-                case "=<":
-                    bool = bool and tuple.revalues[colonne] <= self.cast(op2,relation,colonne)
+                case "<=":
+                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
                 case ">":
                     bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
                 case "<":
@@ -144,6 +189,9 @@ class SelectCommand:
         
 
     def Execute(self):
+        """
+        Exécute la commande SELECT et affiche les résultats
+        """
         # print("-------------SELECTION-----------")
         unique = []
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)

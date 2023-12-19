@@ -6,6 +6,9 @@ from Record import Record
 
 class FileManager:
     def __init__(self, bdd) -> None:
+        """
+        Initialise une instance de la classe FileManager
+        """
         self.bdd=bdd
 
     def createNewHeaderPage(self)->PageId:
@@ -22,6 +25,9 @@ class FileManager:
         return pageId
     
     def addDataPage(self,tabInfo)->PageId:
+        """
+        Ajoute un nouveau PageId dans la table
+        """
         #charger notre headerPage en RAM
         pageIdHeader= tabInfo.headerPageId
 
@@ -50,6 +56,9 @@ class FileManager:
     
     
     def getFreeDataPageId(self,tabInfo,sizeRecord)->PageId:
+        """
+        Récupère le PageId du premier PageId libre pouvant contenir le record
+        """
         headerBuffer = self.bdd.buffer_manager.GetPage(tabInfo.headerPageId) #on charge juste le buffer dans lequel on va ecrire
         headerPage = HeaderPage(headerBuffer,self.bdd)
         #premiere page libre de la liste chainee
@@ -73,6 +82,9 @@ class FileManager:
     
     
     def writeRecordToDataPage(self,record,pageId)->RecordId: 
+        """
+        Ecrit un record dans une page
+        """
         buffPage = self.bdd.buffer_manager.GetPage(pageId)
         dataPage = DataPage(buffPage)
        
@@ -97,6 +109,9 @@ class FileManager:
         return RecordId(pageId,nbSlots)
     
     def getRecordsInDataPage(self,tabInfo,pageId):
+        """
+        Récupère les records d'une page
+        """
         buffPage=self.bdd.buffer_manager.GetPage(pageId)
         dataPage = DataPage(buffPage)
 
@@ -117,7 +132,9 @@ class FileManager:
     
     
     def getDataPages(self,tabInfo):
-
+        """
+        Récupère la liste des pages
+        """
         headerPageId=tabInfo.headerPageId
         buffHeaderPage=self.bdd.buffer_manager.GetPage(headerPageId)
         headerPage=HeaderPage(buffHeaderPage,self.bdd)
@@ -134,6 +151,9 @@ class FileManager:
         return listePagesFree + listePagesFull
     
     def InsertRecordIntoTable(self, record):
+        """
+        Insère un record dans la table
+        """
         getFree = self.getFreeDataPageId(record.tabInfo,record.getTailleRecord())
         
         freeDataPage = None
@@ -146,6 +166,9 @@ class FileManager:
 
     
     def GetAllRecords(self,tabInfo):
+        """
+        Récupère tous les records de la table
+        """
         listePages=self.getDataPages(tabInfo)
         res = []
         

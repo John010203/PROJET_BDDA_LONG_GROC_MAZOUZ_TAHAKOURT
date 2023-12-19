@@ -2,18 +2,27 @@ import TableInfo as TableInfo
 
 class Record : 
     def __init__(self, tableInfo,recvalues):
+        """
+        Initialise une instance de la classe Record
+        """
         #relation a laquelle appartient le record
         self.tabInfo : TableInfo = tableInfo
         #valeurs du record -> un tuple a n vlauers (nb de cols dans la relation)
         self.recvalues : list = recvalues
 
     def initTaille(self, indice):
+        """
+        Initialise la taille d'un champ du record
+        """
         if(self.tabInfo.cols[indice].typeColonne[0] == "VARSTRING(T)"):
             return len(self.recvalues[indice])
         else :
             return self.tabInfo.cols[indice].typeColonne[1]
         
     def writeToBuffer(self, buff, pos) -> int : 
+        """
+        Ecrit le record dans le buffer à une position spécifique
+        """
         nbColonnes = len(self.recvalues)
 
         buff.set_position(pos)
@@ -51,6 +60,9 @@ class Record :
         return taille #nb d'octets ecrits
     
     def readFromBuffer(self, buff, pos):
+        """
+        Lit le record depuis un buffer à une position spécifique et retourne la taille du record
+        """
         tabTaille : list = []
         nbColonnes = len(self.tabInfo.cols)
         buff.set_position(pos)
@@ -89,18 +101,27 @@ class Record :
         return tailleRecord
     
     def getTailleRecord(self):
+        """
+        Retourne la taille du record
+        """
         somme=0
         for i in range (len(self.recvalues)):            
             somme+=self.initTaille(i)
         return somme + 4*(len(self.recvalues))
     
     def __str__(self):
+        """
+        Retourne sous forme de chaîne de caractères le record
+        """
         res = ""
         for i in self.recvalues :
             res += str(i)+ ' '
         return res
     
     def __eq__(self,rec):
+        """
+        Vérifie l'égalité entre 2 record
+        """
         res = True
         for c in range(len(self.recvalues)):
             if(rec.recvalues[c] != self.recvalues[c]):

@@ -5,6 +5,9 @@ from Frame import Frame
 class BufferManager :
 
     def __init__(self, bdd):
+        """
+        Initialise une instance de la classe BufferManager
+        """
         self.bdd = bdd
         self.disk_manager = bdd.disk_manager
         self.frameCount = bdd.DBParams.frameCount
@@ -12,44 +15,43 @@ class BufferManager :
         
         
     def reset(self):
+        """
+        Réinitialise tous les tampons dans la liste de tampons
+        """
         #self.frameCount = 0
         for frame in self.listFrame :
             frame.clear()
              #a verifier
         
     def __str__(self):
+        """
+        Renvoie sous forme de chaine de caractères le bufferManager
+        """
         res = ""
         for i in range(len(self.listFrame)):
             res += "\n" +str(i)+ "\t" + str(self.listFrame[i])
         return res
     
     def FindFrameLibre(self)->int:
-        index : int = None
         """
         LFU : 
         Une page peut être remplacée ssi son pin_count = 0
-        • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu ;
+        • Choisir une frame parmi celles dont le contenu n'est pas utilisé couramment (pin_count=0) pour remplacer son contenu;
         • Si la frame est marquée comme “dirty”, écrire d'abord son contenu sur le disque puis remettre son dirty à 0
         """
         #LFU
+        index : int = None
+        min=None
         #il ya une case libre
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id==None :
                 index=i 
                 return index 
         #on remplace
-        min=None
-        for i in range(len(self.listFrame)) :
-            if self.listFrame[i].pin_count == 0:
-                if min==None: #premier pincount a zero 
+            elif self.listFrame[i].pin_count == 0:
+                if min==None or min > self.listFrame[i].LFU: #premier pincount a zero 
                     min=self.listFrame[i].LFU
                     index=i
-                    
-                else: 
-                    if min>self.listFrame[i].LFU:
-                        min=self.listFrame[i].LFU
-                        index=i
-
                     
         if index==None : 
             raise Exception("Aucune frame disponible")
@@ -61,6 +63,9 @@ class BufferManager :
         return index
 
     def FindFrame(self, pageId : PageId):#verifie si la page est deja chargee
+        """
+        Recherche si la page est déjà chargé dans une frame
+        """
         index = None
         for i in range(len(self.listFrame)) :
             if self.listFrame[i].page_id == pageId : 
@@ -68,6 +73,9 @@ class BufferManager :
         return index
 
     def GetPage(self, pageId : PageId) -> ByteBuffer:
+        """
+        Récupère une page à partir du bufferPool
+        """
         if pageId.FileIdx == -1 and pageId.PageIdx == 0:
             return None
 
@@ -88,15 +96,17 @@ class BufferManager :
         return self.listFrame[i].buffer
 
     def FreePage(self, pageId : PageId, valdirty) -> None:
-
+        """
+        Libère une page et met à jour le pin_count
+        """
         for i in range(len(self.listFrame)) : 
             if self.listFrame[i].page_id == pageId :
                 self.listFrame[i].pin_count-=1
-                if valdirty:
-                    self.listFrame[i].dirty = valdirty
-                self.listFrame[i].buffer.set_position(0)
-                if valdirty:
-                    self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
+                #if valdirty:
+                    #self.listFrame[i].dirty = valdirty
+                #self.listFrame[i].buffer.set_position(0)
+                #if valdirty:
+                    #self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
              
                     #On a deja incremente le LFU dans GetPage
                 

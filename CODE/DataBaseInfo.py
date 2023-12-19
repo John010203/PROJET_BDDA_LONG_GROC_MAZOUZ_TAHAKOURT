@@ -5,11 +5,17 @@ import pickle
 
 class DataBaseInfo :
     def __init__(self, db):
+        """
+        Initialise une instance de la classe DataBaseInfo
+        """
         self.db=db
         self.tableInfo : list = [] #toute sles relations de notre BDD
         #pas besoin de compteur size
         #pas besoin d'initialiser un compteur, on retourne jujste la taille du tableau
     def reset(self):
+        """
+        Réinitialise les informations de la table
+        """
         self.tableInfo = []
     #init lit un fichier et recupere  les definitions des tables    
     def Init(self) -> None :
@@ -35,12 +41,21 @@ class DataBaseInfo :
 
     #--------------------------------------------------------------------------------------------------------------
     def getNbRelations(self) -> int:
+        """
+        Renvoie le nombre de relations
+        """
         return len(self.tableInfo)
     
     def AddTableInfo(self, TableInfo : TableInfo) -> None:
+        """
+        Ajoute les informations d'une nouvelle table à la liste
+        """
         self.tableInfo.append(TableInfo)
     
     def GetTableInfo(self, nomRelation) -> TableInfo:
+        """
+        Récupère les informations d'une table spécifiée par son nom
+        """
         table = None
         for i in self.tableInfo : 
             if i.nomRelation == nomRelation :
@@ -48,6 +63,9 @@ class DataBaseInfo :
         return table
     
     def __str__(self):
+        """
+        Retourne sous forme de chaîne de caractère la liste des tables
+        """
         res = ""
         for t in self.tableInfo:
             res+=("\n"+t.__str__())

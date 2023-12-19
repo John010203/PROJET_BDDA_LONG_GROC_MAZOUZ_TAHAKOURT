@@ -1,9 +1,10 @@
-
 import struct
 
 class ByteBuffer:
-
     def __init__(self, size=4096):
+        """
+        Initialise une instance de la classe ByteBuffer
+        """
         self.__bytes = [None]*size #tableau créer
         self.__pos = 0 #position initialisé
 

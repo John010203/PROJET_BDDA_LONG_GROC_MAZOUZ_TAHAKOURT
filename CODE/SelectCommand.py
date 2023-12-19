@@ -51,36 +51,36 @@ class SelectCommand:
         else : 
             return relations,[]
 
-    def evaluerJointure(self,op):
+    def evaluerJointure(self,tuple1,tuple2):
         #operation colonne>2
         #on split pour recup la colonne et la valeur
-        relation1 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
-        relation2 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
+        relation1 = tuple1.tabInfo.nomRelation
+        relation2 = tuple2.tabInfo.nomRelation
         colonnes1 = [i.nomColonne for i in relation1]
         colonnes2 = [i.nomColonne for i in relation2]
-
+        bool=True
 
         for op in self.operations:#op = R1.C1 > R2.C2
             typeOperation=self.parseOperation(op) #operande= ">"
             opParsed=op.split(typeOperation) 
             relCol1=self.parserOPJointure(opParsed[0])#"[R1,C1]"
             relCol2=self.parserOPJointure(opParsed[1])#"[R2,C2]"
-            colonne1 = colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
-            colonne2 = colonnes2.index(relCol2[1])
-            bool=True
+            colonne1= colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
+            colonne2=colonnes2.index(relCol2[1])
+
             match(typeOperation):
                 case ">=":
-                    bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
+                    bool = bool and relation1.recvalues[colonne1] >= relation2.recvalues[colonne2]
                 case "<=":
-                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
+                    bool = bool and relation1.recvalues[colonne1] <= relation2.recvalues[colonne2]
                 case ">":
-                    bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
+                    bool = bool and relation1.recvalues[colonne1] > relation2.recvalues[colonne2]
                 case "<":
-                    bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
+                    bool = bool and relation1.recvalues[colonne1] < relation2.recvalues[colonne2]
                 case "=":
-                    bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
-        bool = True
+                    bool = bool and relation1.recvalues[colonne1] == relation2.recvalues[colonne2]
 
+        bool = True
 
     def parseOperation(self,op):#> < = >= <=
         """
@@ -97,8 +97,6 @@ class SelectCommand:
             if c in op:
                 return c
 
-
-
     def cast(self,valeur,relation,index):
         """
         Effectue une conversion de type pour la valeur en fonction du type de colonne
@@ -112,8 +110,6 @@ class SelectCommand:
 
         return valeur
 
-            
-    
     def evaluer(self,tuple):
         """
         Evalue toutes les opérations de sélection pour un tuple donné
@@ -147,56 +143,12 @@ class SelectCommand:
                     
         return bool 
 
-    def evaluerJointure(self,op):
-        #operation colonne>2
-        #on split pour recup la colonne et la valeur
-        relation1 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
-        relation2 = self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
-        colonnes1 = [i.nomColonne for i in relation1]
-        colonnes2 = [i.nomColonne for i in relation2]
-
-
-        for op in self.operations:#op = R1.C1 > R2.C2
-            typeOperation=self.parseOperation(op) #operande= ">"
-            opParsed=op.split(typeOperation) 
-            relCol1=self.parserOPJointure(opParsed[0])#"[R1,C1]"
-            relCol2=self.parserOPJointure(opParsed[1])#"[R2,C2]"
-            colonne1= colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
-            colonne2=colonnes2.index(relCol2[1])
-            bool=True
-            match(typeOperation):
-                case ">=":
-                    bool = bool and tuple.recvalues[colonne] >= self.cast(op2,relation,colonne)
-                case "<=":
-                    bool = bool and tuple.recvalues[colonne] <= self.cast(op2,relation,colonne)
-                case ">":
-                    bool = bool and tuple.recvalues[colonne] > self.cast(op2,relation,colonne)
-                case "<":
-                    bool = bool and tuple.recvalues[colonne] < self.cast(op2,relation,colonne)
-                case "=":
-                    bool = bool and tuple.recvalues[colonne] == self.cast(op2,relation,colonne)
-
-            
-
-        
-        bool = True
-
-    def parserOPJointure(self,opi):
-        relCol=opi.split(".")
-        relation=relCol[0]
-        colonne=relCol[1]
-        return relation,colonne
-        
-
-    def Execute(self):
-        """
-        Exécute la commande SELECT et affiche les résultats
-        """
+    def executeSelectClassique(self):
         # print("-------------SELECTION-----------")
         unique = []
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
         res = self.bdd.file_manager.GetAllRecords(relation)
-        
+            
         if "WHERE" in self.commande :
             for t in res:
                 if self.evaluer(t):
@@ -204,9 +156,36 @@ class SelectCommand:
         else :
             unique = res
         
-        print(len(unique), 'tuples : ')
+        for t in unique:
+            print(t)
+        print('Total records=',len(unique))
+  
+
+    def executeJointure(self):
+        r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
+        s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
+        rt = self.bdd.file_manager.GetAllRecords(r)
+        st = self.bdd.file_manager.GetAllRecords(s)
+        
+        if "WHERE" in self.commande :
+            for t in r:
+                if self.evaluer(t):
+                    unique.append(t)
+        else :
+            unique = res
+        
         for t in unique:
             print(t)
         print('Total records=',len(unique))
 
+    def Execute(self):
+        """
+        Exécute la commande SELECT et affiche les résultats
+        """
+        
+        if type(self.nomRelation)==str :
+            self.executeSelectClassique()   
+
+        else:
+            self.executeJointure()
         

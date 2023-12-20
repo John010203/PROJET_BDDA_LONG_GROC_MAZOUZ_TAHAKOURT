@@ -79,7 +79,10 @@ class SelectCommand:
                     bool = bool and relation1.recvalues[colonne1] < relation2.recvalues[colonne2]
                 case "=":
                     bool = bool and relation1.recvalues[colonne1] == relation2.recvalues[colonne2]
-
+                case "<>":
+                    bool = bool and relation1.recvalues[colonne1] != relation2.recvalues[colonne2]
+                case "!=":
+                    bool = bool and relation1.recvalues[colonne1] != relation2.recvalues[colonne2]
         bool = True
 
     def parseOperation(self,op):#> < = >= <= <> !=

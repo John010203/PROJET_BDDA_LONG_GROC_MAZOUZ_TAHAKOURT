@@ -69,7 +69,7 @@ recItr=RecordIterator(bdd,table,i1.pageId)
 
 nbSlots = recItr.dataPage.getNbSlots(bdd)
 print("nbSlots : ", nbSlots)
-recItr.buffRI.set_position(8)
+recItr.Reset()
 
 for i in range(0,nbSlots) :
     x=recItr.GetNextRecord(i)

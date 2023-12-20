@@ -63,10 +63,15 @@ class SelectCommand:
         for op in self.operations:#op = R1.C1 > R2.C2
             typeOperation=self.parseOperation(op) #operande= ">"
             opParsed=op.split(typeOperation)
+            print("opParsed : ", opParsed)
             relCol1=opParsed[0].split(".")#"[R1,C1]"
             relCol2=opParsed[1].split(".")#"[R2,C2]"
-            colonne1 = colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
-            colonne2 = colonnes2.index(relCol2[1])
+            colonne1 = colonnes1.index(relCol1[1].strip())#ca recupere la colonne dans la table
+            print("relCol1 : ", relCol1)
+            print("relCol2 : ", relCol2)
+            colonne2 = colonnes2.index(relCol2[1].strip())
+            print("colonne 1 : ", colonne1)
+            print("colonne 2 : ", colonne2)
             
             match(typeOperation):
                 case ">=":
@@ -180,20 +185,23 @@ class SelectCommand:
         if "WHERE" in self.commande :
             for rp in (rPages) : 
                 itr = RecordIterator(self.bdd,r,rp)
-                rt=(itr.GetNextRecord(i))
-                while(rt!=None):
-                    rt=(itr.GetNextRecord(i))
+                nbSlotsR = itr.dataPage.getNbSlots(self.bdd)
+                itr.Reset()
+                for i in range(nbSlotsR) :
+                    rt=itr.GetNextRecord(i)
+                    print("rt : ",rt)
                     for sp in sPages :
                         its = RecordIterator(self.bdd,s,sp)
-                        st=(its.GetNextRecord(j))
-                        while(st!=None):
-                            st=(its.GetNextRecord(j))
+                        nbSlotsS = its.dataPage.getNbSlots(self.bdd)
+                        its.Reset()
+                        for j in range(nbSlotsS):
+                            st=its.GetNextRecord(j)
+                            print("st : ",st)
                             if self.evaluerJointure(rt,st):
-                                print(rt,st)
-                        j+=1
-                i+=1
-            its.close()
-            itr.close()
+                                print("res : ",rt,st)
+
+            its.Close()
+            itr.Close()
   
 
     def Execute(self):

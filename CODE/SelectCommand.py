@@ -1,4 +1,4 @@
-
+from RecordIterator import RecordIterator
 class SelectCommand:
     def __init__(self,chaineCommande,bdd):
         """
@@ -56,33 +56,33 @@ class SelectCommand:
         #on split pour recup la colonne et la valeur
         relation1 = tuple1.tabInfo.nomRelation
         relation2 = tuple2.tabInfo.nomRelation
-        colonnes1 = [i.nomColonne for i in relation1]
-        colonnes2 = [i.nomColonne for i in relation2]
+        colonnes1 = [i.nomColonne for i in tuple1.tabInfo.cols]
+        colonnes2 = [i.nomColonne for i in tuple2.tabInfo.cols]
         bool=True
 
         for op in self.operations:#op = R1.C1 > R2.C2
             typeOperation=self.parseOperation(op) #operande= ">"
-            opParsed=op.split(typeOperation) 
-            relCol1=self.parserOPJointure(opParsed[0])#"[R1,C1]"
-            relCol2=self.parserOPJointure(opParsed[1])#"[R2,C2]"
-            colonne1= colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
-            colonne2=colonnes2.index(relCol2[1])
-
+            opParsed=op.split(typeOperation)
+            relCol1=opParsed[0].split(".")#"[R1,C1]"
+            relCol2=opParsed[1].split(".")#"[R2,C2]"
+            colonne1 = colonnes1.index(relCol1[1])#ca recupere la colonne dans la table
+            colonne2 = colonnes2.index(relCol2[1])
+            
             match(typeOperation):
                 case ">=":
-                    bool = bool and relation1.recvalues[colonne1] >= relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] >= tuple2.recvalues[colonne2]
                 case "<=":
-                    bool = bool and relation1.recvalues[colonne1] <= relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] <= tuple2.recvalues[colonne2]
                 case ">":
-                    bool = bool and relation1.recvalues[colonne1] > relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] > tuple2.recvalues[colonne2]
                 case "<":
-                    bool = bool and relation1.recvalues[colonne1] < relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] < tuple2.recvalues[colonne2]
                 case "=":
-                    bool = bool and relation1.recvalues[colonne1] == relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] == tuple2.recvalues[colonne2]
                 case "<>":
-                    bool = bool and relation1.recvalues[colonne1] != relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] != tuple2.recvalues[colonne2]
                 case "!=":
-                    bool = bool and relation1.recvalues[colonne1] != relation2.recvalues[colonne2]
+                    bool = bool and tuple1.recvalues[colonne1] != tuple2.recvalues[colonne2]
         bool = True
 
     def parseOperation(self,op):#> < = >= <= <> !=
@@ -168,22 +168,33 @@ class SelectCommand:
         print('Total records=',len(unique))
   
 
-    # def executeJointure(self):
-    #     r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0])
-    #     s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1])
-    #     rt = self.bdd.file_manager.GetAllRecords(r)
-    #     st = self.bdd.file_manager.GetAllRecords(s)
-        
-    #     if "WHERE" in self.commande :
-    #         for t in r:
-    #             if self.evaluer(t):
-    #                 unique.append(t)
-    #     else :
-    #         unique = res
-        
-    #     for t in unique:
-    #         print(t)
-    #     print('Total records=',len(unique))
+    def executeJointure(self):
+        r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0].strip())
+        s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1].strip())
+        rPages = self.bdd.file_manager.getDataPages(r)
+        sPages = self.bdd.file_manager.getDataPages(s)
+        itr = RecordIterator(self.bdd, r,rPages[0])
+        its = RecordIterator(self.bdd, s,sPages[0])
+        i,j=0,0
+
+        if "WHERE" in self.commande :
+            for rp in (rPages) : 
+                itr = RecordIterator(self.bdd,r,rp)
+                rt=(itr.GetNextRecord(i))
+                while(rt!=None):
+                    rt=(itr.GetNextRecord(i))
+                    for sp in sPages :
+                        its = RecordIterator(self.bdd,s,sp)
+                        st=(its.GetNextRecord(j))
+                        while(st!=None):
+                            st=(its.GetNextRecord(j))
+                            if self.evaluerJointure(rt,st):
+                                print(rt,st)
+                        j+=1
+                i+=1
+            its.close()
+            itr.close()
+  
 
     def Execute(self):
         """
@@ -193,6 +204,6 @@ class SelectCommand:
         if type(self.nomRelation)==str :
             self.executeSelectClassique()   
 
-        # else:
-        #     self.executeJointure()
+        else:
+            self.executeJointure()
         

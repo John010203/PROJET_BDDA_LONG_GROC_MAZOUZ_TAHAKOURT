@@ -17,10 +17,8 @@ class RecordIterator:
     def GetNextRecord(self,index)->Record: #index correspond a l'index de la boucle sur laquelle on va iterer
         print("self.buffRI.get_pos() : ",self.buffRI.get_pos())
         valSlot= self.dataPage.getValeurSlotAt(index,self.bdd,self.buffRI.get_pos())
-        print("valslot : ", valSlot)
         record=Record(self.tabInfo,[])
         taille=record.readFromBuffer(self.buffRI,self.buffRI.get_pos())
-        print("taille : ", taille)
         #self.buffRI.set_position(self.buffRI.get_pos()+taille+4*len(self.tabInfo.cols))
         if(valSlot!=-1 or record.getTailleRecord() != 0):
             print("record : ", record.getTailleRecord())

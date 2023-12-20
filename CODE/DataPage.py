@@ -105,6 +105,7 @@ class DataPage :
         self.buff.set_position(0)
     
     def getValeurSlotAt(self,numSlot,bdd,pos):
+        print("numSlot() : ",numSlot)
         self.buff.set_position(bdd.DBParams.SGBDPageSize-8-(numSlot*8))
         value=self.buff.read_int()
         self.buff.set_position(pos)#pour rem

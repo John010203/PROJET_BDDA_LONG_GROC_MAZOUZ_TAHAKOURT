@@ -16,7 +16,6 @@ class ResetDBCommand():
         """
         Réinitialise la BDD en réinitialisant le diskManager, le bufferManager et dataBaseInfo
         """
-        # print("-------------RESETDB-----------")
         self.diskManager.reset()
         self.bufferManager.reset()
         self.databaseInfo.reset()
@@ -25,11 +24,4 @@ class ResetDBCommand():
                 pass
         
         
-        '''
-         supprimer tous les fichiers du dossier DB
-        • « remettre tout à 0 » dans le BufferManager et la DatabaseInfo, ainsi que potentiellement
-        dans le DiskManager.
-        Pour cela, il faut vider les listes, remettre tous les compteurs et les flags à 0, etc.
-        Vous pouvez faire ces « remises à 0 » dans des méthodes spécifiques, à créer sur chaque
-        classe concernée.
-        '''
+        

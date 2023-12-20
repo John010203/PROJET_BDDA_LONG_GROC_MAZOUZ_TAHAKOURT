@@ -52,17 +52,20 @@ class HeaderPage :
     
     def getPagesFromListe(self,pageId):
         """
-        Récupère une liste de PageId à partir d'une liste chaînée de PageId
+        Récupère une liste chainee de pageId qui precedent un certain pageId
+
         """
         listePage= []
         listePage.append(pageId)
-        
+
+        #initialisation
         if pageId.FileIdx != -1 :
             buffPage=self.bdd.buffer_manager.GetPage(pageId)
             dataPage= DataPage(buffPage)
             nextPage= dataPage.nextPageId()
             self.bdd.buffer_manager.FreePage(pageId,False)
-            
+
+            #on itere tant que ce n'est pas la derniere page
             while(nextPage.FileIdx!=-1):
                 buffPage=self.bdd.buffer_manager.GetPage(nextPage)
                 dataPage= DataPage(buffPage)

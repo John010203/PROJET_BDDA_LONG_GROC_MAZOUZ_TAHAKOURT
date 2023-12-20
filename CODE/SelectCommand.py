@@ -52,8 +52,6 @@ class SelectCommand:
             return relations,[]
 
     def evaluerJointure(self,tuple1,tuple2):
-        #operation colonne>2
-        #on split pour recup la colonne et la valeur
         relation1 = tuple1.tabInfo.nomRelation
         relation2 = tuple2.tabInfo.nomRelation
         colonnes1 = [i.nomColonne for i in tuple1.tabInfo.cols]
@@ -167,7 +165,7 @@ class SelectCommand:
         print('Total records=',len(unique))
   
 
-    def executeJointure(self):
+    def executeJointure(self):#on implemente le page oriented nested loop
         r=self.bdd.data_base_info.GetTableInfo(self.nomRelation[0].strip())
         s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1].strip())
         rPages = self.bdd.file_manager.getDataPages(r)

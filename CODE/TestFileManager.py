@@ -78,12 +78,10 @@ for i in range(0,nbSlots) :
     print(recTmp)
     
 
-# for i in range(len(file_manager.getRecordsInDataPage)):
-#     print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[i])
+for i in range(len(file_manager.getRecordsInDataPage(table,pageId2))):
+    print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[i])
 
-# print('stpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[0])
-# print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[1])
-# print('svpppppppppppp',file_manager.getRecordsInDataPage(table,pageId2)[2])
+
 
 
 

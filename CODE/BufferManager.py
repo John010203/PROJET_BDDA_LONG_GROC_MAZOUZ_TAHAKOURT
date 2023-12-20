@@ -105,11 +105,7 @@ class BufferManager :
                 if valdirty:
                     self.listFrame[i].dirty = valdirty
                 self.listFrame[i].buffer.set_position(0)
-                #if valdirty:
-                    #self.disk_manager.WritePage(pageId,self.listFrame[i].buffer)
-                    #print('gogogaga',self.listFrame[i])
-             
-                    #On a deja incremente le LFU dans GetPage
+                
                 
     
     def FlushAll(self) -> None :

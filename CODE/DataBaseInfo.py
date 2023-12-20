@@ -17,8 +17,12 @@ class DataBaseInfo :
         Réinitialise les informations de la table
         """
         self.tableInfo = []
-    #init lit un fichier et recupere  les definitions des tables    
+        
     def Init(self) -> None :
+        '''
+        init lit un fichier et recupere  les definitions des tables    
+        
+        '''
         with open (self.db.DBParams.DBPath+'DBInfo.save','r') as f1:
             for f in f1:
                 param = f.split(" ")
@@ -27,19 +31,19 @@ class DataBaseInfo :
                 headerPageId = PageId(int(param[2]), int(param[3]))
                 cols = []
                 for c in range(4, nbColonnes*2+3, 2):
-                    # print('dans la boucle',param[c].split(":")[0], (param[c].split(":")[1], int(param[c+1])))
                     cols.append(ColInfo(param[c].split(":")[0], (param[c].split(":")[1], int(param[c+1]))))
                 self.tableInfo.append(TableInfo(nomRelation, nbColonnes, cols, headerPageId))
 
-    #--------------------------------------------------------------------------------------------------------------
-    #enregistre les definitions des tables
+    
+    
     def Finish(self) -> None:
-        
+        '''
+        enregistre les definitions des tables
+        '''
         with open (self.db.DBParams.DBPath+'DBInfo.save','w') as f1:
             for tb in self.tableInfo:
                 f1.write(tb.save())
 
-    #--------------------------------------------------------------------------------------------------------------
     def getNbRelations(self) -> int:
         """
         Renvoie le nombre de relations

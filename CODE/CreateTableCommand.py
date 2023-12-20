@@ -41,7 +41,6 @@ class CreateTableCommand:
         relation = TableInfo(self.nomRelation,self.nbColonne,self.colInfos,headerPage)
         self.db.data_base_info.AddTableInfo(relation)
 
-        #print('creation'+self.db.data_base_info.__str__())
         
         return
     

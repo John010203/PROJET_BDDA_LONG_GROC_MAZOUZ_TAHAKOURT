@@ -21,8 +21,9 @@ class DatabaseManager:
         Charge les informations de la BDD depuis un fichier
         """
         file = self.bdd.DBParams.DBPath+'DBInfo.save'
-        self.diskManager.Init()
-        self.databaseInfo.Init()
+        if os.path.exists(file) and os.path.getsize(file) > 0:
+            self.diskManager.Init()
+            self.databaseInfo.Init()
         # print(self.databaseInfo)
         
     def Finish(self):

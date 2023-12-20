@@ -12,16 +12,21 @@ bfManager = bdd.buffer_manager
 '''
 Ecrire dans une page
 '''
+#instanciation du buffer d'ecriture
 bfEcriture = ByteBuffer(4096)
 
 #ecrire dans le buffer
-bfEcriture.put_char('L')
 print('------BUFFER ECRITURE------')
+bfEcriture.put_char('L')
 bfEcriture.put_int(0)
 bfEcriture.put_char('L')
 bfEcriture.put_char('L')
+
+
 #Allocation de la page
 pageId1 = diskManager.AllocPage()
+
+#on ecrit dans la page
 diskManager.WritePage(pageId1,bfEcriture)
 print('-----pageId1----',pageId1)
 
@@ -29,22 +34,25 @@ print('-----pageId1----',pageId1)
 '''
 Lecture dans une page
 '''
+
+#instanciation du buffer de lecture
 bfLecture = ByteBuffer(4096)
+
+#on recupere le contenu de la page dans le buffer
 diskManager.ReadPage(pageId1,bfLecture)
+
+
 '''
-print(bfLecture.read_char(),end=' ')
-print(bfLecture.read_int(),end=' ')
-print(bfLecture.read_char(),end=' ')
-print(bfLecture.read_char(),end=' ')
+On passe aux tests di buffer pool
 '''
 pageId2 = diskManager.AllocPage()
 print('\n-----pageId2 ----',pageId2)
-#diskManager.Dealloc(pageId1)
+
+diskManager.Dealloc(pageId1)
+
 pageId3 = diskManager.AllocPage()
 print('\n-----pageId3--',pageId3)
 
-bfManager.GetPage(pageId1)
-print('on charge 0 0\n',bfManager)
 
 bfManager.GetPage(pageId2)
 print('on charge 1 0\n',bfManager)
@@ -57,6 +65,8 @@ print('on charge 2 0\n',bfManager)
 
 bfManager.GetPage(pageId3)
 print('on accede 2 0\n',bfManager)
+
+
 #print(bfManager.FindFrame(pageId1))
 #print(bfManager.FindFrameLibre())
 

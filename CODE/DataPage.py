@@ -4,7 +4,6 @@ class DataPage :
         """
         Initialise une instance de la classe DataPage
         """
-        #buff devra contenir les PageId et les donnees
         self.buff = buff
 
 
@@ -34,10 +33,6 @@ class DataPage :
         pageId = PageId(self.buff.read_int(),self.buff.read_int())
         self.buff.set_position(0)
         return pageId
-
-    def getPosition(): return
-    def setPosition(pos):return
-    def getRecordAt(pos):return 
 
     def getEspaceDisponible(self):
         """
@@ -98,10 +93,13 @@ class DataPage :
         self.buff.set_position(0)
     
     def remove(self,numSlot,bdd):
+        '''
+        Fonction utilisee pour le delete
+        '''
         self.buff.set_position(bdd.DBParams.SGBDPageSize-8-(numSlot*8))
         #on va fixer la taille a -1
         self.buff.put_int(-1)
-        self.buff.put_int(0)#je ne sais plus par quoi remplacer la position du debut du record
+        self.buff.put_int(0)
         self.buff.set_position(0)
     
     def getValeurSlotAt(self,numSlot,bdd,pos):

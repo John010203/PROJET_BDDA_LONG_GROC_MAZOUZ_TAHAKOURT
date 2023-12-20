@@ -117,8 +117,7 @@ class SelectCommand:
         """
         Evalue toutes les opérations de sélection pour un tuple donné
         """
-        #operation colonne>2
-        #on split pour récup la colonne et la valeur
+
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
         colonnes = [i.nomColonne for i in relation.cols]
         bool = True
@@ -151,7 +150,7 @@ class SelectCommand:
         return bool 
 
     def executeSelectClassique(self):
-        # print("-------------SELECTION-----------")
+
         unique = []
         relation = self.bdd.data_base_info.GetTableInfo(self.nomRelation)
         res = self.bdd.file_manager.GetAllRecords(relation)
@@ -173,27 +172,28 @@ class SelectCommand:
         s=self.bdd.data_base_info.GetTableInfo(self.nomRelation[1].strip())
         rPages = self.bdd.file_manager.getDataPages(r)
         sPages = self.bdd.file_manager.getDataPages(s)
-        # itr = RecordIterator(self.bdd, r,rPages[0])
-        # its = RecordIterator(self.bdd, s,sPages[0])
+
         i,j=1,1
         nbTuples = 0
         if "WHERE" in self.commande :
-            for rp in (rPages) : 
+            for rp in rPages : 
                 for sp in sPages :
                     itr = RecordIterator(self.bdd,r,rp)#GETPAGE
                     rt=itr.GetNextRecord(0)
-                    while  rt:
+                    while rt:
                         its = RecordIterator(self.bdd,s,sp)
                         st=its.GetNextRecord(0)
-                        while(st):
+                        while st:
                             if self.evaluerJointure(rt,st):
                                 nbTuples +=1
                                 print(rt.__str__()[:-1]," ;",st)
                             st=its.GetNextRecord(j)
                             j+=1
-                        its.Close()
+                        its.Reset()
+                        its.Close() 
                         rt=itr.GetNextRecord(i)
-                    i+=1
+                        i+=1  
+                    itr.Reset()  
                     itr.Close()    
         else:
            for rp in (rPages) : 

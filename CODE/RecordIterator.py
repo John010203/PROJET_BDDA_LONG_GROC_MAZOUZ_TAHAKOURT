@@ -19,9 +19,11 @@ class RecordIterator:
 
     def GetNextRecord(self,index)->Record: #index correspond a l'index de la boucle sur laquelle on va iterer
         record=Record(self.tabInfo,[])
-        record.readFromBuffer(self.buffRI,self.buffRI.get_pos())
         #self.buffRI.set_position(self.buffRI.get_pos()+taille+4*len(self.tabInfo.cols))
-        if(self.indiceSlot < self.nbSlots-1):
+        if(self.indiceSlot < self.nbSlots):
+            taille = record.readFromBuffer(self.buffRI,self.buffRI.get_pos())
+            # print('position  : ', self.buffRI.get_pos())
+            # print('///////////////////////////////',taille)
             self.indiceSlot +=1
             return record
         else:

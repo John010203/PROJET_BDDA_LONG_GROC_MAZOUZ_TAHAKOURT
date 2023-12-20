@@ -183,7 +183,7 @@ class SelectCommand:
         # itr = RecordIterator(self.bdd, r,rPages[0])
         # its = RecordIterator(self.bdd, s,sPages[0])
         i,j=0,0
-
+        nbTuples = 0
         if "WHERE" in self.commande :
             for rp in (rPages) : 
                 itr = RecordIterator(self.bdd,r,rp)#GETPAGE
@@ -198,11 +198,11 @@ class SelectCommand:
                         for j in range(nbSlotsS):
                             st=its.GetNextRecord(j)
                             if self.evaluerJointure(rt,st):
-                                print("res : ",rt,"||",st)
+                                nbTuples +=2
+                                print(rt,'\n',st)
                         its.Close()
                         
                 itr.Close()    
-
         else:
            for rp in (rPages) : 
                 itr = RecordIterator(self.bdd,r,rp)#GETPAGE
@@ -216,11 +216,11 @@ class SelectCommand:
                         nbSlotsS = its.dataPage.getNbSlots(self.bdd)
                         its.Reset()
                         for j in range(nbSlotsS):
-                            st=its.GetNextRecord(j)
-                            print("res : ",rt,"||",st)
+                            nbTuples +=2
+                            print(rt,'\n',st)
                         its.Close()
                 itr.Close()#freepage1    
-
+        print('Total records : ',nbTuples)
 
     def Execute(self):
         """

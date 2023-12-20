@@ -198,8 +198,8 @@ class SelectCommand:
                         for j in range(nbSlotsS):
                             st=its.GetNextRecord(j)
                             if self.evaluerJointure(rt,st):
-                                nbTuples +=2
-                                print(rt,'\n',st)
+                                nbTuples +=1
+                                print(rt.__str__()[:-1]," ;",st)
                         its.Close()
                         
                 itr.Close()    
@@ -216,8 +216,8 @@ class SelectCommand:
                         nbSlotsS = its.dataPage.getNbSlots(self.bdd)
                         its.Reset()
                         for j in range(nbSlotsS):
-                            nbTuples +=2
-                            print(rt,'\n',st)
+                            nbTuples +=1
+                            print(rt.__str__()[:-2]," ;",st)
                         its.Close()
                 itr.Close()#freepage1    
         print('Total records : ',nbTuples)

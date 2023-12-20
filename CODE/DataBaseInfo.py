@@ -37,7 +37,6 @@ class DataBaseInfo :
         
         with open (self.db.DBParams.DBPath+'DBInfo.save','w') as f1:
             for tb in self.tableInfo:
-                print(tb)
                 f1.write(tb.save())
 
     #--------------------------------------------------------------------------------------------------------------

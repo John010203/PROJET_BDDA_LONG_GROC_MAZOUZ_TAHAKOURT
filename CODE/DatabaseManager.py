@@ -23,7 +23,7 @@ class DatabaseManager:
         file = self.bdd.DBParams.DBPath+'DBInfo.save'
         self.diskManager.Init()
         self.databaseInfo.Init()
-        print(self.databaseInfo)
+        # print(self.databaseInfo)
         
     def Finish(self):
         """
